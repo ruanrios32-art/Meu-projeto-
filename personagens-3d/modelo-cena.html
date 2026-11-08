@@ -1,0 +1,248 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script src="../.claude/skills/maquina-de-reels/motor/web/lib/three.min.js"></script>
+</head><body>
+<script>
+// Esquete em 3D com bonecos de blocos. window.render(t) desenha o quadro do tempo t (determinístico).
+const W = 1080, H = 1920;
+const DADOS = window.DADOS;
+const cl = v => Math.max(0, Math.min(1, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const io = k => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+const rnd = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setPixelRatio(1); r.setSize(W, H);
+r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+r.outputColorSpace = THREE.SRGBColorSpace;
+r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.3;
+document.body.appendChild(r.domElement);
+
+const cena = new THREE.Scene();
+cena.background = new THREE.Color(0x9cc9f2);
+cena.fog = new THREE.Fog(0xbcd8f2, 30, 90);
+const cam = new THREE.PerspectiveCamera(34, W / H, .1, 300);
+
+cena.add(new THREE.HemisphereLight(0xeef6ff, 0x8a7a6a, 1.5));
+const sol = new THREE.DirectionalLight(0xfff1dc, 2.2);
+sol.position.set(-14, 22, 12); sol.castShadow = true;
+sol.shadow.mapSize.set(2048, 2048);
+Object.assign(sol.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 80 });
+sol.shadow.bias = -0.0004; sol.shadow.radius = 4;
+cena.add(sol);
+
+const mats = {};
+const mat = (c, o = {}) => { const k = c + JSON.stringify(o); return mats[k] || (mats[k] = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .85, metalness: 0 }, o))); };
+const geo = new THREE.BoxGeometry(1, 1, 1);
+function bloco(pai, w, h, d, c, x, y, z, o) {
+  const m = new THREE.Mesh(geo, typeof c === 'number' ? mat(c, o) : c);
+  m.scale.set(w, h, d); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; pai.add(m); return m;
+}
+
+// ---------- cenário: rua de paralelepípedo, calçada, muro, casas ----------
+(function cenario() {
+  // rua (paralelepípedos)
+  const n = 2600, inst = new THREE.InstancedMesh(geo, mat(0x6e6a66), n), dm = new THREE.Object3D(), cor = new THREE.Color();
+  let k = 0;
+  for (let i = 0; i < 52 && k < n; i++) for (let j = 0; j < 50 && k < n; j++) {
+    const x = -12 + j * .52 + (i % 2) * .26, z = 6 - i * .52;
+    dm.position.set(x, -.05 + rnd(k) * .03, z); dm.scale.set(.48, .1, .48); dm.rotation.y = (rnd(k + 7) - .5) * .12; dm.updateMatrix();
+    inst.setMatrixAt(k, dm.matrix); cor.setHSL(.07, .05 + rnd(k + 3) * .05, .28 + rnd(k + 9) * .14); inst.setColorAt(k, cor); k++;
+  }
+  inst.receiveShadow = true; cena.add(inst);
+  bloco(cena, 200, .1, 200, 0x55524e, 0, -.12, 0);
+  // calçada e meio-fio do lado de lá
+  bloco(cena, 80, .3, 4, 0xb9b2a6, 0, .1, -22);
+  // muro escuro à esquerda (como no vídeo)
+  bloco(cena, 1.2, 2.6, 30, 0x4a4542, -6.2, 1.25, -6);
+  for (let i = 0; i < 10; i++) bloco(cena, 1.3, .2, 2.8, 0x5a5450, -6.2, 2.62, 7 - i * 3);
+  // casas do outro lado da rua
+  const cores = [0xe8d8cf, 0xd9a5a0, 0xf1efe8, 0xc98f7a, 0xe6dccb, 0xb9c6cf, 0xf0e2c0];
+  for (let i = 0; i < 12; i++) {
+    const x = -16 + i * 5.2, h = 3.4 + rnd(i) * 3, w = 4.6;
+    const casa = bloco(cena, w, h, 4, cores[i % cores.length], x, h / 2, -26);
+    bloco(cena, w + .3, .35, 4.4, 0x8d5b4a, x, h + .1, -26);                       // beiral
+    bloco(cena, 1.1, 1.9, .12, 0x6b4a34, x - 1, .95, -23.95);                    // porta
+    bloco(cena, 1.2, 1, .12, 0x9fc4dd, x + 1.1, 2.1, -23.95, { roughness: .2 });  // janela
+    if (i % 3 === 1) bloco(cena, 3.6, .9, .14, 0xc0392b, x, h - .7, -23.9);     // placa
+  }
+  // postes e fios
+  for (let i = 0; i < 6; i++) { const x = -14 + i * 11; bloco(cena, .25, 9, .25, 0x8f8a84, x, 4.5, -21.5); bloco(cena, 2.2, .18, .18, 0x8f8a84, x, 8.6, -21.5); }
+  // árvores
+  for (let i = 0; i < 5; i++) { const x = -10 + i * 13; bloco(cena, .5, 2.6, .5, 0x6b4a2f, x, 1.3, -20.5); bloco(cena, 3, 2.6, 3, 0x3f8f45, x, 3.6, -20.5); bloco(cena, 2, 1.4, 2, 0x4fa957, x, 5.3, -20.5); }
+  // carros parados ao fundo
+  [[-3, 0xd8d8d8], [9, 0x2f5fa8], [22, 0xb3352f]].forEach(([x, c]) => { bloco(cena, 4, 1, 1.9, c, x, .7, -18.6); bloco(cena, 2.3, .8, 1.7, c, x - .2, 1.55, -18.6); bloco(cena, 2.2, .6, 1.75, 0x9fc4dd, x - .2, 1.55, -18.6, { roughness: .1 }); });
+})();
+
+// ---------- personagens ----------
+function rostoCanvas(cfg) {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const g = c.getContext('2d');
+  return {
+    tex,
+    desenha(boca, olhos, sobr) {
+      g.fillStyle = cfg.pele; g.fillRect(0, 0, 256, 256);
+      // sobrancelhas
+      g.fillStyle = cfg.sobr; const sy = 92 - sobr * 10;
+      g.save(); g.translate(80, sy); g.rotate(-.12 - sobr * .15); g.fillRect(-28, -6, 56, 12); g.restore();
+      g.save(); g.translate(176, sy); g.rotate(.12 + sobr * .15); g.fillRect(-28, -6, 56, 12); g.restore();
+      // olhos
+      const oh = Math.max(3, 26 * olhos);
+      g.fillStyle = '#fff'; g.beginPath(); g.ellipse(80, 122, 22, oh, 0, 0, 7); g.ellipse(176, 122, 22, oh, 0, 0, 7); g.fill();
+      if (olhos > .2) { g.fillStyle = '#2a1a12'; g.beginPath(); g.arc(84, 124, 12 * Math.min(1, olhos * 1.4), 0, 7); g.arc(180, 124, 12 * Math.min(1, olhos * 1.4), 0, 7); g.fill(); }
+      if (cfg.cilios) { g.strokeStyle = '#1a1010'; g.lineWidth = 5; g.beginPath(); g.moveTo(56, 108); g.lineTo(46, 98); g.moveTo(200, 108); g.lineTo(210, 98); g.stroke(); }
+      // boca
+      const bh = 6 + boca * 42, bw = 38 + boca * 10;
+      g.fillStyle = cfg.labio; g.beginPath(); g.ellipse(128, 196, bw, bh / 2 + 5, 0, 0, 7); g.fill();
+      g.fillStyle = '#3a0d12'; g.beginPath(); g.ellipse(128, 196, bw - 8, Math.max(1, bh / 2 - 2), 0, 0, 7); g.fill();
+      if (boca > .35) { g.fillStyle = '#fff'; g.fillRect(128 - (bw - 14), 196 - bh / 2 + 2, (bw - 14) * 2, 7); }
+      // blush
+      g.fillStyle = 'rgba(230,110,110,.25)'; g.beginPath(); g.arc(50, 168, 18, 0, 7); g.arc(206, 168, 18, 0, 7); g.fill();
+      tex.needsUpdate = true;
+    }
+  };
+}
+function boneco(cfg) {
+  const g = new THREE.Group(); cena.add(g);
+  const P = { g };
+  // pernas
+  P.pE = new THREE.Group(); P.pE.position.set(-.32, 1.55, 0); g.add(P.pE);
+  P.pD = new THREE.Group(); P.pD.position.set(.32, 1.55, 0); g.add(P.pD);
+  bloco(P.pE, .58, 1.55, .62, cfg.perna, 0, -.78, 0); bloco(P.pD, .58, 1.55, .62, cfg.perna, 0, -.78, 0);
+  bloco(P.pE, .62, .22, .78, cfg.sapato, 0, -1.48, .06); bloco(P.pD, .62, .22, .78, cfg.sapato, 0, -1.48, .06);
+  if (cfg.short) { bloco(P.pE, .64, .55, .68, cfg.short, 0, -.2, 0); bloco(P.pD, .64, .55, .68, cfg.short, 0, -.2, 0); bloco(g, 1.32, .35, .7, cfg.short, 0, 1.6, 0); }
+  // tronco
+  P.tronco = new THREE.Group(); P.tronco.position.set(0, 1.6, 0); g.add(P.tronco);
+  if (cfg.vestido) {
+    bloco(P.tronco, 1.3, 1.5, .72, cfg.vestido, 0, .75, 0);
+    bloco(g, 1.42, 1.0, .82, cfg.vestido, 0, 1.15, 0);   // saia até o joelho
+  } else {
+    bloco(P.tronco, 1.24, .62, .66, cfg.pele3, 0, .3, 0);   // barriga à mostra
+    bloco(P.tronco, 1.3, .78, .72, cfg.top, 0, .99, 0);     // top
+    bloco(P.tronco, 1.32, .1, .74, 0xffffff, 0, 1.36, 0);   // elástico branco
+    bloco(P.tronco, 1.2, .14, .64, cfg.pele3, 0, 1.47, 0);  // ombros
+  }
+  // braços (pivô no ombro)
+  const braco = lado => {
+    const b = new THREE.Group(); b.position.set(lado * .86, 1.32, 0); P.tronco.add(b);
+    const ante = new THREE.Group(); ante.position.set(0, -.68, 0); b.add(ante);
+    bloco(b, .42, .72, .5, cfg.manga || cfg.pele3, 0, -.34, 0);
+    bloco(ante, .4, .66, .48, cfg.mangaBaixo || cfg.pele3, 0, -.33, 0);
+    bloco(ante, .38, .26, .44, cfg.pele3, 0, -.75, 0);  // mão
+    return { b, ante };
+  };
+  P.bE = braco(-1); P.bD = braco(1);
+  // cabeça
+  P.cab = new THREE.Group(); P.cab.position.set(0, 1.55, 0); P.tronco.add(P.cab);
+  bloco(P.cab, .4, .22, .4, cfg.pele3, 0, .1, 0); // pescoço
+  P.rosto = rostoCanvas(cfg);
+  const mf = new THREE.MeshStandardMaterial({ map: P.rosto.tex, roughness: .8 });
+  const mp = mat(cfg.pele3);
+  const head = new THREE.Mesh(geo, [mp, mp, mp, mp, mf, mp]); head.scale.set(1.06, 1.06, 1); head.position.set(0, .76, 0); head.castShadow = true; P.cab.add(head);
+  cfg.cabelo(P.cab);
+  P.rosto.desenha(0, 1, 0);
+  return P;
+}
+const peleA = '#e9b48f', peleB = '#c98b62';
+// A: loira de vestido verde de manga longa (quem contrata)
+const A = boneco({ pele: peleA, pele3: 0xe9b48f, sobr: '#a07a3a', labio: '#c4646a', cilios: true, vestido: 0x1f9a3a, manga: 0x1f9a3a, mangaBaixo: 0x1f9a3a, perna: 0xe9b48f, sapato: 0x111111,
+  cabelo(c) { const L = 0xf2d58a, E = 0xd9b45e;
+    bloco(c, 1.16, .32, 1.1, L, 0, 1.38, -.02); bloco(c, 1.18, .5, .3, L, 0, 1.14, -.5);       // topo e trás
+    bloco(c, .26, 1.5, 1.08, L, -.6, .62, -.02); bloco(c, .26, 1.5, 1.08, L, .6, .62, -.02);   // laterais longas
+    bloco(c, 1.18, 1.5, .3, E, 0, .5, -.56);                                                     // costas
+    bloco(c, .7, .28, .14, L, -.2, 1.18, .52); bloco(c, .3, .5, .14, L, -.46, 1.0, .52);       // franja de lado
+  } });
+// B: morena de cabelo curto, top vermelho e short rosa (a "noiada")
+const B = boneco({ pele: peleB, pele3: 0xc98b62, sobr: '#2a1810', labio: '#9a4a48', cilios: false, top: 0xd8344a, short: 0xf2a7c3, perna: 0xc98b62, sapato: 0xf5f5f5,
+  cabelo(c) { const K = 0x231812;
+    bloco(c, 1.16, .34, 1.12, K, 0, 1.38, 0); bloco(c, 1.18, .9, .3, K, 0, .9, -.5);
+    bloco(c, .24, .95, 1.1, K, -.6, .86, 0); bloco(c, .24, .95, 1.1, K, .6, .86, 0);
+    bloco(c, 1.1, .24, .14, K, 0, 1.2, .52);                                                     // franja reta
+  } });
+A.g.position.set(-1.6, 0, 0); A.g.rotation.y = .35;
+B.g.position.set(1.7, 0, .4); B.g.rotation.y = -.45;
+
+// ---------- poses ----------
+function poseA(t, fala) {           // mão no queixo, outro braço cruzado (pensativa / desconfiada)
+  const s = Math.sin(t * 1.3);
+  A.tronco.rotation.z = s * .03; A.tronco.rotation.y = Math.sin(t * .7) * .05;
+  A.bD.b.rotation.set(-.3, 0, -.35); A.bD.ante.rotation.set(-.25 - fala * .1 * Math.sin(t * 9), 0, -2.38);   // mão no queixo
+  A.bE.b.rotation.set(-.45, 0, .2); A.bE.ante.rotation.set(0, 0, 1.37);   // braço cruzado
+  A.cab.rotation.set(-.05 + Math.sin(t * 2.1) * .04 * (1 + fala), Math.sin(t * .9) * .12, Math.sin(t * 1.7) * .05);
+}
+function poseB(t, fala, gesto) {    // mão na cintura; às vezes mãos na cabeça
+  const s = Math.sin(t * 1.5);
+  B.tronco.rotation.z = s * .04; B.tronco.rotation.y = Math.sin(t * .8) * .07;
+  const k = gesto, w = fala * Math.sin(t * 6);
+  // mão direita na cintura
+  B.bD.b.rotation.set(lerp(-.1, -2.9, k), 0, lerp(.75, -.4, k)); B.bD.ante.rotation.set(lerp(0, -1.6, k), 0, lerp(-1.65, 0, k));
+  // mão esquerda gesticula enquanto fala
+  B.bE.b.rotation.set(lerp(-.5 - fala * .6 - w * .25, -2.9, k), 0, lerp(-.25 - fala * .25, .4, k)); B.bE.ante.rotation.set(lerp(-.9 - fala * .5, -1.6, k), 0, lerp(.3, 0, k));
+  B.cab.rotation.set(Math.sin(t * 2.4) * .05 * (1 + fala), Math.sin(t * 1.1) * .15, Math.sin(t * 1.9) * .06);
+}
+
+
+// ---------- placa "Casa da Teresa Rocha" numa casa do fundo ----------
+(function placa() {
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 256;
+  const g = c.getContext('2d'); g.fillStyle = '#f7f1e3'; g.fillRect(0, 0, 1024, 256);
+  g.strokeStyle = '#7a4a2a'; g.lineWidth = 18; g.strokeRect(9, 9, 1006, 238);
+  g.fillStyle = '#7a1f1f'; g.font = 'bold 92px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText('CASA DA TERESA ROCHA', 512, 132);
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(6, 1.5), new THREE.MeshStandardMaterial({ map: tex, roughness: .9 }));
+  m.position.set(0.5, 4.6, -23.85); cena.add(m);
+})();
+
+// ---------- galinha em bloquinhos ----------
+const GAL = new THREE.Group(); cena.add(GAL);
+(function galinha() {
+  bloco(GAL, .9, .75, 1.1, 0xffffff, 0, .75, 0);                 // corpo
+  bloco(GAL, .55, .6, .55, 0xffffff, 0, 1.35, .45);              // cabeça
+  bloco(GAL, .22, .3, .12, 0xe53935, 0, 1.75, .45);             // crista
+  bloco(GAL, .22, .14, .26, 0xffb300, 0, 1.3, .82);             // bico
+  bloco(GAL, .14, .2, .1, 0xe53935, 0, 1.12, .74);              // barbela
+  bloco(GAL, .1, .1, .05, 0x111111, -.2, 1.42, .73); bloco(GAL, .1, .1, .05, 0x111111, .2, 1.42, .73);
+  bloco(GAL, .12, .38, .12, 0xffb300, -.2, .2, 0); bloco(GAL, .12, .38, .12, 0xffb300, .2, .2, 0);
+  bloco(GAL, .7, .45, .25, 0xeeeeee, 0, 1.05, -.6);              // rabo
+  GAL.visible = false;
+})();
+const JANELAS_GALINHA = [[28.0, 31.4], [33.8, 35.4], [47.2, 51.1], [67.8, 69.3]];
+window.GESTO_B = t => { const a = 31.9, b = 37.6; return cl((t - a) / .45) * (1 - cl((t - b) / .45)); };
+function atualizaGalinha(t, alvo, lado) {
+  const j = JANELAS_GALINHA.find(([a, b]) => t >= a - .1 && t < b + .3);
+  GAL.visible = !!j; if (!j) return;
+  const [a, b] = j, k = cl((t - a) / .35), sai = cl((t - b) / .3);
+  const pos = alvo.g.position;
+  GAL.position.set(pos.x + lado * 1.05, Math.abs(Math.sin(t * 7)) * .35 * (1 - sai), pos.z + 2.3);
+  GAL.rotation.y = Math.sin(t * 3) * .5 + lado * .4;
+  GAL.scale.setScalar(Math.max(.001, (k < 1 ? k * 1.15 : 1) * (1 - sai)));
+}
+// ---------- quem fala e câmera ----------
+const fps = DADOS.fps, env = DADOS.env, segs = DADOS.segs;
+const quem = t => { for (const [p, a, b] of segs) if (t >= a && t < b) return [p, a, b]; return segs[segs.length - 1]; };
+const envAt = t => { const i = Math.floor(t * fps); let m = 0; for (let k = -1; k <= 1; k++) m = Math.max(m, env[Math.max(0, Math.min(env.length - 1, i + k))] || 0); return m; };
+const piscar = (t, sem) => { const p = (t + sem) % 3.7; return p < .12 ? Math.abs(p - .06) / .06 : 1; };
+
+window.render = function (t) {
+  const [p, a, b] = quem(t);
+  const e = envAt(t);
+  const fA = p === 'A' ? e : 0, fB = p === 'B' ? e : 0;
+  poseA(t, fA); poseB(t, fB, (window.GESTO_B || (() => 0))(t));
+  A.rosto.desenha(Math.min(1, fA * 1.3), piscar(t, 0), p === 'A' ? .3 + fA * .5 : .1);
+  B.rosto.desenha(Math.min(1, fB * 1.3), piscar(t, 1.3), p === 'B' ? .2 + fB * .6 : 0);
+  // corte seco entre quem fala (como no vídeo) + aproximação lenta dentro do plano
+  const alvo = p === 'A' ? A : B, lado = p === 'A' ? 1 : -1;
+  const k = cl((t - a) / Math.max(.5, b - a));
+  const dist = lerp(10.5, 9.2, io(k));
+  const pos = alvo.g.position;
+  cam.position.set(pos.x + lado * 2.0, 3.9, pos.z + dist);
+  cam.lookAt(pos.x + lado * .3, 3.0, pos.z);
+  atualizaGalinha(t, alvo, lado);
+  r.render(cena, cam);
+};
+window.PRONTO = true;
+</script>
+</body></html>
