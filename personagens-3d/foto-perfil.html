@@ -1,0 +1,108 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script src="../.claude/skills/maquina-de-reels/motor/web/lib/three.min.js"></script>
+</head><body>
+<script>
+// Foto de perfil: boneco de blocos acenando e sorrindo, fundo de céu colorido.
+const W = 1080, H = 1080;
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true, alpha: false });
+r.setPixelRatio(1); r.setSize(W, H);
+r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+r.outputColorSpace = THREE.SRGBColorSpace;
+r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.25;
+document.body.appendChild(r.domElement);
+
+// fundo: degradê de céu (laranja do pôr do sol embaixo, azul em cima) com brilho atrás do boneco
+const fundo = document.createElement('canvas'); fundo.width = fundo.height = 1024;
+const fg = fundo.getContext('2d');
+const lin = fg.createLinearGradient(0, 0, 0, 1024);
+lin.addColorStop(0, '#2f7bff'); lin.addColorStop(.55, '#6cc4ff'); lin.addColorStop(.85, '#ffd27a'); lin.addColorStop(1, '#ff9f5a');
+fg.fillStyle = lin; fg.fillRect(0, 0, 1024, 1024);
+const rad = fg.createRadialGradient(512, 470, 40, 512, 470, 520);
+rad.addColorStop(0, 'rgba(255,255,255,.75)'); rad.addColorStop(.45, 'rgba(255,255,255,.18)'); rad.addColorStop(1, 'rgba(255,255,255,0)');
+fg.fillStyle = rad; fg.fillRect(0, 0, 1024, 1024);
+// raios de luz
+fg.save(); fg.translate(512, 470); fg.globalAlpha = .10; fg.fillStyle = '#fff';
+for (let i = 0; i < 16; i++) { fg.rotate(Math.PI / 8); fg.beginPath(); fg.moveTo(0, 0); fg.lineTo(-60, -900); fg.lineTo(60, -900); fg.fill(); }
+fg.restore();
+const texFundo = new THREE.CanvasTexture(fundo); texFundo.colorSpace = THREE.SRGBColorSpace;
+
+const cena = new THREE.Scene(); cena.background = texFundo;
+const cam = new THREE.PerspectiveCamera(30, 1, .1, 200);
+cena.add(new THREE.HemisphereLight(0xffffff, 0xffd9b0, 1.5));
+const sol = new THREE.DirectionalLight(0xfff3e0, 2.4); sol.position.set(6, 10, 12); sol.castShadow = true;
+sol.shadow.mapSize.set(2048, 2048); Object.assign(sol.shadow.camera, { left: -8, right: 8, top: 8, bottom: -8 }); sol.shadow.radius = 5;
+cena.add(sol);
+const contra = new THREE.DirectionalLight(0x9fd0ff, 1.2); contra.position.set(-8, 6, -6); cena.add(contra);
+
+const geo = new THREE.BoxGeometry(1, 1, 1), mats = {};
+const mat = c => mats[c] || (mats[c] = new THREE.MeshStandardMaterial({ color: c, roughness: .75 }));
+function bloco(pai, w, h, d, c, x, y, z) { const m = new THREE.Mesh(geo, typeof c === 'number' ? mat(c) : c); m.scale.set(w, h, d); m.position.set(x, y, z); m.castShadow = m.receiveShadow = true; pai.add(m); return m; }
+
+// nuvens de blocos
+[[-5.6, 5.2, -14, 1.3], [6.2, 4.6, -15, 1.5], [-7.4, .8, -16, 1.1], [7.6, -.8, -14, 1.0]].forEach(([x, y, z, s]) => {
+  const g = new THREE.Group(); g.position.set(x, y, z); g.scale.setScalar(s); cena.add(g);
+  bloco(g, 2.4, .8, 1, 0xffffff, 0, 0, 0); bloco(g, 1.4, .8, 1, 0xffffff, -.3, .6, 0); bloco(g, 1, .6, 1, 0xffffff, .7, .4, 0);
+});
+// estrelinhas
+[[-2.6, 3.6], [2.9, 4.1], [3.3, 1.2], [-3.4, 1.8]].forEach(([x, y], i) => { const s = bloco(cena, .22, .22, .22, 0xfff3a0, x, y, -2); s.rotation.set(.6, .8, i); s.material = new THREE.MeshBasicMaterial({ color: 0xfff6b0 }); });
+
+// ---------- personagem ----------
+const P = new THREE.Group(); cena.add(P);
+const PELE = 0xd9a07a, PELEc = '#d9a07a';
+// rosto sorrindo
+const rc = document.createElement('canvas'); rc.width = rc.height = 256; const g = rc.getContext('2d');
+g.fillStyle = PELEc; g.fillRect(0, 0, 256, 256);
+g.fillStyle = 'rgba(235,120,110,.35)'; g.beginPath(); g.arc(46, 168, 20, 0, 7); g.arc(210, 168, 20, 0, 7); g.fill();          // bochechas
+g.fillStyle = '#2b1a12';
+g.save(); g.translate(80, 82); g.rotate(-.15); g.fillRect(-28, -7, 56, 14); g.restore();
+g.save(); g.translate(176, 82); g.rotate(.15); g.fillRect(-28, -7, 56, 14); g.restore();                                     // sobrancelhas felizes
+g.fillStyle = '#fff'; g.beginPath(); g.ellipse(80, 120, 21, 25, 0, 0, 7); g.ellipse(176, 120, 21, 25, 0, 0, 7); g.fill();
+g.fillStyle = '#2a1a12'; g.beginPath(); g.arc(83, 124, 13, 0, 7); g.arc(179, 124, 13, 0, 7); g.fill();
+g.fillStyle = '#fff'; g.beginPath(); g.arc(88, 117, 5, 0, 7); g.arc(184, 117, 5, 0, 7); g.fill();                             // brilho no olho
+g.fillStyle = '#5a1418'; g.beginPath(); g.moveTo(78, 168); g.quadraticCurveTo(128, 240, 178, 168); g.closePath(); g.fill();   // sorriso
+g.fillStyle = '#fff'; g.beginPath(); g.moveTo(84, 170); g.quadraticCurveTo(128, 190, 172, 170); g.lineTo(168, 180); g.quadraticCurveTo(128, 198, 88, 180); g.fill();
+g.fillStyle = '#e8706e'; g.beginPath(); g.ellipse(128, 206, 22, 9, 0, 0, 7); g.fill();                                       // língua
+const tex = new THREE.CanvasTexture(rc); tex.colorSpace = THREE.SRGBColorSpace;
+const mp = mat(PELE), mf = new THREE.MeshStandardMaterial({ map: tex, roughness: .8 });
+
+// tronco: moletom amarelo com capuz e cordão
+const T = new THREE.Group(); T.position.y = 0; P.add(T);
+bloco(T, 1.5, 1.6, .85, 0xffc12e, 0, .8, 0);
+bloco(T, 1.56, .3, .9, 0xf0a91a, 0, 1.55, -.05);                       // capuz na gola
+bloco(T, .07, .5, .05, 0xffffff, -.22, 1.25, .45); bloco(T, .07, .5, .05, 0xffffff, .22, 1.25, .45); // cordões
+bloco(T, .9, .4, .05, 0xf0a91a, 0, .35, .45);                          // bolso canguru
+bloco(T, .5, .5, .05, 0x2f7bff, 0, .95, .45);                          // estampa
+bloco(T, 1.48, .9, .82, 0x2d4d8f, 0, -.45, 0);                         // calça jeans
+// braço esquerdo (abaixado, relaxado)
+const bE = new THREE.Group(); bE.position.set(-.98, 1.45, 0); bE.rotation.set(.05, 0, -.12); T.add(bE);
+bloco(bE, .46, 1.3, .52, 0xffc12e, 0, -.62, 0); bloco(bE, .42, .32, .48, PELE, 0, -1.4, 0);
+// braço direito levantado acenando
+const bD = new THREE.Group(); bD.position.set(.98, 1.45, 0); bD.rotation.set(-.15, 0, 2.75); T.add(bD);
+bloco(bD, .46, .78, .52, 0xffc12e, 0, -.36, 0);
+const ante = new THREE.Group(); ante.position.set(0, -.74, 0); ante.rotation.set(-.1, 0, -.45); bD.add(ante);
+bloco(ante, .44, .7, .5, 0xffc12e, 0, -.33, 0);
+const mao = new THREE.Group(); mao.position.set(0, -.78, 0); ante.add(mao);
+bloco(mao, .5, .44, .3, PELE, 0, -.05, 0);                             // palma
+for (let i = 0; i < 4; i++) bloco(mao, .1, .3, .22, PELE, -.18 + i * .12, -.4, 0);  // dedos
+bloco(mao, .12, .26, .22, PELE, .3, -.05, 0);                          // polegar
+// "linhas de aceno"
+[[.25, 0], [.42, .5]].forEach(([d, a]) => { const l = bloco(ante, .06, .4, .06, 0xffffff, .5 + d, -.9 + a * .3, 0); l.material = new THREE.MeshBasicMaterial({ color: 0xffffff }); l.rotation.z = -.5; });
+// cabeça
+const C = new THREE.Group(); C.position.set(0, 1.75, 0); C.rotation.set(.04, -.12, -.08); T.add(C);
+bloco(C, .44, .25, .44, PELE, 0, -.05, 0);
+const head = new THREE.Mesh(geo, [mp, mp, mp, mp, mf, mp]); head.scale.set(1.25, 1.25, 1.15); head.position.y = .7; head.castShadow = true; C.add(head);
+bloco(C, .18, .3, .3, PELE, -.68, .7, 0); bloco(C, .18, .3, .3, PELE, .68, .7, 0);        // orelhas
+// cabelo: topete castanho escuro
+const HA = 0x3a2416;
+bloco(C, 1.32, .3, 1.22, HA, 0, 1.43, -.02); bloco(C, 1.32, .55, .3, HA, 0, 1.12, -.5);
+bloco(C, .2, .45, 1.1, HA, -.62, 1.15, -.05); bloco(C, .2, .45, 1.1, HA, .62, 1.15, -.05);
+bloco(C, .5, .32, .5, HA, -.25, 1.66, .2); bloco(C, .42, .26, .42, HA, .2, 1.6, .3); bloco(C, .3, .22, .3, HA, .45, 1.72, .05);
+P.rotation.y = -.18; P.position.set(.15, -1.1, 0);
+
+cam.position.set(.5, 1.6, 11); cam.lookAt(.35, 1.45, 0);
+r.render(cena, cam);
+window.PRONTO = true;
+</script>
+</body></html>
