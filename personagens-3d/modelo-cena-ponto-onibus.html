@@ -1,0 +1,222 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script src="../.claude/skills/maquina-de-reels/motor/web/lib/three.min.js"></script>
+</head><body>
+<script>
+// Esquete em 3D com bonecos de blocos. window.render(t) desenha o quadro do tempo t (determinístico).
+const W = 1080, H = 1920;
+const DADOS = window.DADOS;
+const cl = v => Math.max(0, Math.min(1, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const io = k => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+const rnd = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setPixelRatio(1); r.setSize(W, H);
+r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+r.outputColorSpace = THREE.SRGBColorSpace;
+r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.3;
+document.body.appendChild(r.domElement);
+
+const cena = new THREE.Scene();
+cena.background = new THREE.Color(0x9cc9f2);
+cena.fog = new THREE.Fog(0xbcd8f2, 30, 90);
+const cam = new THREE.PerspectiveCamera(34, W / H, .1, 300);
+
+cena.add(new THREE.HemisphereLight(0xeef6ff, 0x8a7a6a, 1.5));
+const sol = new THREE.DirectionalLight(0xfff1dc, 2.2);
+sol.position.set(-14, 22, 12); sol.castShadow = true;
+sol.shadow.mapSize.set(2048, 2048);
+Object.assign(sol.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 80 });
+sol.shadow.bias = -0.0004; sol.shadow.radius = 4;
+cena.add(sol);
+
+const mats = {};
+const mat = (c, o = {}) => { const k = c + JSON.stringify(o); return mats[k] || (mats[k] = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .85, metalness: 0 }, o))); };
+const geo = new THREE.BoxGeometry(1, 1, 1);
+function bloco(pai, w, h, d, c, x, y, z, o) {
+  const m = new THREE.Mesh(geo, typeof c === 'number' ? mat(c, o) : c);
+  m.scale.set(w, h, d); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; pai.add(m); return m;
+}
+
+
+// ---------- cenário: ponto de ônibus de vidro, calçada, avenida, árvores ----------
+(function cenario() {
+  bloco(cena, 200, .1, 200, 0x45484d, 0, -.12, 0);                                   // asfalto
+  for (let i = 0; i < 14; i++) bloco(cena, 2.2, .02, .25, 0xf2f2f2, -20 + i * 4, -.05, -12);  // faixa
+  bloco(cena, 60, .3, 9, 0xc9c4ba, 0, .1, 1.5);                                      // calçada
+  for (let i = 0; i < 30; i++) bloco(cena, .04, .02, 9, 0xb0aa9f, -29 + i * 2, .26, 1.5);
+  bloco(cena, 60, .32, .3, 0x9a958c, 0, .12, -3.1);                                  // meio-fio
+  // ponto de ônibus: estrutura metálica + vidros (à direita, como no vídeo)
+  const P = new THREE.Group(); P.position.set(5.6, 0, -1.7); cena.add(P);
+  const metal = 0x9aa1a8, vidro = mat(0xbfe3ff, { roughness: .05, metalness: .1, transparent: true, opacity: .32 });
+  for (const x of [-2.6, -.9, .8, 2.5]) bloco(P, .16, 5.2, .16, metal, x, 2.6, -1.4);
+  for (const x of [-2.6, 2.5]) bloco(P, .16, 5.2, .16, metal, x, 2.6, 1.4);
+  bloco(P, 5.6, .18, 3.2, metal, 0, 5.25, 0);                                          // teto
+  bloco(P, 5.4, .06, 3, 0xdfe7ee, 0, 5.15, 0);
+  for (const x of [-1.75, -.05, 1.65]) bloco(P, 1.6, 4.4, .05, vidro, x, 2.6, -1.4);  // vidros do fundo
+  bloco(P, .05, 4.4, 2.7, vidro, -2.6, 2.6, 0);                                       // vidro lateral
+  bloco(P, 4.6, .14, .9, 0x7a7f86, 0, 1.0, -1.0); for (const x of [-2, 2]) bloco(P, .12, 1, .12, metal, x, .5, -1.0); // banco
+  bloco(P, 1.4, 1.8, .08, 0x1f3f7a, 0.8, 3.2, -1.36);                                 // placa de ônibus
+  // árvores e prédios do outro lado da avenida
+  for (let i = 0; i < 9; i++) { const x = -22 + i * 6; bloco(cena, .6, 3, .6, 0x5a4030, x, 1.5, -18); bloco(cena, 3.6, 3.2, 3.6, 0x2f7d3a, x, 4.4, -18); bloco(cena, 2.4, 1.8, 2.4, 0x3e9447, x, 6.6, -18); }
+  const cores = [0xd9d4cc, 0xbfc8d1, 0xe6d8c2, 0xc9b9a6, 0xa9b7c4];
+  for (let i = 0; i < 8; i++) { const h = 6 + rnd(i) * 6; bloco(cena, 6, h, 5, cores[i % 5], -24 + i * 7, h / 2, -28); for (let j = 0; j < 3; j++) bloco(cena, 4.6, .9, .1, 0x8fb2cc, -24 + i * 7, 1.6 + j * 1.8, -25.45, { roughness: .2 }); }
+  // postes
+  for (let i = 0; i < 4; i++) { const x = -15 + i * 12; bloco(cena, .25, 8, .25, 0x8f8a84, x, 4, -3.6); bloco(cena, 1.8, .18, .18, 0x8f8a84, x + .8, 7.9, -3.6); }
+})();
+
+// ---------- personagens ----------
+// ---------- personagens ----------
+function rostoCanvas(cfg) {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const g = c.getContext('2d');
+  return {
+    tex,
+    desenha(boca, olhos, sobr) {
+      g.fillStyle = cfg.pele; g.fillRect(0, 0, 256, 256);
+      // sobrancelhas
+      g.fillStyle = cfg.sobr; const sy = 92 - sobr * 10;
+      g.save(); g.translate(80, sy); g.rotate(-.12 - sobr * .15); g.fillRect(-28, -6, 56, 12); g.restore();
+      g.save(); g.translate(176, sy); g.rotate(.12 + sobr * .15); g.fillRect(-28, -6, 56, 12); g.restore();
+      // olhos
+      const oh = Math.max(3, 26 * olhos);
+      g.fillStyle = '#fff'; g.beginPath(); g.ellipse(80, 122, 22, oh, 0, 0, 7); g.ellipse(176, 122, 22, oh, 0, 0, 7); g.fill();
+      if (olhos > .2) { g.fillStyle = '#2a1a12'; g.beginPath(); g.arc(84, 124, 12 * Math.min(1, olhos * 1.4), 0, 7); g.arc(180, 124, 12 * Math.min(1, olhos * 1.4), 0, 7); g.fill(); }
+      if (cfg.cilios) { g.strokeStyle = '#1a1010'; g.lineWidth = 5; g.beginPath(); g.moveTo(56, 108); g.lineTo(46, 98); g.moveTo(200, 108); g.lineTo(210, 98); g.stroke(); }
+      // boca
+      const bh = 6 + boca * 42, bw = 38 + boca * 10;
+      g.fillStyle = cfg.labio; g.beginPath(); g.ellipse(128, 196, bw, bh / 2 + 5, 0, 0, 7); g.fill();
+      g.fillStyle = '#3a0d12'; g.beginPath(); g.ellipse(128, 196, bw - 8, Math.max(1, bh / 2 - 2), 0, 0, 7); g.fill();
+      if (boca > .35) { g.fillStyle = '#fff'; g.fillRect(128 - (bw - 14), 196 - bh / 2 + 2, (bw - 14) * 2, 7); }
+      // blush
+      g.fillStyle = 'rgba(230,110,110,.25)'; g.beginPath(); g.arc(50, 168, 18, 0, 7); g.arc(206, 168, 18, 0, 7); g.fill();
+      tex.needsUpdate = true;
+    }
+  };
+}
+
+function boneco(cfg) {
+  const g = new THREE.Group(); cena.add(g);
+  const P = { g };
+  P.pE = new THREE.Group(); P.pE.position.set(-.32, 1.55, 0); g.add(P.pE);
+  P.pD = new THREE.Group(); P.pD.position.set(.32, 1.55, 0); g.add(P.pD);
+  bloco(P.pE, .58, 1.55, .62, cfg.perna, 0, -.78, 0); bloco(P.pD, .58, 1.55, .62, cfg.perna, 0, -.78, 0);
+  bloco(P.pE, .62, .22, .78, cfg.sapato, 0, -1.48, .06); bloco(P.pD, .62, .22, .78, cfg.sapato, 0, -1.48, .06);
+  P.tronco = new THREE.Group(); P.tronco.position.set(0, 1.6, 0); g.add(P.tronco);
+  cfg.roupa(P, g);
+  const braco = lado => {
+    const b = new THREE.Group(); b.position.set(lado * .86, 1.32, 0); P.tronco.add(b);
+    const ante = new THREE.Group(); ante.position.set(0, -.68, 0); b.add(ante);
+    bloco(b, .42, .72, .5, cfg.manga || cfg.pele3, 0, -.34, 0);
+    bloco(ante, .4, .66, .48, cfg.pele3, 0, -.33, 0);
+    bloco(ante, .38, .26, .44, cfg.pele3, 0, -.75, 0);
+    return { b, ante };
+  };
+  P.bE = braco(-1); P.bD = braco(1);
+  P.cab = new THREE.Group(); P.cab.position.set(0, 1.55, 0); P.tronco.add(P.cab);
+  bloco(P.cab, .4, .22, .4, cfg.pele3, 0, .1, 0);
+  P.rosto = rostoCanvas(cfg);
+  const mf = new THREE.MeshStandardMaterial({ map: P.rosto.tex, roughness: .8 }), mp = mat(cfg.pele3);
+  const head = new THREE.Mesh(geo, [mp, mp, mp, mp, mf, mp]); head.scale.set(1.06, 1.06, 1); head.position.set(0, .76, 0); head.castShadow = true; P.cab.add(head);
+  cfg.cabelo(P.cab);
+  P.rosto.desenha(0, 1, 0);
+  return P;
+}
+// C: moça do cropped (cabelo castanho comprido, cropped creme com cordão, saia preta, celular)
+const C = boneco({ pele: '#d9a37e', pele3: 0xd9a37e, sobr: '#3a2416', labio: '#b85a5e', cilios: true, perna: 0xd9a37e, sapato: 0x1a1a1a,
+  roupa(P, g) {
+    bloco(P.tronco, 1.24, .62, .66, 0xd9a37e, 0, .3, 0);              // barriga
+    bloco(P.tronco, 1.3, .8, .72, 0xf1e3cc, 0, 1.0, 0);               // cropped creme
+    bloco(P.tronco, .06, .7, .05, 0xe8d6b8, -.08, .45, .38); bloco(P.tronco, .06, .7, .05, 0xe8d6b8, .08, .45, .38); // cordão
+    bloco(P.tronco, 1.18, .16, .62, 0xd9a37e, 0, 1.47, 0);            // ombros
+    bloco(g, 1.46, .95, .86, 0x161616, 0, 1.25, 0);                   // saia preta
+    bloco(P.tronco, .12, 1.3, .08, 0x5a3a24, .45, .95, .38);          // alça da bolsa
+  },
+  cabelo(c) { const H = 0x5a3a26, T = 0x7a5638;
+    bloco(c, 1.16, .32, 1.1, H, 0, 1.38, -.02); bloco(c, 1.18, .5, .3, H, 0, 1.14, -.5);
+    bloco(c, .26, 1.7, 1.08, H, -.6, .5, -.02); bloco(c, .26, 1.7, 1.08, H, .6, .5, -.02);
+    bloco(c, 1.18, 1.7, .3, T, 0, .4, -.56);
+    bloco(c, 1.0, .22, .14, H, .05, 1.2, .52);                        // franja
+  } });
+// D: o "mendigo" da peruca (peruca enorme, bigodão, camiseta listrada, short preto)
+const D = boneco({ pele: '#c58a63', pele3: 0xc58a63, sobr: '#1a100a', labio: '#8a4644', cilios: false, perna: 0xc58a63, sapato: 0xeeeeee, manga: 0xf4f4f4, bigode: true,
+  roupa(P, g) {
+    const c = document.createElement('canvas'); c.width = 64; c.height = 64; const x = c.getContext('2d');
+    x.fillStyle = '#f4f4f4'; x.fillRect(0, 0, 64, 64); x.fillStyle = '#9aa0a8'; for (let i = 0; i < 64; i += 8) x.fillRect(0, i, 64, 3);
+    const t = new THREE.CanvasTexture(c); t.colorSpace = THREE.SRGBColorSpace; t.magFilter = THREE.NearestFilter;
+    bloco(P.tronco, 1.36, 1.55, .76, new THREE.MeshStandardMaterial({ map: t, roughness: .9 }), 0, .78, 0);   // camiseta listrada
+    bloco(g, 1.34, .4, .74, 0x151515, 0, 1.55, 0);
+    bloco(P.pE, .66, .6, .7, 0x151515, 0, -.22, 0); bloco(P.pD, .66, .6, .7, 0x151515, 0, -.22, 0);            // short
+  },
+  cabelo(c) { const W = 0x2a1a10, W2 = 0x3a2616;
+    for (let i = 0; i < 26; i++) { const a = rnd(i) * 6.28, rr = .5 + rnd(i + 3) * .35, y = .4 + rnd(i + 9) * 1.3;
+      bloco(c, .5 + rnd(i + 5) * .35, .5 + rnd(i + 7) * .35, .5, i % 2 ? W : W2, Math.cos(a) * rr * 1.1, y, -.4 + Math.sin(a) * rr * .45); }
+    bloco(c, 1.7, .55, 1.4, W, 0, 1.45, -.1); bloco(c, .45, 1.6, 1.3, W2, -.82, .7, -.1); bloco(c, .45, 1.6, 1.3, W2, .82, .7, -.1);
+    bloco(c, 1.2, .35, .3, W, 0, 1.12, .55);                          // franja da peruca caindo no rosto
+    bloco(c, .9, .18, .1, 0x111111, 0, .66, .53); bloco(c, .28, .24, .1, 0x111111, -.42, .58, .53); bloco(c, .28, .24, .1, 0x111111, .42, .58, .53); // bigodão
+  } });
+
+C.g.position.set(-1.0, .25, .2); C.g.rotation.y = .3;
+// mãos dele tapando os olhos dela (presas na cabeça dela durante a brincadeira)
+const MAOS = new THREE.Group(); C.cab.add(MAOS);
+bloco(MAOS, .48, .36, .26, 0xc58a63, -.27, .9, .62); bloco(MAOS, .48, .36, .26, 0xc58a63, .27, .9, .62);
+bloco(MAOS, .42, .5, .4, 0xf4f4f4, -.62, .82, .55); bloco(MAOS, .42, .5, .4, 0xf4f4f4, .62, .82, .55);
+D.g.position.set(2.4, .25, .6); D.g.rotation.y = -.45;
+
+const fps = DADOS.fps, env = DADOS.env, segs = DADOS.segs, falas = DADOS.falas;
+const quem = t => { for (const s of segs) if (t >= s[1] && t < s[2]) return s; return segs[segs.length - 1]; };
+const quemFala = t => { for (const f of falas) if (t >= f[1] - .05 && t < f[2] + .1) return f[0]; return null; };
+const envAt = t => { const i = Math.floor(t * fps); let m = 0; for (let k = -1; k <= 1; k++) m = Math.max(m, env[Math.max(0, Math.min(env.length - 1, i + k))] || 0); return m; };
+const piscar = (t, s) => { const p = (t + s) % 3.4; return p < .12 ? Math.abs(p - .06) / .06 : 1; };
+const T_REVELA = 11.1;   // "É um mendigo!": ele pula na frente dela
+
+window.render = function (t) {
+  const [p, a, b] = quem(t);
+  const f = quemFala(t), e = envAt(t);
+  const fC = f === 'C' ? e : 0, fD = f === 'D' ? e : 0;
+  const tapando = t < T_REVELA;
+  // ---- C: moça (chorosa/irritada) ----
+  C.tronco.rotation.set(0, Math.sin(t * .8) * .06, Math.sin(t * 1.4) * .04);
+  if (tapando) {                         // olhos tapados, mãos pra frente tateando
+    C.bE.b.rotation.set(-1.1 + Math.sin(t * 4) * .2, 0, .15); C.bE.ante.rotation.set(-.4, 0, 0);
+    C.bD.b.rotation.set(-1.0 + Math.cos(t * 4) * .2, 0, -.15); C.bD.ante.rotation.set(-.5, 0, 0);
+  } else {                               // mão na cintura + braço gesticulando com celular
+    C.bD.b.rotation.set(-.1, 0, .75); C.bD.ante.rotation.set(0, 0, -1.65);
+    C.bE.b.rotation.set(-.6 - fC * .6 * (1 + Math.sin(t * 5)) * .5, 0, -.2 - fC * .2); C.bE.ante.rotation.set(-1.0 - fC * .5, 0, .2);
+  }
+  C.cab.rotation.set(Math.sin(t * 2.2) * .05 * (1 + fC), Math.sin(t * 1.1) * .14, Math.sin(t * 1.7) * .07);
+  C.rosto.desenha(Math.min(1, fC * 1.3), tapando ? 0 : piscar(t, 0), .9);       // sobrancelha "triste" (chorosa)
+  // ---- D: mendigo da peruca (agitado, braços abertos) ----
+  const k = cl((t - T_REVELA) / .45);
+  MAOS.visible = tapando;
+  if (tapando) {                         // atrás dela, mãos nos olhos dela
+    D.g.position.set(-1.0 + .55, .55, -1.1); D.g.rotation.y = .3;
+    D.bE.b.rotation.set(-1.45, 0, -.35); D.bE.ante.rotation.set(-.5, 0, 0);
+    D.bD.b.rotation.set(-1.45, 0, .35); D.bD.ante.rotation.set(-.5, 0, 0);
+  } else {
+    const pulo = Math.sin(cl(k) * Math.PI) * 1.2;
+    D.g.position.set(lerp(-.45, 2.4, io(k)), .25 + pulo, lerp(-1.1, .6, io(k))); D.g.rotation.y = lerp(.3, -.45, k);
+    const w = Math.sin(t * 5.5), q = .4 + fD * .6;
+    D.bE.b.rotation.set(-.3 + w * .25 * q, 0, -.9 - q * .5 - Math.sin(t * 3) * .2); D.bE.ante.rotation.set(-.6 - fD * .6, 0, .3);
+    D.bD.b.rotation.set(-.3 - w * .25 * q, 0, .9 + q * .5 + Math.cos(t * 3) * .2); D.bD.ante.rotation.set(-.6 - fD * .6, 0, -.3);
+  }
+  D.tronco.rotation.set(Math.sin(t * 3) * .05 * (1 + fD), Math.sin(t * 1.6) * .15, Math.sin(t * 2.6) * .08 * (1 + fD));
+  D.pE.rotation.x = Math.sin(t * 6) * .25 * fD; D.pD.rotation.x = -Math.sin(t * 6) * .25 * fD;
+  D.cab.rotation.set(Math.sin(t * 3.1) * .08 * (1 + fD), Math.sin(t * 1.3) * .2, Math.sin(t * 2.3) * .1);
+  D.rosto.desenha(Math.min(1, fD * 1.4), piscar(t, 1.1), .3 + fD * .5);
+  // ---- câmera: plano de quem está em quadro (como no vídeo) ----
+  let alvo = p === 'C' ? C : D, lado = p === 'C' ? 1 : -1;
+  if (tapando) { alvo = C; lado = 1; }
+  const kk = cl((t - a) / Math.max(.5, b - a));
+  const dist = lerp(10.5, 9.0, io(kk));
+  const pos = alvo.g.position;
+  cam.position.set(pos.x + lado * 1.8, 4.1, pos.z + dist);
+  cam.lookAt(pos.x + lado * .3, 3.1, pos.z);
+  r.render(cena, cam);
+};
+window.PRONTO = true;
+</script>
+</body></html>
