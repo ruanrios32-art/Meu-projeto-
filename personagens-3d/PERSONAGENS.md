@@ -55,3 +55,10 @@ lendo `../dados.json` (fps, envelope do áudio `env` e trechos de quem fala `seg
 
 ### Cenário
 - Fachada de banco genérica (letreiro "BANCO" azul com filete amarelo, porta de vidro com moldura azul, caixa eletrônico), calçada de blocos cinza.
+
+## Esquete "Você conheceu sua cunhada" (sala de casa) — `modelo-cena-sala.html`
+- `Z` Zé, o irmão: cabelo curto escuro, camiseta preta com flores brancas, jeans, tênis branco; mãos no cinto, acena chamando.
+- `R` Gigi, a namorada: cabelo escuro preso, blusa vermelha, short branco; muito expressiva (mãos no peito, pulinhos de mãos juntas, mãos no rosto, aponta).
+- `L` Lu, a irmã: peruca loira lisa no ombro, vestido creme frente única, bolinha prateada nas mãos; tímida, entra andando.
+- `A` Laurinha/Lauan: peruca chanel preta com coquinhos, camiseta vermelha e azul de herói, calça preta; mãos no bolso, entra desfilando na música.
+- Cenário: sala com piso de cerâmica, cortinas vermelhas, janela, sofá marrom em L, tapete azul, porta à esquerda (saem andando no final).
