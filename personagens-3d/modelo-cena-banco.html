@@ -1,0 +1,219 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:#000;overflow:hidden}canvas{display:block}</style>
+<script src="../.claude/skills/maquina-de-reels/motor/web/lib/three.min.js"></script>
+</head><body>
+<script>
+// Esquete em 3D com bonecos de blocos. window.render(t) desenha o quadro do tempo t (determinístico).
+const W = 1080, H = 1920;
+const DADOS = window.DADOS;
+const cl = v => Math.max(0, Math.min(1, v));
+const lerp = (a, b, k) => a + (b - a) * k;
+const io = k => k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
+const rnd = i => { const x = Math.sin(i * 127.1 + 311.7) * 43758.5453; return x - Math.floor(x); };
+
+const r = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+r.setPixelRatio(1); r.setSize(W, H);
+r.shadowMap.enabled = true; r.shadowMap.type = THREE.PCFSoftShadowMap;
+r.outputColorSpace = THREE.SRGBColorSpace;
+r.toneMapping = THREE.ACESFilmicToneMapping; r.toneMappingExposure = 1.3;
+document.body.appendChild(r.domElement);
+
+const cena = new THREE.Scene();
+cena.background = new THREE.Color(0x9cc9f2);
+cena.fog = new THREE.Fog(0xbcd8f2, 30, 90);
+const cam = new THREE.PerspectiveCamera(34, W / H, .1, 300);
+
+cena.add(new THREE.HemisphereLight(0xeef6ff, 0x8a7a6a, 1.5));
+const sol = new THREE.DirectionalLight(0xfff1dc, 2.2);
+sol.position.set(-14, 22, 12); sol.castShadow = true;
+sol.shadow.mapSize.set(2048, 2048);
+Object.assign(sol.shadow.camera, { left: -14, right: 14, top: 14, bottom: -14, near: 1, far: 80 });
+sol.shadow.bias = -0.0004; sol.shadow.radius = 4;
+cena.add(sol);
+
+const mats = {};
+const mat = (c, o = {}) => { const k = c + JSON.stringify(o); return mats[k] || (mats[k] = new THREE.MeshStandardMaterial(Object.assign({ color: c, roughness: .85, metalness: 0 }, o))); };
+const geo = new THREE.BoxGeometry(1, 1, 1);
+function bloco(pai, w, h, d, c, x, y, z, o) {
+  const m = new THREE.Mesh(geo, typeof c === 'number' ? mat(c, o) : c);
+  m.scale.set(w, h, d); m.position.set(x, y, z); m.castShadow = true; m.receiveShadow = true; pai.add(m); return m;
+}
+
+
+// ---------- cenário: fachada de banco (genérico) com portas de vidro, calçada de blocos ----------
+(function cenario() {
+  bloco(cena, 200, .1, 200, 0x6f7276, 0, -.12, 0);
+  const n = 1400, inst = new THREE.InstancedMesh(geo, mat(0x8c8f93), n), dm = new THREE.Object3D(), cor = new THREE.Color(); let k = 0;
+  for (let i = 0; i < 28 && k < n; i++) for (let j = 0; j < 50 && k < n; j++) { dm.position.set(-12 + j * .5 + (i % 2) * .25, -.04, 6 - i * .5); dm.scale.set(.47, .08, .47); dm.updateMatrix(); inst.setMatrixAt(k, dm.matrix); cor.setHSL(.6, .03, .42 + rnd(k) * .1); inst.setColorAt(k, cor); k++; }
+  inst.receiveShadow = true; cena.add(inst);
+  // prédio do banco
+  bloco(cena, 26, 12, 2, 0xe9edf2, 0, 6, -9);
+  bloco(cena, 26, 2.2, .6, 0x1f63c6, 0, 7.6, -7.8);                      // faixa azul do letreiro
+  bloco(cena, 26, .25, .7, 0xf2b705, 0, 6.42, -7.75);                     // filete amarelo
+  // letreiro genérico
+  const c = document.createElement('canvas'); c.width = 1024; c.height = 256; const g = c.getContext('2d');
+  g.fillStyle = '#1f63c6'; g.fillRect(0, 0, 1024, 256); g.fillStyle = '#fff'; g.font = 'bold 170px sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('BANCO', 512, 136);
+  const tx = new THREE.CanvasTexture(c); tx.colorSpace = THREE.SRGBColorSpace;
+  const pl = new THREE.Mesh(new THREE.PlaneGeometry(8, 2), new THREE.MeshBasicMaterial({ map: tx })); pl.position.set(-1.5, 7.6, -7.48); cena.add(pl);
+  // entrada com moldura azul e portas de vidro
+  bloco(cena, 8.4, 6.0, .5, 0x1f63c6, 1, 3.0, -7.9);
+  bloco(cena, 7.4, 5.2, .2, 0x2b3440, 1, 2.6, -7.7);
+  const vidro = mat(0x9fd0ff, { roughness: .05, transparent: true, opacity: .55 });
+  for (let i = 0; i < 4; i++) bloco(cena, 1.7, 4.9, .06, vidro, -1.6 + i * 1.75, 2.5, -7.55);
+  for (let i = 0; i < 5; i++) bloco(cena, .1, 5.0, .1, 0xc0c6cc, -2.5 + i * 1.75, 2.5, -7.5);
+  bloco(cena, 1.1, 1.6, .5, 0x334455, 7.5, .8, -7.5); bloco(cena, .9, .5, .1, 0x9fd0ff, 7.5, 1.3, -7.24);   // caixa eletrônico
+  for (let i = 0; i < 3; i++) bloco(cena, 1.6, 1.0, .08, 0xdfe6ee, -8 + i * 2.2, 2.2, -7.95);             // cartazes
+  // floreiras
+  for (const x of [-11, 11]) { bloco(cena, 2.2, .8, 1.2, 0x9aa0a6, x, .4, -6.6); bloco(cena, 2, .9, 1, 0x3e8f47, x, 1.2, -6.6); }
+})();
+
+// ---------- personagens ----------
+// ---------- personagens ----------
+function rostoCanvas(cfg) {
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const tex = new THREE.CanvasTexture(c); tex.colorSpace = THREE.SRGBColorSpace;
+  const g = c.getContext('2d');
+  return {
+    tex,
+    desenha(boca, olhos, sobr) {
+      g.fillStyle = cfg.pele; g.fillRect(0, 0, 256, 256);
+      // sobrancelhas
+      g.fillStyle = cfg.sobr; const sy = 92 - sobr * 10;
+      g.save(); g.translate(80, sy); g.rotate(-.12 - sobr * .15); g.fillRect(-28, -6, 56, 12); g.restore();
+      g.save(); g.translate(176, sy); g.rotate(.12 + sobr * .15); g.fillRect(-28, -6, 56, 12); g.restore();
+      // olhos
+      const oh = Math.max(3, 26 * olhos);
+      g.fillStyle = '#fff'; g.beginPath(); g.ellipse(80, 122, 22, oh, 0, 0, 7); g.ellipse(176, 122, 22, oh, 0, 0, 7); g.fill();
+      if (olhos > .2) { g.fillStyle = '#2a1a12'; g.beginPath(); g.arc(84, 124, 12 * Math.min(1, olhos * 1.4), 0, 7); g.arc(180, 124, 12 * Math.min(1, olhos * 1.4), 0, 7); g.fill(); }
+      if (cfg.cilios) { g.strokeStyle = '#1a1010'; g.lineWidth = 5; g.beginPath(); g.moveTo(56, 108); g.lineTo(46, 98); g.moveTo(200, 108); g.lineTo(210, 98); g.stroke(); }
+      // boca
+      const bh = 6 + boca * 42, bw = 38 + boca * 10;
+      g.fillStyle = cfg.labio; g.beginPath(); g.ellipse(128, 196, bw, bh / 2 + 5, 0, 0, 7); g.fill();
+      g.fillStyle = '#3a0d12'; g.beginPath(); g.ellipse(128, 196, bw - 8, Math.max(1, bh / 2 - 2), 0, 0, 7); g.fill();
+      if (boca > .35) { g.fillStyle = '#fff'; g.fillRect(128 - (bw - 14), 196 - bh / 2 + 2, (bw - 14) * 2, 7); }
+      // blush
+      g.fillStyle = 'rgba(230,110,110,.25)'; g.beginPath(); g.arc(50, 168, 18, 0, 7); g.arc(206, 168, 18, 0, 7); g.fill();
+      tex.needsUpdate = true;
+    }
+  };
+}
+
+function boneco(cfg) {
+  const g = new THREE.Group(); cena.add(g);
+  const P = { g };
+  P.pE = new THREE.Group(); P.pE.position.set(-.32, 1.55, 0); g.add(P.pE);
+  P.pD = new THREE.Group(); P.pD.position.set(.32, 1.55, 0); g.add(P.pD);
+  bloco(P.pE, .58, 1.55, .62, cfg.perna, 0, -.78, 0); bloco(P.pD, .58, 1.55, .62, cfg.perna, 0, -.78, 0);
+  bloco(P.pE, .62, .22, .78, cfg.sapato, 0, -1.48, .06); bloco(P.pD, .62, .22, .78, cfg.sapato, 0, -1.48, .06);
+  P.tronco = new THREE.Group(); P.tronco.position.set(0, 1.6, 0); g.add(P.tronco);
+  cfg.roupa(P, g);
+  const braco = lado => {
+    const b = new THREE.Group(); b.position.set(lado * .86, 1.32, 0); P.tronco.add(b);
+    const ante = new THREE.Group(); ante.position.set(0, -.68, 0); b.add(ante);
+    bloco(b, .42, .72, .5, cfg.manga || cfg.pele3, 0, -.34, 0);
+    bloco(ante, .4, .66, .48, cfg.pele3, 0, -.33, 0);
+    bloco(ante, .38, .26, .44, cfg.pele3, 0, -.75, 0);
+    return { b, ante };
+  };
+  P.bE = braco(-1); P.bD = braco(1);
+  P.cab = new THREE.Group(); P.cab.position.set(0, 1.55, 0); P.tronco.add(P.cab);
+  bloco(P.cab, .4, .22, .4, cfg.pele3, 0, .1, 0);
+  P.rosto = rostoCanvas(cfg);
+  const mf = new THREE.MeshStandardMaterial({ map: P.rosto.tex, roughness: .8 }), mp = mat(cfg.pele3);
+  const head = new THREE.Mesh(geo, [mp, mp, mp, mp, mf, mp]); head.scale.set(1.06, 1.06, 1); head.position.set(0, .76, 0); head.castShadow = true; P.cab.add(head);
+  cfg.cabelo(P.cab);
+  P.rosto.desenha(0, 1, 0);
+  return P;
+}
+
+// E: moça do cabelo vermelho (cabelo chanel vermelho, corpete amarelo, short jeans, bolsa marrom)
+const E = boneco({ pele: '#c98e66', pele3: 0xc98e66, sobr: '#3a1a12', labio: '#a8484e', cilios: true, perna: 0xc98e66, sapato: 0x222222,
+  roupa(P, g) {
+    bloco(P.tronco, 1.24, .5, .66, 0xc98e66, 0, .25, 0);              // barriga
+    bloco(P.tronco, 1.3, .92, .72, 0xf6e04a, 0, .96, 0);              // corpete amarelo
+    for (const x of [-.3, 0, .3]) bloco(P.tronco, .05, .9, .05, 0xe0c52f, x, .96, .37);   // costuras do corpete
+    bloco(P.tronco, .1, .3, .08, 0xf6e04a, -.45, 1.5, .1); bloco(P.tronco, .1, .3, .08, 0xf6e04a, .45, 1.5, .1); // alcinhas
+    bloco(P.tronco, 1.18, .14, .62, 0xc98e66, 0, 1.47, 0);
+    bloco(g, 1.4, .55, .8, 0x4b6fa3, 0, 1.45, 0);                    // short jeans
+    bloco(P.pE, .66, .45, .7, 0x4b6fa3, 0, -.1, 0); bloco(P.pD, .66, .45, .7, 0x4b6fa3, 0, -.1, 0);
+    // bolsa marrom no ombro esquerdo
+    P.bolsa = new THREE.Group(); P.bolsa.position.set(-.95, .55, .15); P.tronco.add(P.bolsa);
+    bloco(P.bolsa, .3, .75, .95, 0x6b4a2e, 0, 0, 0); bloco(P.bolsa, .32, .1, .97, 0x8a6a46, 0, .2, 0);
+    bloco(P.tronco, .08, 1.0, .08, 0x5a3a22, -.7, 1.05, .2);
+  },
+  cabelo(c) { const R = 0xc8282e, R2 = 0xa81e24;
+    bloco(c, 1.16, .32, 1.1, R, 0, 1.38, -.02); bloco(c, 1.2, .9, .3, R2, 0, .95, -.52);
+    bloco(c, .26, 1.0, 1.08, R, -.6, .8, -.02); bloco(c, .26, 1.0, 1.08, R, .6, .8, -.02);   // chanel até o queixo
+    bloco(c, .72, .3, .14, R, -.2, 1.18, .52); bloco(c, .3, .45, .14, R, -.46, 1.02, .52);  // franja de lado
+  } });
+// F: o pedinte de barba (cabelo cacheado escuro, barba cheia, camiseta e short pretos)
+const F = boneco({ pele: '#c48a64', pele3: 0xc48a64, sobr: '#1a100a', labio: '#8a4644', cilios: false, perna: 0xc48a64, sapato: 0x111111, manga: 0x161616,
+  roupa(P, g) {
+    bloco(P.tronco, 1.36, 1.6, .76, 0x161616, 0, .8, 0);              // camiseta preta comprida
+    bloco(g, 1.36, .45, .76, 0x161616, 0, 1.45, 0);
+    bloco(P.pE, .66, .55, .7, 0x111111, 0, -.2, 0); bloco(P.pD, .66, .55, .7, 0x111111, 0, -.2, 0);
+  },
+  cabelo(c) { const K = 0x2a1a10, K2 = 0x3a2616;
+    for (let i = 0; i < 16; i++) { const a = rnd(i + 40) * 6.28; bloco(c, .42, .42, .42, i % 2 ? K : K2, Math.cos(a) * .55, 1.35 + rnd(i + 41) * .25, -.25 + Math.sin(a) * .35); }
+    bloco(c, 1.2, .4, 1.15, K, 0, 1.36, -.05); bloco(c, .24, .7, 1.1, K2, -.6, 1.0, -.05); bloco(c, .24, .7, 1.1, K2, .6, 1.0, -.05);
+    // barba cheia e bigode
+    bloco(c, 1.1, .38, .12, K, 0, .36, .52); bloco(c, .22, .5, .12, K, -.45, .55, .52); bloco(c, .22, .5, .12, K, .45, .55, .52);
+    bloco(c, .6, .1, .1, K, 0, .62, .54);
+    // óculos
+    bloco(c, .34, .24, .06, 0x111111, -.24, .9, .54); bloco(c, .34, .24, .06, 0x111111, .24, .9, .54); bloco(c, .16, .05, .06, 0x111111, 0, .94, .54);
+    bloco(c, .26, .16, .02, 0x9fc4dd, -.24, .9, .58); bloco(c, .26, .16, .02, 0x9fc4dd, .24, .9, .58);
+  } });
+E.g.position.set(-1.2, 0, .3); E.g.rotation.y = .3;
+F.g.position.set(1.8, 0, .4); F.g.rotation.y = -.4;
+
+const fps = DADOS.fps, env = DADOS.env, segs = DADOS.segs, falas = DADOS.falas;
+const quem = t => { for (const s of segs) if (t >= s[1] && t < s[2]) return s; return segs[segs.length - 1]; };
+const quemFala = t => { for (const f of falas) if (t >= f[1] - .05 && t < f[2] + .1) return f[0]; return null; };
+const envAt = t => { const i = Math.floor(t * fps); let m = 0; for (let k = -1; k <= 1; k++) m = Math.max(m, env[Math.max(0, Math.min(env.length - 1, i + k))] || 0); return m; };
+const piscar = (t, s) => { const p = (t + s) % 3.4; return p < .12 ? Math.abs(p - .06) / .06 : 1; };
+const GESTOS = DADOS.gestos || [];   // [t0, t1, 'aponta'|'tapa'] momentos fortes dela
+const gesto = t => { for (const [a, b, n] of GESTOS) if (t >= a && t < b) return [n, (t - a) / (b - a)]; return [null, 0]; };
+
+window.render = function (t) {
+  const [p, a, b] = quem(t);
+  const f = quemFala(t), e = envAt(t);
+  const fE = f === 'E' ? e : 0, fF = f === 'F' ? e : 0;
+  // ---- E: braços cruzados no começo, depois mão na cintura, apontando e ameaçando ----
+  const [gn, gk] = gesto(t);
+  E.tronco.rotation.set(0, Math.sin(t * .8) * .06, Math.sin(t * 1.4) * .04);
+  if (t < 9.5) {                         // braços cruzados segurando a bolsa (desconfiada)
+    E.bE.b.rotation.set(-.45, 0, .2); E.bE.ante.rotation.set(0, 0, 1.37);
+    E.bD.b.rotation.set(-.55, 0, -.2); E.bD.ante.rotation.set(0, 0, -1.37);
+  } else {
+    E.bE.b.rotation.set(-.1, 0, -.75); E.bE.ante.rotation.set(0, 0, 1.65);    // mão na cintura (lado da bolsa)
+    if (gn === 'aponta') { const k = Math.sin(Math.min(1, gk * 3) * Math.PI / 2); E.bD.b.rotation.set(-1.45 * k - .2, 0, -.1); E.bD.ante.rotation.set(-.15, 0, 0); }
+    else if (gn === 'tapa') { const k = Math.sin(gk * Math.PI); E.bD.b.rotation.set(-2.6 * k - .2, 0, .4 - k * .6); E.bD.ante.rotation.set(-.6 + k * .4, 0, 0); }
+    else { E.bD.b.rotation.set(-.6 - fE * .5 * (1 + Math.sin(t * 5)), 0, .2 + fE * .25); E.bD.ante.rotation.set(-.9 - fE * .6, 0, -.2); }
+  }
+  E.cab.rotation.set(Math.sin(t * 2.2) * .05 * (1 + fE * 1.5), Math.sin(t * 1.1) * .16, Math.sin(t * 1.7) * .08);
+  E.rosto.desenha(Math.min(1, fE * 1.3), piscar(t, 0), .15 + fE * .6);
+  // ---- F: braços cruzados / mãos pra trás, gesticula quando fala ----
+  const q = fF;
+  if (q > .05 || (t > 22.7 && t < 27.6) || (t > 73.4 && t < 77.6)) {
+    const w = Math.sin(t * 5);
+    F.bE.b.rotation.set(-.4 - q * .5 + w * .15, 0, -.35 - q * .3); F.bE.ante.rotation.set(-.9 - q * .5, 0, .3);
+    F.bD.b.rotation.set(-.4 - q * .5 - w * .15, 0, .35 + q * .3); F.bD.ante.rotation.set(-.9 - q * .5, 0, -.3);
+  } else {
+    F.bE.b.rotation.set(-.45, 0, .2); F.bE.ante.rotation.set(0, 0, 1.37);
+    F.bD.b.rotation.set(-.55, 0, -.2); F.bD.ante.rotation.set(0, 0, -1.37);
+  }
+  F.tronco.rotation.set(Math.sin(t * 2) * .03, Math.sin(t * 1.2) * .1, Math.sin(t * 1.8) * .05);
+  F.cab.rotation.set(Math.sin(t * 2.6) * .06 * (1 + q), Math.sin(t * 1.3) * .18, Math.sin(t * 2.1) * .06);
+  F.rosto.desenha(Math.min(1, q * 1.4), piscar(t, 1.1), .25 + q * .5);
+  // ---- câmera ----
+  const alvo = p === 'E' ? E : F, lado = p === 'E' ? 1 : -1;
+  const kk = cl((t - a) / Math.max(.5, b - a));
+  const dist = lerp(10.5, 9.0, io(kk)), pos = alvo.g.position;
+  cam.position.set(pos.x + lado * 1.8, 4.0, pos.z + dist);
+  cam.lookAt(pos.x + lado * .3, 3.1, pos.z);
+  r.render(cena, cam);
+};
+window.PRONTO = true;
+</script>
+</body></html>

@@ -39,3 +39,19 @@ lendo `../dados.json` (fps, envelope do áudio `env` e trechos de quem fala `seg
 
 ### Cenário
 - Ponto de ônibus de vidro (estrutura metálica, banco, placa azul), calçada clara, avenida com faixa, árvores e prédios ao fundo.
+
+## Esquete "Você foi fazer um saque no banco" — `modelo-cena-banco.html`
+
+### "Moça do cabelo vermelho" — `E`
+- Pele #c98e66, cílios, boca #a8484e.
+- Cabelo vermelho (#c8282e / #a81e24) chanel até o queixo, franja de lado.
+- Corpete amarelo (#f6e04a) com costuras e alcinhas, barriga de fora, short jeans (#4b6fa3), bolsa marrom no ombro esquerdo.
+- Poses: braços cruzados segurando a bolsa (desconfiada); mão na cintura; apontando o dedo; ameaçando tapa (`gestos` em dados.json).
+
+### "Pedinte de barba" — `F`
+- Pele #c48a64; cabelo cacheado escuro, barba cheia, bigode, óculos.
+- Camiseta preta comprida, short preto, tênis preto.
+- Poses: braços cruzados; gesticula com os dois braços quando fala.
+
+### Cenário
+- Fachada de banco genérica (letreiro "BANCO" azul com filete amarelo, porta de vidro com moldura azul, caixa eletrônico), calçada de blocos cinza.
