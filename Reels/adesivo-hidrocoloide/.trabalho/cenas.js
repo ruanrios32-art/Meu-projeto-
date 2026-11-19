@@ -387,7 +387,7 @@ window.CENA = {
     const logo = M.el(r, `<div class="abs" style="left:720px;top:600px;width:170px;height:170px;border-radius:40px;border:8px solid ${D};box-shadow:0 10px 0 rgba(0,0,0,.2);overflow:hidden">${M.logo('shopee')}</div>`);
     M.K(logo, { o: 0, s: .3, r: -30 }).to(T(158), { o: 1, s: 1, r: 8 }, .45, M.E.back2).float(6, 3);
     M.sfx('pop', T(158), .5);
-    const btn = M.el(r, `<div class="abs" style="left:110px;top:1130px;width:860px;height:150px;border-radius:80px;background:#EE4D2D;border:8px solid ${D};box-shadow:0 14px 0 ${D};display:flex;align-items:center;justify-content:center;gap:22px;white-space:nowrap;font:900 52px Montserrat;color:#fff;-webkit-text-stroke:8px ${D};paint-order:stroke fill"><div style="width:80px;height:80px">${M.icone('shopping-bag', '#fff', 3)}</div><span>TOCA E GARANTE</span></div>`);
+    const btn = M.el(r, `<div class="abs" style="left:110px;top:1130px;width:860px;height:150px;border-radius:80px;background:#EE4D2D;border:8px solid ${D};box-shadow:0 14px 0 ${D};display:flex;align-items:center;justify-content:center;gap:22px;white-space:nowrap;font:900 52px Montserrat;color:#fff;-webkit-text-stroke:8px ${D};paint-order:stroke fill"><div style="width:80px;height:80px;color:#fff">${M.icone('shopping-bag', '#fff', 3)}</div><span>TOCA E GARANTE</span></div>`);
     ent(btn, T(149), 'pop', .45).to(T(151) + .1, { s: .92, y: 10 }, .08).to(T(151) + .18, { s: 1, y: 0 }, .3, M.E.spring).to(T(155), { s: 1.06 }, .3, M.E.back).float(4, 0);
     const cur = cursor(r, 900, 1500);
     M.K(cur, { o: 0 }).to(T(149), { o: 1 }, .1).to(T(149), { x: -280, y: -290 }, .45, M.E.io).to(T(151) + .1, { s: .85 }, .08).to(T(151) + .18, { s: 1 }, .2);
@@ -401,6 +401,37 @@ window.CENA = {
     M.sfx('ding', T(155), .5);
     pill(r, 'LINK AQUI EMBAIXO', T(150), T(158), 'ok');
     pill(r, 'NA SHOPEE', T(158), c.b + .6, 'ok');
+  },
+  // 20 — "Gostou? Curte, comenta, compartilha e segue a página pra mais achadinhos!"
+  seguir(c) {
+    const r = cena(c, '#D9487F', '#F27BA6');
+    const AV = window.AVATAR_SRC;   // logo do perfil (quando existir)
+    const card = M.el(r, `<div class="abs" style="left:130px;top:560px;width:820px;height:560px;background:#fff;border:8px solid ${D};border-radius:48px;box-shadow:0 16px 0 rgba(0,0,0,.18)"></div>`);
+    ent(card, c.a, 'pop', .45).float(4, .5);
+    const av = M.el(card, `<div class="abs" style="left:270px;top:40px;width:264px;height:264px;border-radius:50%;padding:8px;background:conic-gradient(#FFD23F,#EE4D2D,#FF6B9A,#FFD23F)"><div style="width:100%;height:100%;border-radius:50%;border:6px solid #fff;overflow:hidden;background:linear-gradient(90deg,#FFE600 50%,#EE4D2D 50%);display:grid;place-items:center">${AV ? `<img src="${AV}" style="width:100%;height:100%;object-fit:cover">` : `<div style="width:120px;height:120px;color:${D}">${M.icone('shopping-bag', D, 2.4)}</div>`}</div></div>`);
+    ent(av, c.a + .15, 'pop', .45);
+    M.el(card, `<div class="abs" style="left:0;right:0;top:322px;text-align:center;font:800 56px Poppins;color:${D}">@achadinhos.rds0</div>`);
+    M.el(card, `<div class="abs" style="left:0;right:0;top:398px;text-align:center;font:600 32px Poppins;color:#6b6880">Achadinhos Mercado Livre &amp; Shopee</div>`);
+    const tS = T(165);
+    const btn = M.el(card, `<div class="abs" style="left:210px;top:448px;width:384px;height:84px;border-radius:22px;background:#0095F6;display:grid;place-items:center;font:800 40px Poppins;color:#fff">Seguir</div>`);
+    const btn2 = M.el(card, `<div class="abs" style="left:210px;top:448px;width:384px;height:84px;border-radius:22px;background:#EFEFF3;display:grid;place-items:center;font:800 40px Poppins;color:${D}">Seguindo ✓</div>`);
+    M.K(btn).to(tS + .25, { s: .9 }, .08).to(tS + .33, { s: 1, o: 0 }, .05);
+    M.K(btn2, { o: 0 }).to(tS + .33, { o: 1, s: 1.08 }, .05).to(tS + .38, { s: 1 }, .3, M.E.spring);
+    const cur = cursor(r, 900, 1500);
+    M.K(cur, { o: 0 }).to(tS - .4, { o: 1 }, .1).to(tS - .4, { x: -380, y: -480 }, .55, M.E.io).to(tS + .25, { s: .85 }, .08).to(tS + .33, { s: 1 }, .2).to(tS + .9, { o: 0 }, .3);
+    M.sfx('click', tS + .25, .6); M.sfx('ding', tS + .35, .5);
+    sparks(r, 540, 1050, tS + .3, '#0095F6');
+    const ic = [['heart', 161, '#EF4444'], ['message-circle', 162, '#0095F6'], ['send', 163, '#22C55E']];
+    ic.forEach(([n, k, cor], i) => {
+      const t = T(k);
+      const b = M.el(r, `<div class="abs" style="left:${190 + i * 260}px;top:1170px;width:180px;height:180px;border-radius:50%;background:#fff;border:8px solid ${D};box-shadow:0 10px 0 rgba(0,0,0,.18);display:grid;place-items:center"><div style="width:96px;height:96px;color:${D}">${M.icone(n, D, 2.4)}</div></div>`);
+      ent(b, t, 'pop', .4).to(t + .4, { s: 1.15 }, .12).to(t + .52, { s: 1 }, .3, M.E.spring).float(5, 2, i);
+      const cheio = M.el(b, `<div class="abs" style="inset:0;display:grid;place-items:center"><div style="width:96px;height:96px;color:${cor}">${M.icone(n, cor, 2.4).replaceAll('fill="none"', `fill="${cor}"`)}</div></div>`);
+      M.K(cheio, { o: 0, s: .4 }).to(t + .4, { o: 1, s: 1 }, .3, M.E.back2);
+      M.sfx('pop', t + .02, .45);
+    });
+    pill(r, 'GOSTOU?', T(160), tS - .2, 'ok');
+    pill(r, 'SEGUE PRA MAIS ACHADINHOS', tS - .2, c.b + .6, 'ok');
   }
 };
 })();
