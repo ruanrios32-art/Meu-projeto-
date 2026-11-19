@@ -1,0 +1,162 @@
+{
+ "versao": "1.0",
+ "entrada": "/home/user/Meu-projeto-/Reels/hidrocoloide-src/narracao.mp3",
+ "nome": "adesivo-hidrocoloide",
+ "estilo": "cartoon-produto",
+ "formato": "9:16",
+ "dur": 59.533,
+ "camN": 0,
+ "camW": 1080,
+ "camH": 1920,
+ "temVideo": false,
+ "rosto": {
+  "x": 0.5,
+  "y": 0.36,
+  "h": 0.22
+ },
+ "cortes": [],
+ "trechos": [
+  [
+   0.0,
+   59.533
+  ]
+ ],
+ "respiro": 0.3,
+ "removidos": [],
+ "plano": {
+  "cenas": [
+   {
+    "de": 0,
+    "modo": "anim",
+    "custom": "gancho"
+   },
+   {
+    "de": 10,
+    "modo": "anim",
+    "custom": "absorve"
+   },
+   {
+    "de": 21,
+    "modo": "anim",
+    "custom": "motivo"
+   },
+   {
+    "de": 31,
+    "modo": "anim",
+    "custom": "inflamada"
+   },
+   {
+    "de": 37,
+    "modo": "anim",
+    "custom": "sujeira"
+   },
+   {
+    "de": 45,
+    "modo": "anim",
+    "custom": "vermelha"
+   },
+   {
+    "de": 51,
+    "modo": "anim",
+    "custom": "esconder"
+   },
+   {
+    "de": 56,
+    "modo": "anim",
+    "custom": "marca"
+   },
+   {
+    "de": 61,
+    "modo": "anim",
+    "custom": "todoMundo"
+   },
+   {
+    "de": 71,
+    "modo": "anim",
+    "custom": "cola"
+   },
+   {
+    "de": 81,
+    "modo": "anim",
+    "custom": "protege"
+   },
+   {
+    "de": 90,
+    "modo": "anim",
+    "custom": "fininho"
+   },
+   {
+    "de": 97,
+    "modo": "anim",
+    "custom": "diaNoite"
+   },
+   {
+    "de": 107,
+    "modo": "anim",
+    "custom": "tamanhos"
+   },
+   {
+    "de": 115,
+    "modo": "anim",
+    "custom": "cartela"
+   },
+   {
+    "de": 122,
+    "modo": "anim",
+    "custom": "escada"
+   },
+   {
+    "de": 129,
+    "modo": "anim",
+    "custom": "preco1"
+   },
+   {
+    "de": 134,
+    "modo": "anim",
+    "custom": "preco3"
+   },
+   {
+    "de": 144,
+    "modo": "anim",
+    "custom": "centavos"
+   },
+   {
+    "de": 149,
+    "modo": "anim",
+    "custom": "cta"
+   }
+  ]
+ },
+ "chave": [
+  7,
+  12,
+  18,
+  28,
+  32,
+  36,
+  41,
+  44,
+  50,
+  55,
+  60,
+  65,
+  70,
+  78,
+  91,
+  93,
+  96,
+  100,
+  105,
+  109,
+  120,
+  126,
+  133,
+  139,
+  143,
+  145,
+  147,
+  151,
+  153
+ ],
+ "sfx": true
+}

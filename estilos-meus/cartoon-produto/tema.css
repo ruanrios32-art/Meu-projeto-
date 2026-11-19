@@ -1,0 +1,7 @@
+/* Cartoon Produto — fundos coloridos com raios, desenhos chapados, legenda com contorno escuro */
+:root{--bg:#1FA59A;--ink:#fff;--muted:#e9f5f3;--acc:#FFD23F;--acc2:#FF6B3D;--ok:#22C55E;--bad:#EF4444;--hl:#FFD23F;
+ --card:#fff;--card-ink:#1d1d24;--card2:#f4f4f6;--line:rgba(0,0,0,.1);--r:28px;--shadow:0 14px 0 rgba(0,0,0,.18);
+ --f-ui:'Poppins',sans-serif;--f-display:'Montserrat',sans-serif;--f-serif:'Instrument Serif',serif;--f-mono:'JetBrains Mono',monospace;--sel:#FFD23F}
+.lv-leg{-webkit-text-stroke:14px #26213a;paint-order:stroke fill;text-shadow:0 7px 0 #26213a;letter-spacing:.01em}
+.lv-leg .mq-w{-webkit-text-stroke:14px #26213a;paint-order:stroke fill}
+.cp-pill{position:absolute;padding:16px 40px;border-radius:999px;background:#fff;color:#26213a;font:800 46px 'Poppins',sans-serif;border:6px solid #26213a;white-space:nowrap;display:flex;align-items:center;gap:14px;box-shadow:0 8px 0 rgba(0,0,0,.18)}

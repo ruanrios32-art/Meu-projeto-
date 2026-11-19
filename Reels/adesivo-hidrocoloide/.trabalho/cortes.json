@@ -1,0 +1,10 @@
+{
+ "manter": [
+  [
+   0,
+   59.57
+  ]
+ ],
+ "removidos": [],
+ "ajuda": "Edite \"manter\" (segundos do arquivo ORIGINAL) e rode: maquina.py recortar <pasta>. Trechos fora de \"manter\" saem do vídeo."
+}

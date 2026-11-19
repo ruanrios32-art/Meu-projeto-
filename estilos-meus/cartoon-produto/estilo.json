@@ -1,0 +1,10 @@
+{
+  "nome": "Cartoon Produto",
+  "base": "livre",
+  "layouts": ["anim"],
+  "transicao": "corte",
+  "zoomCortes": 0,
+  "sons": true,
+  "fundo": { "cor": "#1FA59A" },
+  "legenda": { "fonte": "Montserrat", "peso": 900, "tamanho": 74, "cor": "#FFFFFF", "corChave": "#FFD23F", "fundo": null, "maiusculas": true, "y": 330, "palavrasPorVez": 3 }
+}
