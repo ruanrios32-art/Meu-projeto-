@@ -379,19 +379,28 @@ window.CENA = {
     ent(a, T(147), 'pop').float(6, 4);
     pill(r, 'CADA ADESIVO', T(146), c.b);
   },
-  // 19 — "Clica no link e garante o teu."
+  // 19 — "Toca no link aqui embaixo e garante o teu na Shopee."
   cta(c) {
     const r = cena(c, '#2457C5', '#4F86EA');
     const p = produto(r, 290, 560, 500);
     ent(p, c.a, 'zoom', .45).float(5, 1);
-    const btn = M.el(r, `<div class="abs" style="left:110px;top:1150px;width:860px;height:150px;border-radius:80px;background:#FF6B3D;border:8px solid ${D};box-shadow:0 14px 0 ${D};display:flex;align-items:center;justify-content:center;gap:22px;white-space:nowrap;font:900 52px Montserrat;color:#fff;-webkit-text-stroke:8px ${D};paint-order:stroke fill">${M.icone('shopping-cart', '#fff', 3).replace('<div', '<div style="width:80px;height:80px"')}<span>CLICA E GARANTE</span></div>`);
-    ent(btn, T(149), 'pop', .45).to(T(151) + .3, { s: .92, y: 10 }, .08).to(T(151) + .38, { s: 1, y: 0 }, .3, M.E.spring).to(T(153), { s: 1.06 }, .3, M.E.back).float(4, 0);
+    const logo = M.el(r, `<div class="abs" style="left:720px;top:600px;width:170px;height:170px;border-radius:40px;border:8px solid ${D};box-shadow:0 10px 0 rgba(0,0,0,.2);overflow:hidden">${M.logo('shopee')}</div>`);
+    M.K(logo, { o: 0, s: .3, r: -30 }).to(T(158), { o: 1, s: 1, r: 8 }, .45, M.E.back2).float(6, 3);
+    M.sfx('pop', T(158), .5);
+    const btn = M.el(r, `<div class="abs" style="left:110px;top:1130px;width:860px;height:150px;border-radius:80px;background:#EE4D2D;border:8px solid ${D};box-shadow:0 14px 0 ${D};display:flex;align-items:center;justify-content:center;gap:22px;white-space:nowrap;font:900 52px Montserrat;color:#fff;-webkit-text-stroke:8px ${D};paint-order:stroke fill"><div style="width:80px;height:80px">${M.icone('shopping-bag', '#fff', 3)}</div><span>TOCA E GARANTE</span></div>`);
+    ent(btn, T(149), 'pop', .45).to(T(151) + .1, { s: .92, y: 10 }, .08).to(T(151) + .18, { s: 1, y: 0 }, .3, M.E.spring).to(T(155), { s: 1.06 }, .3, M.E.back).float(4, 0);
     const cur = cursor(r, 900, 1500);
-    M.K(cur, { o: 0 }).to(T(150), { o: 1 }, .1).to(T(150), { x: -280, y: -270 }, .45, M.E.io).to(T(151) + .3, { s: .85 }, .08).to(T(151) + .38, { s: 1 }, .2);
-    M.sfx('click', T(151) + .3, .6);
-    sparks(r, 640, 1230, T(151) + .35, '#FFD23F');
-    M.sfx('ding', T(153), .5);
-    pill(r, 'LINK AQUI', T(150), c.b, 'ok');
+    M.K(cur, { o: 0 }).to(T(149), { o: 1 }, .1).to(T(149), { x: -280, y: -290 }, .45, M.E.io).to(T(151) + .1, { s: .85 }, .08).to(T(151) + .18, { s: 1 }, .2);
+    M.sfx('click', T(151) + .1, .6);
+    sparks(r, 640, 1210, T(151) + .15, '#FFD23F');
+    for (let i = 0; i < 2; i++) {
+      const s2 = S(r, 490, 1300 + i * 45, 100, 60, `<path d="M10 10L50 46 90 10" stroke="#fff" stroke-width="16" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 10L50 46 90 10" stroke="${D}" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity=".0"/>`);
+      M.K(s2, { o: 0 }).to(T(152) + i * .1, { o: 1 }, .2);
+      M.up(t => { if (t > T(152)) s2.style.transform = `translateY(${(8 * Math.sin((t - i * .15) * 9)).toFixed(1)}px)`; });
+    }
+    M.sfx('ding', T(155), .5);
+    pill(r, 'LINK AQUI EMBAIXO', T(150), T(158), 'ok');
+    pill(r, 'NA SHOPEE', T(158), c.b + .6, 'ok');
   }
 };
 })();

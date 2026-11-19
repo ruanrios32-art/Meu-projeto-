@@ -4,7 +4,7 @@
  "nome": "adesivo-hidrocoloide",
  "estilo": "cartoon-produto",
  "formato": "9:16",
- "dur": 59.533,
+ "dur": 60.567,
  "camN": 0,
  "camW": 1080,
  "camH": 1920,
@@ -18,7 +18,7 @@
  "trechos": [
   [
    0.0,
-   59.533
+   60.567
   ]
  ],
  "respiro": 0.3,
@@ -156,7 +156,9 @@
   145,
   147,
   151,
-  153
+  153,
+  155,
+  159
  ],
  "sfx": true
 }
