@@ -405,10 +405,10 @@ window.CENA = {
   // 20 — "Gostou? Curte, comenta, compartilha e segue a página pra mais achadinhos!"
   seguir(c) {
     const r = cena(c, '#D9487F', '#F27BA6');
-    const AV = window.AVATAR_SRC;   // logo do perfil (quando existir)
+    const AV = M.P.trabDir + 'logo.png';   // logo do perfil
     const card = M.el(r, `<div class="abs" style="left:130px;top:560px;width:820px;height:560px;background:#fff;border:8px solid ${D};border-radius:48px;box-shadow:0 16px 0 rgba(0,0,0,.18)"></div>`);
     ent(card, c.a, 'pop', .45).float(4, .5);
-    const av = M.el(card, `<div class="abs" style="left:270px;top:40px;width:264px;height:264px;border-radius:50%;padding:8px;background:conic-gradient(#FFD23F,#EE4D2D,#FF6B9A,#FFD23F)"><div style="width:100%;height:100%;border-radius:50%;border:6px solid #fff;overflow:hidden;background:linear-gradient(90deg,#FFE600 50%,#EE4D2D 50%);display:grid;place-items:center">${AV ? `<img src="${AV}" style="width:100%;height:100%;object-fit:cover">` : `<div style="width:120px;height:120px;color:${D}">${M.icone('shopping-bag', D, 2.4)}</div>`}</div></div>`);
+    const av = M.el(card, `<div class="abs" style="left:270px;top:40px;width:264px;height:264px;border-radius:50%;padding:8px;background:conic-gradient(#FFD23F,#EE4D2D,#FF6B9A,#FFD23F)"><div style="width:100%;height:100%;border-radius:50%;border:6px solid #fff;overflow:hidden;background:linear-gradient(90deg,#FFE600 50%,#EE4D2D 50%);display:grid;place-items:center">${AV ? `<img src="${AV}" style="width:112%;height:112%;margin:-6%;object-fit:cover">` : `<div style="width:120px;height:120px;color:${D}">${M.icone('shopping-bag', D, 2.4)}</div>`}</div></div>`);
     ent(av, c.a + .15, 'pop', .45);
     M.el(card, `<div class="abs" style="left:0;right:0;top:322px;text-align:center;font:800 56px Poppins;color:${D}">@achadinhos.rds0</div>`);
     M.el(card, `<div class="abs" style="left:0;right:0;top:398px;text-align:center;font:600 32px Poppins;color:#6b6880">Achadinhos Mercado Livre &amp; Shopee</div>`);
