@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Achadinhos RDS — ofertas da Shopee e do Mercado Livre</title>
+<meta name="description" content="Achadinhos que valem a pena: ofertas da Shopee e do Mercado Livre escolhidas a dedo. Toque e compre direto no app.">
+<meta name="theme-color" content="#1a1410">
+<meta property="og:title" content="Achadinhos RDS">
+<meta property="og:description" content="Ofertas da Shopee e do Mercado Livre escolhidas a dedo.">
+<meta property="og:image" content="img/logo.jpg">
+<link rel="icon" href="img/icone.png">
+<link rel="apple-touch-icon" href="img/icone.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff8ec;--ink:#1f1a17;--muted:#6f655c;--card:#fff;--line:#f0e3cf;--amarelo:#FFE600;--laranja:#EE4D2D;--ml:#2D3277;--ok:#16a34a;--sombra:0 6px 18px rgba(80,40,0,.08)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Poppins,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+a{color:inherit}
+.topo{background:linear-gradient(105deg,#FFD600 0%,#FFC400 45%,#FF7A2F 55%,#EE4D2D 100%);padding:28px 16px 64px;text-align:center;position:relative;overflow:hidden}
+.topo::before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 40%,rgba(255,255,255,.12) 0 8deg,transparent 8deg 16deg);pointer-events:none}
+.logo{width:112px;height:112px;border-radius:50%;border:5px solid #fff;box-shadow:0 8px 24px rgba(0,0,0,.25);position:relative;object-fit:cover;background:#222}
+.topo h1{position:relative;margin-top:12px;font-weight:900;font-size:28px;color:#fff;text-shadow:0 3px 0 rgba(0,0,0,.25);letter-spacing:-.01em}
+.topo p{position:relative;margin-top:4px;color:#fff;font-weight:600;font-size:15px;text-shadow:0 2px 0 rgba(0,0,0,.2)}
+.insta{position:relative;display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:#fff;color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;padding:9px 16px;border-radius:999px;box-shadow:0 4px 0 rgba(0,0,0,.15)}
+.insta svg{width:18px;height:18px}
+main{max-width:1080px;margin:-40px auto 0;padding:0 16px 40px;position:relative}
+.busca{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);border-radius:16px;padding:0 14px;box-shadow:var(--sombra)}
+.busca svg{width:20px;height:20px;flex:none;color:var(--muted)}
+.busca input{flex:1;min-width:0;border:0;outline:0;font:500 16px Poppins,sans-serif;padding:15px 0;background:transparent;color:var(--ink)}
+.filtros{display:flex;gap:8px;overflow-x:auto;padding:14px 0 4px;scrollbar-width:none}
+.filtros::-webkit-scrollbar{display:none}
+.chip{flex:none;border:2px solid var(--line);background:#fff;color:var(--ink);font:700 14px Poppins,sans-serif;padding:8px 14px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.chip.shopee[aria-pressed="true"]{background:var(--laranja);border-color:var(--laranja)}
+.chip.ml[aria-pressed="true"]{background:var(--amarelo);border-color:#e6cf00;color:var(--ml)}
+.info{color:var(--muted);font-size:13px;font-weight:600;margin:10px 2px}
+.grade{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+@media(min-width:640px){.grade{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}}
+@media(min-width:900px){.grade{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.card{background:var(--card);border-radius:18px;overflow:hidden;box-shadow:var(--sombra);display:flex;flex-direction:column;border:1px solid var(--line)}
+.foto{position:relative;aspect-ratio:1;background:#f6efe4}
+.foto img{width:100%;height:100%;object-fit:cover;display:block}
+.selo{position:absolute;left:8px;top:8px;font-size:11px;font-weight:800;padding:4px 9px;border-radius:999px;color:#fff;background:var(--laranja)}
+.selo.ml{background:var(--amarelo);color:var(--ml)}
+.alta{position:absolute;right:8px;top:8px;font-size:11px;font-weight:800;padding:4px 8px;border-radius:999px;background:#1f1a17;color:#fff}
+.corpo{padding:10px 12px 12px;display:flex;flex-direction:column;gap:6px;flex:1}
+.nome{font-size:14px;font-weight:700;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.desc{font-size:12px;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.opcoes{font-size:11px;color:var(--muted);font-weight:600;background:#fbf5ea;border-radius:8px;padding:6px 8px;line-height:1.45}
+.precos{margin-top:auto;padding-top:4px}
+.antigo{font-size:12px;color:var(--muted);text-decoration:line-through}
+.preco{font-size:20px;font-weight:900;color:var(--laranja);line-height:1.1}
+.preco small{font-size:11px;font-weight:700;color:var(--muted);display:block}
+.ml-card .preco{color:var(--ml)}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;text-decoration:none;font-weight:800;font-size:14px;padding:12px 10px;border-radius:12px;color:#fff;background:var(--laranja);text-align:center;box-shadow:0 4px 0 rgba(0,0,0,.18);transition:transform .08s}
+.btn:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.btn.ml{background:var(--amarelo);color:var(--ml)}
+.btn svg{width:18px;height:18px;flex:none}
+.btn.off{background:#e8e1d6;color:#8b8076;box-shadow:none;pointer-events:none}
+.vazio{text-align:center;color:var(--muted);padding:40px 16px;font-weight:600;grid-column:1/-1}
+footer{text-align:center;color:var(--muted);font-size:12px;line-height:1.6;padding:8px 16px 32px;max-width:640px;margin:0 auto}
+</style>
+</head>
+<body>
+<header class="topo">
+  <img class="logo" src="img/logo.jpg" alt="Logo Achadinhos RDS" width="112" height="112">
+  <h1>Achadinhos RDS</h1>
+  <p>Ofertas da Shopee e do Mercado Livre escolhidas a dedo</p>
+  <a class="insta" href="https://www.instagram.com/achadinhos.rds0/" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+    @achadinhos.rds0
+  </a>
+</header>
+<main>
+  <label class="busca">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input id="busca" type="search" placeholder="Buscar achadinho..." autocomplete="off" aria-label="Buscar produto">
+  </label>
+  <div class="filtros" id="lojas" role="group" aria-label="Filtrar por loja"></div>
+  <div class="filtros" id="categorias" role="group" aria-label="Filtrar por categoria" style="padding-top:6px"></div>
+  <p class="info" id="info"></p>
+  <section class="grade" id="grade" aria-live="polite"></section>
+</main>
+<footer>
+  Toque em <b>Ver oferta</b> para abrir o produto direto no app da loja.<br>
+  Os preços podem mudar a qualquer momento — confira sempre na loja antes de comprar.<br>
+  Este site participa de programas de afiliados: podemos receber uma comissão pelas compras feitas pelos links, sem custo extra para você.
+</footer>
+<script src="produtos.js"></script>
+<script>
+(() => {
+  const P = (window.PRODUTOS || []).filter(p => p && p.nome);
+  const LOJA = { shopee: 'Shopee', mercadolivre: 'Mercado Livre' };
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+  const norm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const okLink = u => /^https:\/\//i.test(u || '');
+  const estado = { loja: 'todas', cat: 'Todas', q: '' };
+
+  const sacola = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 7h12l1 13H5z"/><path d="M9 10V6a3 3 0 0 1 6 0v4"/></svg>';
+
+  function chips(el, itens, chave, extraClasse) {
+    el.innerHTML = itens.map(([v, txt]) => `<button class="chip ${extraClasse(v)}" data-v="${esc(v)}" aria-pressed="${estado[chave] === v}">${esc(txt)}</button>`).join('');
+    el.onclick = e => { const b = e.target.closest('button'); if (!b) return; estado[chave] = b.dataset.v; desenhar(); };
+  }
+
+  function card(p) {
+    const ml = p.loja === 'mercadolivre';
+    const lojaNome = LOJA[p.loja] || 'Loja';
+    const tem = okLink(p.link);
+    return `<article class="card ${ml ? 'ml-card' : ''}">
+      <div class="foto">
+        <img src="${esc(p.foto)}" alt="${esc(p.nome)}" loading="lazy">
+        <span class="selo ${ml ? 'ml' : ''}">${esc(lojaNome)}</span>
+        ${p.destaque ? '<span class="alta">🔥 Em alta</span>' : ''}
+      </div>
+      <div class="corpo">
+        <h2 class="nome">${esc(p.nome)}</h2>
+        ${p.descricao ? `<p class="desc">${esc(p.descricao)}</p>` : ''}
+        ${p.opcoes && p.opcoes.length ? `<p class="opcoes">${[].concat(p.opcoes).map(esc).join('<br>')}</p>` : ''}
+        <div class="precos">
+          ${p.precoAntigo ? `<div class="antigo">R$ ${esc(p.precoAntigo)}</div>` : ''}
+          ${p.preco ? `<div class="preco">${p.aPartirDe ? '<small>a partir de</small>' : ''}R$ ${esc(p.preco)}</div>` : ''}
+        </div>
+        ${tem
+          ? `<a class="btn ${ml ? 'ml' : ''}" href="${esc(p.link)}" target="_blank" rel="noopener sponsored">${sacola}Ver oferta na ${esc(lojaNome)}</a>`
+          : `<span class="btn off">Link em breve</span>`}
+      </div>
+    </article>`;
+  }
+
+  function desenhar() {
+    const lojas = [['todas', 'Todas as lojas'], ...Object.keys(LOJA).filter(k => P.some(p => p.loja === k)).map(k => [k, LOJA[k]])];
+    chips(document.getElementById('lojas'), lojas, 'loja', v => v === 'shopee' ? 'shopee' : v === 'mercadolivre' ? 'ml' : '');
+    const cats = ['Todas', ...[...new Set(P.map(p => p.categoria).filter(Boolean))].sort()];
+    const elCat = document.getElementById('categorias');
+    elCat.style.display = cats.length > 2 ? '' : 'none';
+    chips(elCat, cats.map(c => [c, c]), 'cat', () => '');
+    const q = norm(estado.q);
+    const lista = P.filter(p => (estado.loja === 'todas' || p.loja === estado.loja)
+      && (estado.cat === 'Todas' || p.categoria === estado.cat)
+      && (!q || norm(p.nome + ' ' + p.descricao + ' ' + p.categoria).includes(q)))
+      .sort((a, b) => (b.destaque ? 1 : 0) - (a.destaque ? 1 : 0));
+    document.getElementById('info').textContent = lista.length === 1 ? '1 achadinho' : `${lista.length} achadinhos`;
+    document.getElementById('grade').innerHTML = lista.length ? lista.map(card).join('') : '<p class="vazio">Nenhum achadinho encontrado 😕<br>Tente outra palavra.</p>';
+  }
+
+  document.getElementById('busca').addEventListener('input', e => { estado.q = e.target.value; desenhar(); });
+  desenhar();
+})();
+</script>
+</body>
+</html>
