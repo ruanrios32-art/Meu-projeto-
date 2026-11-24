@@ -1,0 +1,40 @@
+{
+ "versao": "1.0",
+ "entrada": "batida.wav",
+ "nome": "chef-jade-3d",
+ "estilo": "cartoon-produto",
+ "formato": "9:16",
+ "dur": 9.0,
+ "camN": 0,
+ "camW": 1080,
+ "camH": 1920,
+ "temVideo": false,
+ "rosto": {
+  "x": 0.5,
+  "y": 0.36,
+  "h": 0.22
+ },
+ "cortes": [],
+ "trechos": [
+  [
+   0,
+   9.0
+  ]
+ ],
+ "respiro": 0.3,
+ "removidos": [],
+ "sfx": true,
+ "legenda": false,
+ "libs": [
+  "three"
+ ],
+ "plano": {
+  "cenas": [
+   {
+    "de": 0,
+    "modo": "anim",
+    "custom": "jade3d"
+   }
+  ]
+ }
+}
