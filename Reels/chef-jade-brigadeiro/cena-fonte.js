@@ -141,8 +141,8 @@ window.CENA = {
 
     // ---------- 5) Final: Jade com o prato (12,5–15,5 s) ----------
     const X5 = 4 * W;
-    jadeCamadas(mundo, X5 + 200, 700, 680, [[0, 'feliz'], [b(26), 'lambendo'], [b(28), 'olhosFechados'], [b(29), 'piscada']]);
-    const prato5 = S(mundo, X5 + 190, 1200, 700, 170, `<ellipse cx="350" cy="100" rx="340" ry="70" fill="#fff" stroke="${D}" stroke-width="8"/>` +
+    jadeCamadas(mundo, X5 + 240, 640, 600, [[0, 'feliz'], [b(26), 'lambendo'], [b(28), 'olhosFechados'], [b(29), 'piscada']]);
+    const prato5 = S(mundo, X5 + 190, 1230, 700, 170, `<ellipse cx="350" cy="100" rx="340" ry="70" fill="#fff" stroke="${D}" stroke-width="8"/>` +
       [[200, 70], [300, 50], [400, 50], [500, 70], [250, 100], [450, 100]].map(([x, y]) => `<path d="M${x - 46} ${y + 20}h92l-10 40h-72Z" fill="#FF8FAB" stroke="${D}" stroke-width="5"/><circle cx="${x}" cy="${y}" r="40" fill="#5a2d18" stroke="${D}" stroke-width="6"/><circle cx="${x - 12}" cy="${y - 12}" r="5" fill="#2a120a"/><circle cx="${x + 10}" cy="${y - 4}" r="5" fill="#FF8FAB"/><circle cx="${x - 2}" cy="${y + 14}" r="5" fill="#2a120a"/>`).join(''));
     prato5.style.zIndex = 4;
     for (let i = 0; i < 8; i++) {
@@ -150,11 +150,11 @@ window.CENA = {
       M.K(hh, { o: 0, s: .3 }).to(b(27) + i * .1, { o: 1, s: 1 }, .2, M.E.back2).to(b(27) + i * .1, { y: -480 - (i % 3) * 60, x: (i - 3.5) * 16 }, 1.5, M.E.out).to(b(27) + i * .1 + 1.1, { o: 0 }, .4);
     }
     titulo(R, 'HUMMM!', '', ESTACOES[4] - .3, b(28) + .2, 250);
-    const logo = M.el(R, `<div class="abs" style="left:90px;top:230px;width:900px;height:420px">${jadeLogo()}</div>`);
+    const logo = M.el(R, `<div class="abs" style="left:90px;top:170px;width:900px;height:420px">${jadeLogo()}</div>`);
     logo.firstElementChild.setAttribute('width', 900); logo.firstElementChild.setAttribute('height', 420);
     M.K(logo, { o: 0, s: .3, r: -8 }).to(b(28) + .2, { o: 1, s: 1, r: 0 }, .45, M.E.back2).float(6, 1);
     M.sfx('ding', b(28) + .2, .5);
-    const segue = M.el(R, `<div class="abs" style="left:0;right:0;top:640px;display:flex;justify-content:center"><div class="cp-pill" style="position:relative">SEGUE PRA MAIS RECEITINHAS 💖</div></div>`);
+    const segue = M.el(R, `<div class="abs" style="left:0;right:0;top:570px;display:flex;justify-content:center"><div class="cp-pill" style="position:relative">SEGUE PRA MAIS RECEITINHAS 💖</div></div>`);
     M.K(segue, { o: 0, y: 30 }).to(b(29), { o: 1, y: 0 }, .3, M.E.back);
   }
 };
