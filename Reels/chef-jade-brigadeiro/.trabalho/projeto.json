@@ -1,0 +1,48 @@
+{
+ "versao": "1.0",
+ "entrada": "batida.wav",
+ "nome": "chef-jade-brigadeiro",
+ "estilo": "cartoon-produto",
+ "formato": "9:16",
+ "dur": 15.5,
+ "camN": 0,
+ "camW": 1080,
+ "camH": 1920,
+ "temVideo": false,
+ "rosto": {
+  "x": 0.5,
+  "y": 0.36,
+  "h": 0.22
+ },
+ "cortes": [],
+ "trechos": [
+  [
+   0,
+   15.5
+  ]
+ ],
+ "respiro": 0.3,
+ "removidos": [],
+ "sfx": true,
+ "plano": {
+  "cenas": [
+   {
+    "de": 0,
+    "modo": "anim",
+    "custom": "brigadeiro"
+   }
+  ]
+ },
+ "chave": [
+  2,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11
+ ],
+ "legenda": false
+}
