@@ -31,8 +31,9 @@ hz = lambda m: 440 * 2 ** ((m - 69) / 12)
 acordes = [(48, [60, 64, 67]), (45, [57, 60, 64]), (41, [57, 60, 65]), (43, [59, 62, 67])]   # C Am F G
 melodia = [72, 76, 79, 76, 81, 79, 76, 74, 72, 74, 76, 79, 77, 76, 74, 72]
 nb = int(dur / B)
+FINAL = float(sys.argv[3]) if len(sys.argv) > 3 else (nb - 3) * B   # hora do "tchan!" final (a batida vai até ali)
 for k in range(nb):
-    t = k * B; bar = (k // 4) % 4; raiz, ac = acordes[bar]; fim = t >= dur - 1.6
+    t = k * B; bar = (k // 4) % 4; raiz, ac = acordes[bar]; fim = t >= FINAL - 1e-6
     if fim: continue
     add(kick(), t, .95)
     if k % 2 == 1: add(clap(), t, .55)
@@ -45,7 +46,7 @@ for k in range(nb):
     if k % 4 == 0:
         for c in ac: add(nota(hz(c), 1.5, 'sino'), t, .06)
 # final "tchan!"
-tf = (nb - 3) * B
+tf = FINAL
 for c in [60, 64, 67, 72, 76]: add(nota(hz(c), 1.2, 'sino'), tf, .14)
 add(kick(), tf, 1); add(clap(), tf, .6)
 mix /= np.max(np.abs(mix)) * 1.12

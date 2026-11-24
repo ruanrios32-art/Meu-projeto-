@@ -133,7 +133,8 @@ const M = MQ, D = '#2B1B17', B = .5, b = n => n * B, W = 1080, H = 1920;
 const PELO = '#F2A73B', PRETO = '#241712', ROSA = '#E6407F';
 const S = (pai, x, y, w, h, inner, vb) => M.el(pai, `<svg class="abs" style="left:${x}px;top:${y}px;overflow:visible" width="${w}" height="${h}" viewBox="${vb || `0 0 ${w} ${h}`}">${inner}</svg>`);
 const box = (pai, x, y, w, h, css = '') => M.el(pai, `<div class="abs" style="left:${x}px;top:${y}px;width:${w}px;height:${h}px;${css}"></div>`);
-const bob = t => Math.cos(Math.PI * t / B);            // +1 = baixo (batidas pares), -1 = cima (ímpares)
+const FIM = 15;                                         // último "tchan!" da música: o sobe e desce para aqui
+const bob = t => Math.cos(Math.PI * t / B) * (t < FIM ? 1 : Math.max(0, 1 - (t - FIM) / .35));  // +1 = baixo (pares), -1 = cima (ímpares)
 const pulso = t => { const ph = ((t % B) + B) % B / B; return Math.exp(-ph * 7); };
 let seed = 5; const rnd = () => (seed = (seed * 9301 + 49297) % 233280) / 233280;
 const ESTACOES = [0, b(6), b(14), b(19), b(25)];        // início de cada cenário (s)
@@ -190,13 +191,13 @@ window.CENA = {
     });
 
     // ---------- 1) Introdução: dedinho da Jade (0–3 s) ----------
-    jadeCamadas(mundo, 30, 600, 560, [[0, 'surpresa'], [b(1), 'feliz'], [b(3), 'piscada'], [b(4), 'feliz']]);
-    const dedoW = box(mundo, 650, 690, 230, 720);
-    const dedoIn = box(dedoW, 0, 0, 230, 720);
-    S(dedoIn, 0, 0, 230, 720, DEDO);
+    jadeCamadas(mundo, -10, 620, 560, [[0, 'surpresa'], [b(1), 'feliz'], [b(3), 'piscada'], [b(4), 'feliz']]);
+    const dedoW = box(mundo, 430, 600, 720, 230);          // entra pela lateral direita, na horizontal
+    const dedoIn = box(dedoW, 0, 0, 720, 230);
+    S(dedoIn, 0, 0, 720, 230, `<g transform="translate(0 230) rotate(-90)">${DEDO}</g>`);
     M.up(t => { dedoIn.style.transform = `translateY(${(110 * bob(t)).toFixed(1)}px)`; });
-    M.K(dedoW, { y: 700, o: 0 }).to(0, { y: 0, o: 1 }, .4, M.E.back).to(b(5) + .3, { o: 0, s: .6 }, .25);
-    const cb = M.el(R, `<div class="abs" style="left:0;right:0;top:470px;text-align:center;font:900 64px Montserrat;color:#fff;-webkit-text-stroke:11px ${D};paint-order:stroke fill"></div>`);
+    M.K(dedoW, { x: 700 }).to(0, { x: 0 }, .45, M.E.back).to(b(5) - .2, { x: 760, o: 0 }, .35, M.E.in);
+    const cb = M.el(R, `<div class="abs" style="left:60px;width:440px;top:470px;text-align:left;font:900 64px Montserrat;color:#fff;-webkit-text-stroke:11px ${D};paint-order:stroke fill"></div>`);
     M.up(t => { if (t < b(6) - .3) { const up = bob(t) < 0; cb.innerHTML = up ? '⬆ CIMA' : '⬇ BAIXO'; cb.style.color = up ? '#FFD23F' : '#fff'; cb.style.visibility = 'visible'; } else cb.style.visibility = 'hidden'; });
     titulo(R, 'MEXA O DEDO', 'JUNTO!', 0, b(6) - .3, 220);
 

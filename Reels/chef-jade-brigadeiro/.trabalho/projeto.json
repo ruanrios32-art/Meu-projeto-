@@ -4,7 +4,7 @@
  "nome": "chef-jade-brigadeiro",
  "estilo": "cartoon-produto",
  "formato": "9:16",
- "dur": 15.5,
+ "dur": 16.0,
  "camN": 0,
  "camW": 1080,
  "camH": 1920,
@@ -18,7 +18,7 @@
  "trechos": [
   [
    0,
-   15.5
+   16.0
   ]
  ],
  "respiro": 0.3,
