@@ -216,7 +216,7 @@ Use a estrutura, não o conteúdo. Para ser nosso, mudamos: **o tipo de ameaça,
 **"Ninguém responde o próprio nome."** Numa noite de apagão na cidade, algo lá fora imita a voz das pessoas e chama pelo nome. Quem responde, some.
 Regra da série: **nunca responda quando chamarem seu nome.** Visual: cidade escura, só lanternas e luz azul de celular (bem diferente do céu vermelho).
 
-**PARTE 1: roteiro de ~70 s (POV: você, um motoboy de 19 anos)**
+**PARTE 1: roteiro de ~70 s (versão completa e atualizada em `roteiros/parte-1-o-apagao.md`) (POV: você, Dudu, fotojornalista de 22 anos)**
 
 | Tempo | Quem (cor) | Fala / ação |
 |---|---|---|
@@ -229,15 +229,15 @@ Regra da série: **nunca responda quando chamarem seu nome.** Visual: cidade esc
 | 0:18 | Você | "Como assim, não responde?" |
 | 0:20 | Dona Cida | "O Juninho respondeu. Faz uma hora." |
 | 0:24–0:40 | — | Silêncio. Você anda. Notificação: "Mãe: tô no mercado, vem me buscar". Bateria 2%. |
-| 0:41 | Voz da mãe (lilás, de longe) | "Rafa? Rafa, é a mãe..." |
+| 0:41 | Voz da mãe (lilás, de longe) | "Eduardo? Eduardo, é a mãe..." |
 | 0:45 | Você (sussurro) | "...mãe?" — a câmera para. |
 | 0:48 | Dona Cida | "NÃO RESPONDE!" |
-| 0:51 | Voz da mãe | "Rafa, por que cê não fala comigo?" |
+| 0:51 | Voz da mãe | "Filho, por que cê não fala comigo?" |
 | 0:55 | — | O celular vibra: **ligação da Mãe**. Ao mesmo tempo, a voz chama da esquina. |
 | 1:00 | Você | "Se ela tá ligando... quem tá me chamando?" |
 | 1:04 | — | **CTA:** "O QUE VOCÊ FARIA?" [📞 ATENDER A LIGAÇÃO] / [🔦 IR ATÉ A VOZ] — "Comenta aqui 👇" |
 
-Setup para colher depois: a bateria do celular (vai acabar na pior hora) e o apelido "Rafa", que só a mãe verdadeira usa (vira um teste na Parte 2).
+Setup para colher depois: a bateria do celular (vai acabar na pior hora) e o apelido "Dudu", que só a mãe verdadeira usa (vira um teste na Parte 2).
 
 ### Fluxo de produção sugerido
 1. **Roteiro** na tabela acima (tempo | quem | fala | ação).
