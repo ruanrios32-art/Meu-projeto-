@@ -36,16 +36,16 @@ for (a, b, txt), w in zip(blocos, quem):
     linhas.append(f"Dialogue: 0,{ass_t(a)},{ass_t(b)},{w},,0,0,0,,{txt.strip().replace(chr(10), '\\N')}")
 open('legendas.ass', 'w').write(estilos + '\n'.join(linhas) + '\n')
 
-vf = ("lenscorrection=k1=0.16:k2=0.03,crop=iw*0.88:ih*0.88,scale=720:1280,"
+vf = ("lenscorrection=k1=0.22:k2=0.04,crop=iw*0.85:ih*0.85,scale=720:1280,"
       "vignette=PI/4.2,noise=alls=5:allf=t,"
       "ass=legendas.ass,fade=t=out:st=26.3:d=0.7")
-cmd = ['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', 'frames/f_%04d.jpg',
+cmd = ['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', 'frames3d/f_%04d.jpg',
        '-i', '../../audio/trilha-voz-parte1.wav', '-i', 'sfx.wav',
        '-filter_complex',
        f'[0:v]{vf}[v];[1:a]atrim=0:{DUR},asetpts=PTS-STARTPTS[va];[2:a]volume=0.9[sa];'
        f'[va][sa]amix=inputs=2:normalize=0,afade=t=out:st=26.3:d=0.7[a]',
        '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19',
        '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-t', str(DUR), '-movflags', '+faststart',
-       'previa-parte1-0a27s.mp4']
+       'previa-parte1-3d-0a27s.mp4']
 subprocess.run(cmd, check=True)
-print('ok: previa-parte1-0a27s.mp4')
+print('ok: previa-parte1-3d-0a27s.mp4')
