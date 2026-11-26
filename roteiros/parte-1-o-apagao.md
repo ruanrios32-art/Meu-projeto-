@@ -2,7 +2,7 @@
 
 **Duração:** ~1:18 · **POV:** Dudu · **Falas:** 16 · **Regra nova:** "Se chamarem teu nome, não responde."
 **Objetivo do Dudu (dito em 1 frase):** achar a mãe.
-**Plantar para depois:** bateria do celular · apelido "Dudu" · chinelo azul · a Dona Cida já sabia · **a foto com flash mostra o que o olho não vê**.
+**Plantar para depois:** bateria do celular · "Dudu" no dia a dia, "Eduardo" quando é sério · chinelo azul · a Dona Cida já sabia · **a foto com flash mostra o que o olho não vê**.
 
 Cores: Dudu = branco · Dona Cida = amarelo · Mãe = lilás · *A Voz = itálico na cor de quem imita* · 📱 celular = verde-água.
 (Fichas completas em `nao-responde-biblia.md`.)
@@ -39,14 +39,14 @@ O Dudu anda em direção ao mercado. **16 segundos sem diálogo, mas com ação 
 
 | Tempo | Imagem (POV) | Som | Legenda (cor) |
 |---|---|---|---|
-| 0:43–0:46 | De uma esquina escura, à direita, vem a voz. A lanterna **não alcança**. | **Todo o ambiente some.** Só a voz, com eco leve | *Eduardo? Eduardo, é a mãe...* (**lilás itálico**: é A Voz) |
+| 0:43–0:46 | De uma esquina escura, à direita, vem a voz. A lanterna **não alcança**. | **Todo o ambiente some.** Só a voz, com eco leve | *Dudu? Dudu, é a mãe...* (**lilás itálico**: é A Voz, num tom doce demais para a situação) |
 | 0:47–0:48 | A câmera trava. Ele começa a responder... | Respiração presa | **...mã—** (branco, cortado) |
 | 0:48–0:49 | **A própria mão tampa a boca**, com a alça da câmera ainda enrolada no pulso (imagem-chave do episódio). | — | — |
 | 0:50–0:52 | De longe, de trás, a janela da Dona Cida. | Grito distante | **NÃO RESPONDE!** (amarelo) |
 | 0:53–0:56 | A lanterna treme apontando para a esquina. Nada visível. | Só a voz | *Filho... por que cê não fala comigo?* (**lilás itálico**) |
-| 0:57–1:00 | A lanterna desce para o chão. Ele sussurra. | — | **Ela nunca me chama de Eduardo.** (branco) ← pista da regra 2 |
+| 0:57–1:00 | A lanterna desce para o chão. Ele sussurra. | — | **Numa hora dessas... ela me chamaria de Eduardo.** (branco) ← pista da regra 2 |
 | 1:01–1:03 | **O celular vibra na mão: ligação "MÃE ❤️".** Bateria **1%**. | Toque de chamada, alto no silêncio | 📱 **MÃE ❤️ chamando...** (verde-água) |
-| 1:03–1:05 | Ao mesmo tempo, a voz na esquina fica mais perto e **acerta o apelido**. | Voz mais próxima, sem eco | *Dudu... atende, vai.* (**lilás itálico**) ← A Voz aprendeu |
+| 1:03–1:05 | Ao mesmo tempo, a voz na esquina fica mais perto e **muda o tom: agora séria, usa "Eduardo"**. | Voz mais próxima, sem eco | *Eduardo... atende, vai.* (**lilás itálico**) ← A Voz aprendeu |
 | 1:06–1:08 | Câmera alterna entre a tela tocando e a esquina escura. | Toque continua | **Se ela tá ligando... quem tá ali na esquina?** (branco) |
 
 ## CENA 4: CTA (1:09–1:18)
@@ -68,7 +68,7 @@ Por que é um bom dilema: as duas opções têm risco. Atender gasta o último 1
 ---
 
 ## O que vem na Parte 2 (preparar já)
-- **Se ganhar "ATENDER":** a mãe de verdade sussurra *"Dudu, não fala nada. Só escuta. Eu tô no mercado, ela tá aqui também, ela tá falando igual a mim—"* e **o celular morre** (bateria 0%). Escuridão total, e A Voz na esquina: *"Dudu?"*. Sem lanterna, ele levanta a câmera e **dispara o flash** para enxergar.
+- **Se ganhar "ATENDER":** a mãe de verdade sussurra *"Eduardo, não fala nada. Só escuta. Eu tô no mercado, ela tá aqui também, ela tá falando igual a mim—"* e **o celular morre** (bateria 0%). Escuridão total, e A Voz na esquina, imitando o mesmo tom sério: *"Eduardo?"*. Sem lanterna, ele levanta a câmera e **dispara o flash** para enxergar.
 - **Se ganhar "IR ATÉ A ESQUINA":** ele vai disparando flashes para iluminar o caminho. Na esquina não tem ninguém, só o **outro pé do chinelo azul**. Num dos flashes, a silhueta aparece **bem perto**, recuando da luz. Atrás dele, uma loja com **luz de emergência acesa** e o Biel acenando lá dentro: *"Entra! Ela não chega perto da luz!"* (regra 3).
 - Os dois caminhos convergem para o Biel na loja iluminada, e o **flash da câmera** vira a única arma do Dudu. Gancho de bateria: agora é a bateria da câmera que está acabando.
 

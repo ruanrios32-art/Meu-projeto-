@@ -16,7 +16,7 @@ O público descobre as regras junto com o Dudu: **uma regra nova por episódio**
 | # | Regra | Episódio em que aparece |
 |---|---|---|
 | 1 | Se chamarem teu nome, **não responde**. | Parte 1 |
-| 2 | A Voz erra os detalhes: apelidos, jeito de falar. Mas **aprende** com o tempo. | Parte 1 (pista) / Parte 2 (confirmada) |
+| 2 | A Voz erra os detalhes: apelido errado para a situação, tom de voz errado. Mas **aprende** com o tempo. | Parte 1 (pista) / Parte 2 (confirmada) |
 | 3 | A Voz não chega perto de **luz acesa**, e foge do flash. | Parte 2 |
 | 4 | Quem sumiu **volta**, mas não pisca. | Parte 3 |
 
@@ -35,7 +35,7 @@ Cada personagem tem **uma cor fixa de legenda**, como nos vídeos de referência
 
 | Personagem | Quem é | Cor da legenda | Hex |
 |---|---|---|---|
-| **Dudu** (você) | Eduardo, 22 anos, fotojornalista freelancer de um portal de notícias do bairro. Saiu para fotografar o apagão. Curioso, brinca para esconder o medo, fotografa tudo por reflexo. Só a mãe o chama de "Dudu"; estranhos dizem "Eduardo". | Branco | `#FFFFFF` |
+| **Dudu** (você) | Eduardo, 22 anos, fotojornalista freelancer de um portal de notícias do bairro. Saiu para fotografar o apagão. Curioso, brinca para esconder o medo, fotografa tudo por reflexo. A mãe o chama de "Dudu" no dia a dia e de **"Eduardo" quando o assunto é sério**. | Branco | `#FFFFFF` |
 | **Dona Cida** | 60 e poucos anos, vizinha, enfermeira aposentada, rígida e carinhosa. Fala pela janela. Perdeu o neto Juninho nesta noite. | Amarelo | `#FFD84D` |
 | **Mãe** (Sônia) | Mãe do Dudu, caixa do mercado do bairro. Só aparece por celular na Parte 1. | Lilás | `#C9A7FF` |
 | **A Voz** | A coisa no escuro. Imita qualquer pessoa. | **A cor de quem ela imita, em itálico** | igual à da pessoa |

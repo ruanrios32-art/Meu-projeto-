@@ -229,7 +229,7 @@ Regra da série: **nunca responda quando chamarem seu nome.** Visual: cidade esc
 | 0:18 | Você | "Como assim, não responde?" |
 | 0:20 | Dona Cida | "O Juninho respondeu. Faz uma hora." |
 | 0:24–0:40 | — | Silêncio. Você anda. Notificação: "Mãe: tô no mercado, vem me buscar". Bateria 2%. |
-| 0:41 | Voz da mãe (lilás, de longe) | "Eduardo? Eduardo, é a mãe..." |
+| 0:41 | Voz da mãe (lilás, de longe) | "Dudu? Dudu, é a mãe..." |
 | 0:45 | Você (sussurro) | "...mãe?" — a câmera para. |
 | 0:48 | Dona Cida | "NÃO RESPONDE!" |
 | 0:51 | Voz da mãe | "Filho, por que cê não fala comigo?" |
@@ -237,7 +237,7 @@ Regra da série: **nunca responda quando chamarem seu nome.** Visual: cidade esc
 | 1:00 | Você | "Se ela tá ligando... quem tá me chamando?" |
 | 1:04 | — | **CTA:** "O QUE VOCÊ FARIA?" [📞 ATENDER A LIGAÇÃO] / [🔦 IR ATÉ A VOZ] — "Comenta aqui 👇" |
 
-Setup para colher depois: a bateria do celular (vai acabar na pior hora) e o apelido "Dudu", que só a mãe verdadeira usa (vira um teste na Parte 2).
+Setup para colher depois: a bateria do celular (vai acabar na pior hora) e o nome: a mãe verdadeira diz "Dudu" no dia a dia, mas "Eduardo" quando é sério (vira um teste na Parte 2).
 
 ### Fluxo de produção sugerido
 1. **Roteiro** na tabela acima (tempo | quem | fala | ação).
