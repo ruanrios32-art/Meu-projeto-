@@ -32,11 +32,11 @@ F=[
 ("12","falso-biel",17.16,18.61,GRITO,"Falso","EU SOU O BIEL!",('apos',0.3),0),
 ("13","monstro",0.00,4.88,MONSTRO,"Monstro","Vocês deviam ter ficado aqui dentro.",('apos',3.2),0),
 ("14","biel",15.76,16.95,"","Biel","Os fundos! Corre!",('apos',0.4),0),
-("15","dudu",8.50,11.13,"","Dudu","Mãe?... Mãe?",('apos',5.2),0),
+("15","dudu",8.50,11.13,"","Dudu","Mãe?... Mãe?",('apos',10.6),0),
 ("16","maes",0.00,3.48,VOZ,"Voz","Eduardo! Aqui! No depósito!",('apos',0.8),-0.75),
 ("17","maes_e2",0.00,99,VOZ,"Voz","Dudu, filho... vem cá. Sou eu.",('apos',0.9),0.75),
 ("18","biel",18.09,20.14,"","Biel","Dudu... são duas.",('apos',0.6),0),
-("19","monstro",6.04,10.54,MONSTRO,"Monstro","Eu sei qual é a de verdade.",('apos',1.2),0),
+("19","monstro",6.04,10.54,MONSTRO,"Monstro","Agora não adianta mais se esconder.",('apos',1.2),0),
 ]
 clips=[]; fim=0
 for n,src,a,b,fx,quem,txt,(modo,v),pan in F:
@@ -52,7 +52,7 @@ c={k['n']:k for k in clips}; FIM=lambda n:c[n]['ini']+c[n]['dur']
 ev={
  "abre":FIM("02")+0.25, "entra":FIM("02")+0.7, "fecha":c["03"]["ini"]+c["03"]["dur"]+0.2,
  "pisca":c["11"]["ini"], "transf0":c["12"]["ini"], "transf1":FIM("12")+2.9,
- "corre":c["14"]["ini"], "flash":FIM("14")+1.0, "corte":FIM("14")+1.5, "deposito":FIM("14")+3.0,
+ "corre":c["14"]["ini"], "flash":FIM("14")+1.0, "corte":FIM("14")+1.5, "rua0":FIM("14")+1.8, "rua1":FIM("14")+8.8, "deposito":FIM("14")+9.4,
  "olhos":c["19"]["ini"]-0.6, "cta":round(FIM("19")+0.8,2),
 }
 total=ev["cta"]+8.0; ev["total"]=round(total,2)

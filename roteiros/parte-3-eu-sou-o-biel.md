@@ -41,6 +41,6 @@
 - **16 Mãe** (esquerda, *itálico*): *Eduardo! Aqui! No depósito!*
 - **17 Mãe** (direita, *itálico*): *Dudu, filho... vem cá. Sou eu.*
 - **18 Biel:** *Dudu... são duas.*
-- Do teto, no escuro, os dois olhos brancos se abrem. **19 Monstro** (sussurro grave): *Eu sei qual é a de verdade.*
+- Do teto, no escuro, os dois olhos brancos se abrem. **19 Monstro** (sussurro grave): *Agora não adianta mais se esconder.*
 
 **CTA:** QUAL É A MÃE DE VERDADE? ⬅️ A DO DEPÓSITO ("Eduardo!") / ➡️ A QUE CHAMA DE "DUDU"

@@ -128,8 +128,8 @@ let zr=-12, zl=6;
 const ALZ=[-22,-16]; let HID=null;   // beco (esquina) na direita entre z=-22 e z=-16
 while(zr>-215){const L=8+rnd()*10;const over=zr>ALZ[0]&&zr-L<ALZ[1];if(over){CUR=new THREE.Group();HID=[zr,zr-L]}
   building(1,zr,L,9+rnd()*20,PAL[Math.floor(rnd()*PAL.length)]);CUR=S;zr-=L+0.0}
-let MERC=false; const HIDL=[];   // prédios da esquerda escondidos para a loja do Zé (z=-25..-15)
-while(zl>-215){const L=8+rnd()*10;const o=(!MERC&&zl<-30)?(MERC=true,{sign:'MERCADO BOM PREÇO',signCol:'#1f5e3a'}):{};
+let MERC=false, MERCZ=[-40,-50]; const HIDL=[];   // prédios da esquerda escondidos para a loja do Zé (z=-25..-15)
+while(zl>-215){const L=8+rnd()*10;const o=(!MERC&&zl<-30)?(MERC=true,MERCZ=[zl,zl-L],{sign:'MERCADO BOM PREÇO',signCol:'#1f5e3a'}):{};
   const ov=zl>-25&&zl-L<-15; if(ov){CUR=new THREE.Group();HIDL.push([zl,zl-L])}
   building(-1,zl,L,9+rnd()*20,PAL[Math.floor(rnd()*PAL.length)],o);CUR=S;zl-=L+0.0}
 // skyline no fim da rua
@@ -321,8 +321,8 @@ const DX=200;
  const par=toon('#5a5f66'); box(24,4.8,0.3,par,DX,2.4,-10,0.05); box(24,4.8,0.3,par,DX,2.4,10,0.05); box(0.3,4.8,20,par,DX-12,2.4,0,0.05); box(0.3,4.8,20,par,DX+12,2.4,0,0.05);
  box(24,0.3,20,toon('#3a3e45'),DX,4.75,0,0.05);
  const cx=toon({map:tex(128,128,(x,w,h)=>{x.fillStyle='#b98b5a';x.fillRect(0,0,w,h);x.strokeStyle='#7a5a38';x.lineWidth=6;x.strokeRect(6,6,w-12,h-12);x.fillStyle='#7a5a38';x.font='900 22px Inter';x.textAlign='center';x.fillText('BOM PREÇO',w/2,h/2+8)})});
- for(const rx of [DX-5.6,DX,DX+5.6]){ for(let z=-8;z<=3.5;z+=1.25){ for(let lv=0;lv<3;lv++){ if(Math.sin(z*7+lv*3+rx)>0.85)continue; box(1.3,0.9,1.1,cx,rx,0.5+lv*1.05,z,0.03)} }
-   box(0.12,3.4,13,toon('#3d4f63'),rx-0.75,1.7,-2.2,0.02); box(0.12,3.4,13,toon('#3d4f63'),rx+0.75,1.7,-2.2,0.02)}
+ for(const rx of [DX-5.6,DX,DX+5.6]){ for(let z=-8;z<=-1.8;z+=1.25){ for(let lv=0;lv<3;lv++){ if(Math.sin(z*7+lv*3+rx)>0.85)continue; box(1.3,0.9,1.1,cx,rx,0.5+lv*1.05,z,0.03)} }
+   box(0.12,3.4,7.2,toon('#3d4f63'),rx-0.75,1.7,-5.0,0.02); box(0.12,3.4,7.2,toon('#3d4f63'),rx+0.75,1.7,-5.0,0.02)}
  const sg=tex(256,96,(x,w,h)=>{x.fillStyle='#0d3b1e';x.fillRect(0,0,w,h);x.fillStyle='#4dff88';x.font='900 56px Inter';x.textAlign='center';x.textBaseline='middle';x.fillText('SAÍDA',w/2,h/2+2)});
  const sn=new THREE.Mesh(new THREE.BoxGeometry(1.6,0.6,0.1),[toon('#0d3b1e'),toon('#0d3b1e'),toon('#0d3b1e'),toon('#0d3b1e'),new THREE.MeshBasicMaterial({map:sg,fog:false}),toon('#0d3b1e')]);sn.position.set(DX,3.7,-9.8);S.add(sn);
  const gl=new THREE.PointLight('#3dff7a',3.2,22,1.1); gl.position.set(DX,3.3,-8.8); S.add(gl);}
@@ -331,12 +331,42 @@ const OLHOSTETO=new THREE.Group(); OLHOSTETO.position.set(DX,4.5,3.2); OLHOSTETO
  for(const s of [-1,1]){const e=new THREE.Mesh(new THREE.SphereGeometry(0.08,10,8),new THREE.MeshBasicMaterial({color:'#f4f8ff',fog:false}));e.position.set(s*0.22,-0.3,0.35);e.scale.set(1.5,0.7,1);OLHOSTETO.add(e)}
  for(let i=0;i<6;i++){const a=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.05,1.8,6),pretoM);const ang=i/6*Math.PI*2;a.position.set(Math.cos(ang)*1.1,-0.2,Math.sin(ang)*1.1);a.rotation.z=Math.cos(ang)*1.2;a.rotation.x=-Math.sin(ang)*1.2;OLHOSTETO.add(a)}}
 
+// ---------- AS DUAS MÃES (idênticas, farda verde do mercado) ----------
+function makeMae(){const G=new THREE.Group();G.visible=false;S.add(G);
+  const pele=toon('#8a5a3c'), farda=toon('#2f7a4a'), calca=toon('#2b2f3a'), cab=toon('#2a1a12');
+  const pernas=[], bracos=[];
+  for(const s of [-1,1]){const pv=new THREE.Group();pv.position.set(s*0.13,0.86,0);G.add(pv);cyl(0.1,0.09,0.8,calca,0,-0.4,0,0.02,pv);box(0.16,0.1,0.28,toon('#1b1b1f'),0,-0.82,0.05,0.02,pv);pernas.push(pv)}
+  cyl(0.27,0.33,0.85,farda,0,1.28,0,0.025,G,18); ball(0.3,farda,0,1.66,0,0.025,G).scale.set(1,0.4,0.85);
+  box(0.12,0.07,0.02,toon('#f2f2f2'),0.13,1.45,0.29,0.01,G);
+  for(const s of [-1,1]){const sh=new THREE.Group();sh.position.set(s*0.35,1.6,0);G.add(sh);
+    cyl(0.08,0.07,0.3,farda,0,-0.15,0,0.02,sh);cyl(0.06,0.055,0.42,pele,0,-0.48,0,0.02,sh);ball(0.075,pele,0,-0.72,0,0.015,sh);bracos.push(sh)}
+  cyl(0.08,0.09,0.14,pele,0,1.78,0,0.02,G);
+  const H=new THREE.Group();H.position.set(0,2.1,0);G.add(H);
+  ball(0.33,pele,0,0,0,0.025,H,32);
+  const topo=new THREE.Mesh(new THREE.SphereGeometry(0.345,24,12,0,Math.PI*2,0,Math.PI*0.42),cab);H.add(topo);
+  const topoI=new THREE.Mesh(new THREE.SphereGeometry(0.37,24,12,0,Math.PI*2,0,Math.PI*0.44),INK);H.add(topoI);
+  ball(0.3,cab,0,-0.2,-0.14,0.02,H).scale.set(1.15,1.35,0.8);
+  const olhos=[],pup=[];
+  for(const s of [-1,1]){const e=ball(0.085,toon('#f7f3ea'),s*0.12,0.02,0.28,0.015,H);e.scale.set(1,1.15,0.55);olhos.push(e);
+    pup.push(ball(0.04,new THREE.MeshBasicMaterial({color:'#0d0d0d'}),s*0.12,0.015,0.33,0,H));
+    const br=box(0.12,0.03,0.03,toon('#1a100a'),s*0.12,0.15,0.31,0.01,H);br.rotation.z=s*0.15}
+  ball(0.05,toon('#7a4a2e'),0,-0.08,0.33,0.01,H);
+  const boca=ball(0.06,new THREE.MeshBasicMaterial({color:'#5a1414'}),0,-0.18,0.29,0.01,H);
+  return {G,pernas,bracos,H,boca,olhos,pup}}
+const MAE_E=makeMae(), MAE_D=makeMae();
+const LUZMERC=new THREE.PointLight('#ffd9a0',0,16,1.2); S.add(LUZMERC);
+const LUZDEP=new THREE.PointLight('#b8f0c8',0,14,1.1); LUZDEP.position.set(DX,3.2,8.5); S.add(LUZDEP);
+
 // ---------- tempos ----------
 let EV={}; window.setEv=e=>{EV=e};
 let FALAS={}; window.setFalas=f=>{for(const k of f)FALAS[k.n]=k};
 const FI=n=>FALAS[n]?FALAS[n].ini:999, FF=n=>FALAS[n]?FALAS[n].ini+FALAS[n].dur:999;
 
 // ---------- posições ----------
+function monstroRua(t){const E=EV, zc=(MERCZ[0]+MERCZ[1])/2, u=sm(E.rua0,E.rua1,t);
+  const d=lerp(10,4.5,u); return V(lerp(-2.0,-7.5,u),0.26,lerp(-22,zc+1.5,u)+d)}
+function maePos(q,t){const E=EV; if(q==='E'){const u=sm(FI('16')-0.4,FF('16')+0.4,t); return V(lerp(DX-2.8,DX-1.3,u),0,lerp(-5.5,3.9,u))}
+  const u=sm(FI('17')-0.4,FF('17')+0.6,t); return V(lerp(DX+2.8,DX+1.4,u),0,lerp(-5.5,4.1,u))}
 const EYE=new THREE.Vector3(-12.6,1.62,-16.6), DOORP=new THREE.Vector3(-11.1,1.45,-20.0), FUNDOS=new THREE.Vector3(-22.8,1.5,-22.6);
 const V=(x,y,z)=>new THREE.Vector3(x,y,z);
 function falsoPos(t){const E=EV; const u=sm(FI('05'),FF('07'),t); let p=V(lerp(-20.2,-15.9,u),0.26,lerp(-21.0,-19.8,u));
@@ -345,14 +375,26 @@ function bielPos(t){const E=EV; if(t<E.entra) return V(-10.2,0.26,-19.6);
   let p=V(-10.2,0.26,-19.6).lerp(V(-12.5,0.26,-18.7),sm(E.entra,E.entra+0.7,t));
   p.lerp(V(-13.7,0.26,-19.3),sm(FI('06')-0.4,FI('06')+0.4,t));
   p.lerp(V(-22.2,0.26,-22.6),sm(E.corre+0.3,E.corte,t)); return p}
-function stage(t){const E=EV; if(t<E.transf0+0.3) return 0; return Math.min(5,1+Math.floor((t-E.transf0-0.3)/((E.transf1-E.transf0)/5)))}
+function stage(t){const E=EV; if(t>=E.corte) return 5; if(t<E.transf0+0.3) return 0; return Math.min(5,1+Math.floor((t-E.transf0-0.3)/((E.transf1-E.transf0)/5)))}
 function rig(t){
   const E=EV, fp=falsoPos(t).clone().setY(1.95), bp=bielPos(t).clone().setY(1.75), mid=fp.clone().lerp(bp,0.5);
+  if(t>=E.rua0&&t<E.deposito){ // fuga pela rua até o mercado
+    const zc=(MERCZ[0]+MERCZ[1])/2, u=sm(E.rua0,E.rua1,t);
+    const eye=V(lerp(-2.5,-8.6,u*u),1.62,lerp(-22,zc+1.5,u)); eye.y+=0.12*Math.abs(Math.sin(t*Math.PI*3.1));
+    let tg=V(lerp(-4,-11,u),1.5,eye.z-12);
+    const tras=sm(E.rua0+1.8,E.rua0+2.3,t)*(1-sm(E.rua0+3.2,E.rua0+3.6,t))+sm(E.rua0+4.6,E.rua0+5.0,t)*(1-sm(E.rua0+5.7,E.rua0+6.1,t));
+    tg.lerp(monstroRua(t).clone().setY(2.2),tras);
+    tg.lerp(V(-11,1.6,zc),sm(E.rua1-0.9,E.rua1-0.3,t));
+    tg.y+=0.25*Math.sin(t*9.7);
+    return {eye,tg,roll:0.05*Math.sin(t*Math.PI*1.55)};
+  }
   if(t>=E.corte){ // depósito do mercado
-    let tg=V(DX,1.6,-6); tg.lerp(V(DX-3.6,1.4,-4),sm(FI('16')-0.2,FI('16')+0.4,t)*(1-sm(FI('17')-0.3,FI('17')+0.2,t)));
-    tg.lerp(V(DX+3.6,1.4,-4),sm(FI('17')-0.3,FI('17')+0.2,t)*(1-sm(FI('18')-0.3,FI('18'),t)));
-    tg.lerp(V(DX+1.3,1.7,5.0),sm(FI('18')-0.3,FI('18'),t)*(1-sm(E.olhos-0.3,E.olhos,t)));
-    tg.lerp(V(DX,4.3,3.0),sm(E.olhos-0.3,E.olhos+0.3,t));
+    let tg=V(DX,1.6,-6);
+    tg.lerp(maePos('E',t).setY(1.9),sm(FI('16')-0.5,FI('16')+0.1,t)*(1-sm(FI('17')-0.4,FI('17')+0.1,t)));
+    tg.lerp(maePos('D',t).setY(1.9),sm(FI('17')-0.4,FI('17')+0.1,t)*(1-sm(FI('18')-0.3,FI('18'),t)));
+    tg.lerp(V(DX,1.8,3.6),sm(FI('18')-0.3,FI('18'),t));
+    tg.lerp(V(DX,4.2,3.0),sm(E.olhos-0.3,E.olhos+0.3,t)*(1-sm(FF('19')-0.6,FF('19'),t)));
+    tg.lerp(V(DX,2.1,3.6),sm(FF('19')-0.6,FF('19'),t));
     tg.x+=0.12*Math.sin(t*1.3)+0.06*Math.sin(t*7); tg.y+=0.1*Math.sin(t*1.7)+0.05*Math.sin(t*8.9);
     return {eye:V(DX,1.62,7.2),tg,roll:0.02*Math.sin(t*0.9)};
   }
@@ -395,14 +437,14 @@ function texto(c,t){
     c.font='900 40px Inter';c.strokeText('DEPÓSITO',360,615);c.fillStyle='#4dff88';c.fillText('DEPÓSITO',360,615);c.restore()}
 }
 function cta(c,u){
-  c.fillStyle=`rgba(0,0,0,${0.5*sm(0,0.3,u)})`;c.fillRect(0,0,W,H);
+  c.fillStyle=`rgba(0,0,0,${0.3*sm(0,0.3,u)})`;c.fillRect(0,0,W,H);
   const a=sm(0.05,0.35,u), s=lerp(0.85,1,a); if(a<=0) return;
   c.save();c.globalAlpha=a;c.translate(360,700);c.scale(s,s);c.translate(-360,-700);c.textAlign='center';c.lineJoin='round';
   const txt=(t,y,size,col)=>{c.font=`900 ${size}px Inter`;c.lineWidth=size*0.16;c.strokeStyle='#000';c.strokeText(t,360,y);c.fillStyle=col;c.fillText(t,360,y)};
-  txt('QUAL É A MÃE',470,62,'#ffffff'); txt('DE VERDADE?',545,62,'#ffffff');
+  txt('QUAL É A MÃE',300,62,'#ffffff'); txt('DE VERDADE?',372,62,'#FFD84D');
   const btn=(y,col,label)=>{rr(c,60,y,600,100,22,col,6);c.font='900 34px Inter';c.fillStyle='#fff';c.fillText(label,360,y+62)};
-  btn(610,'#2E6F8E','⬅️ A DO DEPÓSITO'); btn(740,'#C62828','➡️ A QUE CHAMA DE DUDU');
-  txt('Comenta aqui 👇',920,40,'#FFD84D'); c.textAlign='left';c.restore();
+  btn(860,'#2E6F8E','⬅️ A DO DEPÓSITO'); btn(980,'#C62828','➡️ A QUE CHAMA DE DUDU');
+  txt('Comenta aqui 👇',1135,40,'#FFD84D'); c.textAlign='left';c.restore();
 }
 
 // ---------- quadro ----------
@@ -423,30 +465,48 @@ window.draw=function(tt){
   DOOR.rotation.y=-sm(E.abre,E.abre+0.5,t)*(1-sm(E.fecha-0.3,E.fecha+0.1,t))*1.25; DOOR.position.x=-11.1+(t<E.abre-0.2?0.025*Math.sin(t*38):0);
   // FALSO / MONSTRO
   const st=stage(t), af=amp('falso',t);
-  BIEL.visible=t<E.corte+0.1; BIEL.position.copy(falsoPos(t));
+  const naRua=t>=E.rua0&&t<E.deposito;
+  BIEL.visible=t<E.corte+0.1||naRua; BIEL.position.copy(naRua?monstroRua(t):falsoPos(t));
+  if(naRua){HEMI.intensity=0.32;MOON.intensity=0.3}
+  LUZMERC.intensity=naRua?3.5:0; LUZMERC.position.set(-10.2,3.2,(MERCZ[0]+MERCZ[1])/2);
   const lk=new THREE.Vector3().subVectors(CAM.position,BIEL.position); BIEL.rotation.set(0,Math.atan2(lk.x,lk.z),0);
   const esc=[0,0.5,1,1,1,1][st]; for(const [m,c0] of CORES) m.color.copy(c0).lerp(new THREE.Color('#060608'),esc);
   BIEL.scale.set(st>=2?0.85:1, st>=2?1.5:(st>=1?1.08:1), st>=2?0.85:1);
   for(const a of BARM){a.scale.y=st>=3?2.1:1; a.rotation.x=st>=3?0.15:0.05; a.rotation.z=0}
-  PERNAS.scale.setScalar(st>=4?1+0.06*Math.sin(t*9):0.001); PERNAS.rotation.x=st>=4?0.08*Math.sin(t*6):0;
+  PERNAS.scale.setScalar(st>=4?1+0.06*Math.sin(t*9):0.001); PERNAS.rotation.x=st>=4?(naRua?0.3*Math.sin(t*14):0.08*Math.sin(t*6)):0;
+  if(naRua){BIEL.rotation.x=-0.25; BIEL.position.y+=0.15*Math.abs(Math.sin(t*7))}
   const glitch=(t>FI('11')&&t<FF('12'))?1:0;
   BH.rotation.set(0.05+(st>=2?0.35:0)+glitch*0.15*Math.sin(t*41), glitch*0.3*Math.sin(t*23), (st>=2?0.4:0)+glitch*0.2*Math.sin(t*31));
   for(const g of OL1){g.scale.y=1.15; g.children.forEach(m=>{if(m.isMesh&&m.material!==INK){m.material.emissive=new THREE.Color(st>=5?'#ffffff':'#000000')}})}
   for(const p of PU1) p.visible=st<5;
   BMOUTH.scale.set(1+af*0.4+(st>=2?0.8:0),0.3+af*1.5+(st>=2?0.5:0),0.6);
   // BIEL DE VERDADE (em pé, pisca muito)
-  BIEL2.visible=t<E.corte+0.1||t>=E.deposito; 
-  let bp=bielPos(t); if(t>=E.deposito) bp=V(DX+1.3,0.26,5.0); BIEL2.position.copy(bp);
+  BIEL2.visible=t<E.corte+0.1||t>=E.deposito||naRua; 
+  let bp=bielPos(t); if(t>=E.deposito) bp=V(DX+2.4,0.26,6.4);
+  if(naRua){const u=sm(E.rua0,E.rua1,t),zc=(MERCZ[0]+MERCZ[1])/2; bp=V(lerp(-0.8,-7.0,u),0.26+0.1*Math.abs(Math.sin(t*9.5)),lerp(-24.5,zc-0.5,u))}
+  BIEL2.position.copy(bp);
   const alvo=(t>FI('04')&&t<E.corre)?BIEL.position:CAM.position; const lk2=new THREE.Vector3().subVectors(alvo,BIEL2.position);
-  BIEL2.rotation.y=t>E.corre&&t<E.corte?-Math.PI/2:Math.atan2(lk2.x,lk2.z); BIEL2.position.y+=0.03*Math.sin(t*9)*(t>E.entra?1:0);
+  BIEL2.rotation.y=t>E.corre&&t<E.corte?-Math.PI/2:(naRua?Math.PI+0.3:Math.atan2(lk2.x,lk2.z)); BIEL2.position.y+=0.03*Math.sin(t*9)*(t>E.entra?1:0);
   BARM2.forEach((a,i)=>{a.rotation.x=(t<E.abre&&i===1)?-2.3+0.6*Math.sin(t*14):0.05});
   const pis=((t*1.15)%1)<0.1; for(const o of OL2) o.scale.y=pis?0.12:1.15; for(const p of PU2) p.visible=!pis;
   BM2.scale.set(1+amp('biel',t)*0.4,0.3+amp('biel',t)*1.5,0.6);
+  // mães: aparecem saindo dos corredores e vêm na direção dele
+  for(const [m,q,n,fala] of [[MAE_E,'E','16','maeE'],[MAE_D,'D','17','maeD']]){
+    m.G.visible=t>=FI(n)-0.6&&t>=E.deposito; const p=maePos(q,t); m.G.position.copy(p);
+    const lk=new THREE.Vector3().subVectors(CAM.position,p); m.G.rotation.y=Math.atan2(lk.x,lk.z);
+    const anda=(q==='E'?(t>FI('16')-0.4&&t<FF('16')+0.4):(t>FI('17')-0.4&&t<FF('17')+0.6))?1:0, vel=q==='E'?9:5;
+    m.pernas[0].rotation.x=anda*0.5*Math.sin(t*vel); m.pernas[1].rotation.x=-anda*0.5*Math.sin(t*vel);
+    m.bracos.forEach((b,i)=>{b.rotation.x=q==='E'?(t>FI('16')?-1.2+0.2*Math.sin(t*6+i):0.05):(t>FI('17')?-0.6-0.1*i:0.05)});
+    const a=amp(fala,t); m.boca.scale.set(1+a*0.4,0.35+a*1.6,0.6);
+    const pis=((t*0.7+(q==='E'?0:0.37))%1)<0.07; m.olhos.forEach(o=>o.scale.y=pis?0.12:1.15); m.pup.forEach(o=>o.visible=!pis);
+    m.H.rotation.z=q==='D'?0.12*sm(FI('17'),FI('17')+1,t):0;
+  }
+  LUZDEP.intensity=t>=E.deposito?2.4:0;
   OLHOSTETO.visible=t>=E.olhos; OLHOSTETO.children.slice(1,3).forEach(e=>e.scale.y=0.7*sm(E.olhos,E.olhos+0.3,t)+0.01);
   FLASH.position.copy(k.eye); FLASH.intensity=(t>=E.flash&&t<E.flash+0.14)?22*(1-(t-E.flash)/0.14):0;
   R.render(S,CAM); O.drawImage(R.domElement,0,0);
   if(t>=E.flash&&t<E.flash+0.25){O.fillStyle=`rgba(255,255,255,${0.55*(1-(t-E.flash)/0.25)})`;O.fillRect(0,0,W,H)}
-  if(t>=E.corte&&t<E.deposito){O.fillStyle='#000';O.fillRect(0,0,W,H)}
+  if((t>=E.corte&&t<E.rua0)||(t>=E.rua1&&t<E.deposito)){O.fillStyle='#000';O.fillRect(0,0,W,H)}
   maoTrinco(O,t); texto(O,t);
   if(tt>=E.cta) cta(O,tt-E.cta);
   return OUT.toDataURL('image/jpeg',0.92);

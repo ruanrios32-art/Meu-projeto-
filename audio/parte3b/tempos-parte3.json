@@ -9,10 +9,12 @@
   "corre": 47.781,
   "flash": 50.141,
   "corte": 50.641,
-  "deposito": 52.141,
-  "olhos": 73.19800000000001,
-  "cta": 80.97,
-  "total": 88.97
+  "rua0": 50.940999999999995,
+  "rua1": 57.941,
+  "deposito": 58.541,
+  "olhos": 78.598,
+  "cta": 86.37,
+  "total": 94.37
  },
  "falas": [
   {
@@ -131,7 +133,7 @@
    "n": "15",
    "quem": "Dudu",
    "txt": "Mãe?... Mãe?",
-   "ini": 54.341,
+   "ini": 59.741,
    "dur": 2.8,
    "pan": 0
   },
@@ -139,7 +141,7 @@
    "n": "16",
    "quem": "Voz",
    "txt": "Eduardo! Aqui! No depósito!",
-   "ini": 57.941,
+   "ini": 63.341,
    "dur": 4.574,
    "pan": -0.75
   },
@@ -147,7 +149,7 @@
    "n": "17",
    "quem": "Voz",
    "txt": "Dudu, filho... vem cá. Sou eu.",
-   "ini": 63.414,
+   "ini": 68.814,
    "dur": 6.364,
    "pan": 0.75
   },
@@ -155,15 +157,15 @@
    "n": "18",
    "quem": "Biel",
    "txt": "Dudu... são duas.",
-   "ini": 70.378,
+   "ini": 75.778,
    "dur": 2.22,
    "pan": 0
   },
   {
    "n": "19",
    "quem": "Monstro",
-   "txt": "Eu sei qual é a de verdade.",
-   "ini": 73.798,
+   "txt": "Agora não adianta mais se esconder.",
+   "ini": 79.198,
    "dur": 6.375,
    "pan": 0
   }

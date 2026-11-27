@@ -5,11 +5,14 @@ TJ=json.load(open('../../audio/parte3b/tempos-parte3.json')); E=TJ['eventos']; D
 def ler(p):
     w=wave.open(p); x=np.frombuffer(w.readframes(w.getnframes()),np.int16).astype(np.float32)/32768
     return x.reshape(-1,w.getnchannels()).mean(1)
-amp={'biel':np.zeros(int(DUR*FPS)+1),'falso':np.zeros(int(DUR*FPS)+1)}
+amp={k:np.zeros(int(DUR*FPS)+1) for k in ('biel','falso','maeE','maeD')}
 src={'Biel':('biel','biel'),'BielEscuro':('biel','biel'),'Falso':('falso','falso-biel')}
 for f in TJ['falas']:
-    if f['quem'] not in src: continue
-    k,arq=src[f['quem']]; x=ler(f"../../audio/parte3b/falas/{f['n']}_{arq}.wav"); hop=SR//FPS
+    if f['n']=='16': src2=('maeE','maes')
+    elif f['n']=='17': src2=('maeD','maes_e2')
+    elif f['quem'] in src: src2=src[f['quem']]
+    else: continue
+    k,arq=src2; x=ler(f"../../audio/parte3b/falas/{f['n']}_{arq}.wav"); hop=SR//FPS
     for i in range(len(x)//hop):
         j=int(f['ini']*FPS)+i
         if j<len(amp[k]): amp[k][j]=np.sqrt(np.mean(x[i*hop:(i+1)*hop]**2))
@@ -59,7 +62,16 @@ for s in np.arange(E['corre']+0.3,E['flash'],1/3.2): put(passo(),s,0.32)
 put(clique(.008),E['flash'],0.7); put(boom(0.8)[:int(0.8*SR)],E['flash'],0.45)
 L=int(0.9*SR); h=ruido(0.9); h=h-lp(h,0.25); h*=np.sin(np.linspace(0,np.pi,L))**2; put(h,E['flash']+0.05,0.3)
 L=int(0.4*SR); tt=np.arange(L)/SR; put((np.sin(2*np.pi*60*tt)*np.exp(-tt/0.08)+0.4*lp(ruido(0.4),0.1)*np.exp(-tt/0.05)).astype(np.float32),E['corte'],0.8)
-k=(t>E['corte']+0.3)&(t<E['deposito']); out[k]*=0.05
+k=(t>E['corte']+0.1)&(t<E['rua0']); out[k]*=0.05
+# rua: vento forte, passos correndo, o monstro correndo atrás (estalos rápidos), porta do mercado
+rua=((t>=E['rua0'])&(t<E['rua1'])).astype(np.float32)
+out+=0.06*lp(ruido(DUR)[:n],0.01)*rua*4
+for s in np.arange(E['rua0']+0.1,E['rua1'],1/3.1): put(passo(),s,0.35)
+for s in np.arange(E['rua0']+0.3,E['rua1'],0.11):
+    g=0.08+0.25*(s-E['rua0'])/(E['rua1']-E['rua0']); put(clique(.004),s+rng.random()*0.04,g)
+for s in (E['rua0']+2.0,E['rua0']+4.8): put(boom(0.7)[:int(0.9*SR)],s,0.35)
+L=int(0.4*SR); tt=np.arange(L)/SR; put((np.sin(2*np.pi*60*tt)*np.exp(-tt/0.08)+0.4*lp(ruido(0.4),0.1)*np.exp(-tt/0.05)).astype(np.float32),E['rua1'],0.8)
+k=(t>E['rua1']+0.2)&(t<E['deposito']); out[k]*=0.05
 # depósito: zumbido grave da placa verde + gotas
 out+=0.008*np.sin(2*np.pi*100*t).astype(np.float32)*dep
 for s in np.arange(E['deposito']+1,DUR-2,1.7): 
