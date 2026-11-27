@@ -40,6 +40,9 @@ open('legendas.ass', 'w').write(estilos + '\n'.join(linhas) + '\n')
 
 vf = ("lenscorrection=k1=0.22:k2=0.04,crop=iw*0.85:ih*0.85,scale=720:1280,"
       "vignette=PI/4.2,noise=alls=5:allf=t,"
+      # marca d'água: @ no meio da tela, quase transparente (abaixo das legendas)
+      "drawtext=fontfile=/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf:text='@dudu.aventuras_':"
+      "fontsize=46:fontcolor=white@0.20:borderw=2:bordercolor=black@0.15:x=(w-tw)/2:y=(h-th)/2,"
       "ass=legendas.ass,fade=t=out:st=89.1:d=0.7")
 cmd = ['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', 'frames3d/f_%04d.jpg',
        '-i', '../../audio/trilha-voz-parte1.wav', '-i', 'sfx.wav', '-i', '../../audio/musica/musica-fundo.wav',
@@ -52,8 +55,8 @@ cmd = ['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', 'frames3d/f_%04d
        f'afade=t=in:d=2.5,afade=t=out:st={DUR-3}:d=3[m0];'
        f'[m0][vk]sidechaincompress=threshold=0.02:ratio=4:attack=40:release=700[mu];'
        f'[va][sa][mu]amix=inputs=3:normalize=0,afade=t=out:st={DUR-0.8}:d=0.8[a]',
-       '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19',
+       '-map', '[v]', '-map', '[a]', '-c:v', 'libx264', '-preset', 'slow', '-crf', '23',
        '-pix_fmt', 'yuv420p', '-c:a', 'aac', '-b:a', '192k', '-t', str(DUR), '-movflags', '+faststart',
-       'nao-responde-parte1.mp4']
+       'nao-responde-parte1-final.mp4']
 subprocess.run(cmd, check=True)
-print('ok: nao-responde-parte1.mp4')
+print('ok: nao-responde-parte1-final.mp4')
