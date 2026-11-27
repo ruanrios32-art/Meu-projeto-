@@ -1,0 +1,135 @@
+{
+ "eventos": {
+  "abre": 8.961,
+  "entra": 9.511000000000001,
+  "fecha": 11.711,
+  "passo1": 8.861,
+  "passo2": 24.464,
+  "passo3": 31.674,
+  "falha": 34.479000000000006,
+  "colado": 51.184999999999995,
+  "cta": 54.93,
+  "total": 62.93
+ },
+ "falas": [
+  {
+   "n": "01",
+   "quem": "Falso",
+   "txt": "Dudu. Não abre essa porta.",
+   "ini": 0.5,
+   "dur": 2.691
+  },
+  {
+   "n": "02",
+   "quem": "BielEscuro",
+   "txt": "Dudu, pelo amor de Deus, abre! Ela tá aqui atrás!",
+   "ini": 3.591,
+   "dur": 3.71
+  },
+  {
+   "n": "03",
+   "quem": "Dudu",
+   "txt": "Desculpa, Biel.",
+   "ini": 7.701,
+   "dur": 1.11
+  },
+  {
+   "n": "04",
+   "quem": "Biel",
+   "txt": "Fecha! Fecha a porta!",
+   "ini": 10.211,
+   "dur": 1.3
+  },
+  {
+   "n": "05",
+   "quem": "Biel",
+   "txt": "Dudu... quem é esse?",
+   "ini": 12.511,
+   "dur": 1.93
+  },
+  {
+   "n": "06",
+   "quem": "Falso",
+   "txt": "Eu sou o Biel.",
+   "ini": 15.141,
+   "dur": 1.124
+  },
+  {
+   "n": "07",
+   "quem": "Falso",
+   "txt": "Eu respondi quando meu pai me chamou.",
+   "ini": 16.865,
+   "dur": 2.258
+  },
+  {
+   "n": "08",
+   "quem": "Falso",
+   "txt": "Agora eu fico no lugar dele.",
+   "ini": 19.722,
+   "dur": 2.041
+  },
+  {
+   "n": "09",
+   "quem": "Dudu",
+   "txt": "Biel, sai de perto dele!",
+   "ini": 22.464,
+   "dur": 1.85
+  },
+  {
+   "n": "10",
+   "quem": "Biel",
+   "txt": "Para! Não fala meu nome!",
+   "ini": 25.614,
+   "dur": 2.17
+  },
+  {
+   "n": "11",
+   "quem": "Biel",
+   "txt": "Toda vez que alguém fala... ele chega mais perto.",
+   "ini": 28.284,
+   "dur": 3.04
+  },
+  {
+   "n": "12",
+   "quem": "Falso",
+   "txt": "Fala de novo, Dudu.",
+   "ini": 32.024,
+   "dur": 1.856
+  },
+  {
+   "n": "13",
+   "quem": "Dudu",
+   "txt": "A luz tá acabando...",
+   "ini": 35.279,
+   "dur": 1.27
+  },
+  {
+   "n": "14",
+   "quem": "Biel",
+   "txt": "O mercado é a duas quadras. Tua mãe tá lá?",
+   "ini": 37.149,
+   "dur": 3.26
+  },
+  {
+   "n": "15",
+   "quem": "Dudu",
+   "txt": "Tá. Trancada no depósito.",
+   "ini": 40.909,
+   "dur": 2.41
+  },
+  {
+   "n": "16",
+   "quem": "Voz",
+   "txt": "Eduardo... vem. Eu tô te esperando.",
+   "ini": 44.219,
+   "dur": 6.216
+  },
+  {
+   "n": "17",
+   "quem": "Falso",
+   "txt": "Ela também respondeu, Dudu.",
+   "ini": 51.635,
+   "dur": 2.3
+  }
+ ]
+}
