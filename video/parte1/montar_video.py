@@ -40,9 +40,9 @@ open('legendas.ass', 'w').write(estilos + '\n'.join(linhas) + '\n')
 
 vf = ("lenscorrection=k1=0.22:k2=0.04,crop=iw*0.85:ih*0.85,scale=720:1280,"
       "vignette=PI/4.2,noise=alls=5:allf=t,"
-      # marca d'água: @ no meio da tela, quase transparente (abaixo das legendas)
+      # marca d'água: @ pequeno embaixo, entre a legenda e a área de texto do TikTok
       "drawtext=fontfile=/usr/share/fonts/opentype/inter/Inter-ExtraBold.otf:text='@dudu.aventuras_':"
-      "fontsize=46:fontcolor=white@0.20:borderw=2:bordercolor=black@0.15:x=(w-tw)/2:y=(h-th)/2,"
+      "fontsize=28:fontcolor=white@0.32:borderw=2:bordercolor=black@0.25:x=(w-tw)/2-115:y=h*0.785,"
       "ass=legendas.ass,fade=t=out:st=89.1:d=0.7")
 cmd = ['ffmpeg', '-v', 'error', '-y', '-framerate', '30', '-i', 'frames3d/f_%04d.jpg',
        '-i', '../../audio/trilha-voz-parte1.wav', '-i', 'sfx.wav', '-i', '../../audio/musica/musica-fundo.wav',
