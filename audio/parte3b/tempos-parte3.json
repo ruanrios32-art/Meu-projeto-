@@ -1,0 +1,171 @@
+{
+ "eventos": {
+  "abre": 6.234999999999999,
+  "entra": 6.685,
+  "fecha": 9.174999999999999,
+  "pisca": 31.791,
+  "transf0": 35.101,
+  "transf1": 40.303,
+  "corre": 47.781,
+  "flash": 50.141,
+  "corte": 50.641,
+  "deposito": 52.141,
+  "olhos": 73.19800000000001,
+  "cta": 80.97,
+  "total": 88.97
+ },
+ "falas": [
+  {
+   "n": "01",
+   "quem": "Falso",
+   "txt": "Dudu. Não abre essa porta.",
+   "ini": 0.5,
+   "dur": 2.495,
+   "pan": 0
+  },
+  {
+   "n": "02",
+   "quem": "BielEscuro",
+   "txt": "Abre, Dudu! Por favor!",
+   "ini": 3.395,
+   "dur": 2.59,
+   "pan": 0
+  },
+  {
+   "n": "03",
+   "quem": "Biel",
+   "txt": "Fecha! Fecha a porta!",
+   "ini": 7.285,
+   "dur": 1.69,
+   "pan": 0
+  },
+  {
+   "n": "04",
+   "quem": "Biel",
+   "txt": "Dudu... quem é esse?",
+   "ini": 9.875,
+   "dur": 1.93,
+   "pan": 0
+  },
+  {
+   "n": "05",
+   "quem": "Falso",
+   "txt": "Eu que pergunto. Eu sou o Biel.",
+   "ini": 12.305,
+   "dur": 2.763,
+   "pan": 0
+  },
+  {
+   "n": "06",
+   "quem": "Biel",
+   "txt": "Mentira! Eu sou o Biel!",
+   "ini": 15.368,
+   "dur": 2.14,
+   "pan": 0
+  },
+  {
+   "n": "07",
+   "quem": "Falso",
+   "txt": "Não escuta ele, Dudu. Ele é a coisa lá de fora.",
+   "ini": 17.908,
+   "dur": 3.773,
+   "pan": 0
+  },
+  {
+   "n": "08",
+   "quem": "Dudu",
+   "txt": "Para! Para os dois!",
+   "ini": 22.081,
+   "dur": 1.77,
+   "pan": 0
+  },
+  {
+   "n": "09",
+   "quem": "Dudu",
+   "txt": "Qual foi a última foto que eu tirei de você?",
+   "ini": 24.451,
+   "dur": 1.99,
+   "pan": 0
+  },
+  {
+   "n": "10",
+   "quem": "Biel",
+   "txt": "Na laje, no teu aniversário! Eu caí da cadeira!",
+   "ini": 26.841,
+   "dur": 4.05,
+   "pan": 0
+  },
+  {
+   "n": "11",
+   "quem": "Falso",
+   "txt": "Foi... foi... foi...",
+   "ini": 31.791,
+   "dur": 3.01,
+   "pan": 0
+  },
+  {
+   "n": "12",
+   "quem": "Falso",
+   "txt": "EU SOU O BIEL!",
+   "ini": 35.101,
+   "dur": 2.302,
+   "pan": 0
+  },
+  {
+   "n": "13",
+   "quem": "Monstro",
+   "txt": "Vocês deviam ter ficado aqui dentro.",
+   "ini": 40.603,
+   "dur": 6.778,
+   "pan": 0
+  },
+  {
+   "n": "14",
+   "quem": "Biel",
+   "txt": "Os fundos! Corre!",
+   "ini": 47.781,
+   "dur": 1.36,
+   "pan": 0
+  },
+  {
+   "n": "15",
+   "quem": "Dudu",
+   "txt": "Mãe?... Mãe?",
+   "ini": 54.341,
+   "dur": 2.8,
+   "pan": 0
+  },
+  {
+   "n": "16",
+   "quem": "Voz",
+   "txt": "Eduardo! Aqui! No depósito!",
+   "ini": 57.941,
+   "dur": 4.574,
+   "pan": -0.75
+  },
+  {
+   "n": "17",
+   "quem": "Voz",
+   "txt": "Dudu, filho... vem cá. Sou eu.",
+   "ini": 63.414,
+   "dur": 6.364,
+   "pan": 0.75
+  },
+  {
+   "n": "18",
+   "quem": "Biel",
+   "txt": "Dudu... são duas.",
+   "ini": 70.378,
+   "dur": 2.22,
+   "pan": 0
+  },
+  {
+   "n": "19",
+   "quem": "Monstro",
+   "txt": "Eu sei qual é a de verdade.",
+   "ini": 73.798,
+   "dur": 6.375,
+   "pan": 0
+  }
+ ]
+}
