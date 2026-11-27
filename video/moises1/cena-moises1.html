@@ -1,0 +1,345 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Dudu e Moisés 1</title>
+<style>html,body{margin:0;background:#000}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js"}}</script></head>
+<body><canvas id="out" width="720" height="1280"></canvas>
+<script type="module">
+// DUDU E MOISÉS — Parte 1 "O Cesto no Rio". Cenários: quarto (x=0), Egito (x=300), casa (x=600), rio Nilo (x=900).
+import * as THREE from 'three';
+const W=720,H=1280, OUT=document.getElementById('out'), O=OUT.getContext('2d');
+const R=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:true}); R.setSize(W,H); R.setPixelRatio(1); R.outputColorSpace=THREE.SRGBColorSpace;
+const S=new THREE.Scene(); S.fog=new THREE.Fog('#000',30,200);
+const CAM=new THREE.PerspectiveCamera(80,W/H,0.03,600);
+let rs=777; const rnd=()=>((rs=Math.imul(rs^rs>>>15,2246822519)+0x9e3779b9|0)>>>0)/4294967296;
+const cl=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)), lerp=(a,b,u)=>a+(b-a)*u, sm=(a,b,t)=>{const u=cl((t-a)/(b-a));return u*u*(3-2*u)};
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+let AMP={}; const amp=(k,t)=>(AMP[k]||[])[Math.floor(t*30)]||0;
+let EV={}, FALAS={}; window.setEv=e=>{EV=e}; window.setFalas=f=>{for(const k of f)FALAS[k.n]=k}; window.setAmp=a=>{AMP=a};
+const FI=n=>FALAS[n]?FALAS[n].ini:999, FF=n=>FALAS[n]?FALAS[n].ini+FALAS[n].dur:999;
+
+// ---------- materiais e formas (cartoon com contorno) ----------
+const grad=new THREE.DataTexture(new Uint8Array([70,140,210,255]),4,1,THREE.RedFormat); grad.minFilter=grad.magFilter=THREE.NearestFilter; grad.needsUpdate=true;
+const toon=o=>new THREE.MeshToonMaterial({gradientMap:grad,...(typeof o==='string'?{color:o}:o)});
+const INK=new THREE.MeshBasicMaterial({color:'#000',side:THREE.BackSide});
+function tex(w,h,fn,rep){const c=document.createElement('canvas');c.width=w;c.height=h;fn(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.colorSpace=THREE.SRGBColorSpace;t.anisotropy=4;if(rep){t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(...rep)}return t}
+function box(w,h,d,m,x,y,z,ink=0.03,p=S){const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m));if(ink)g.add(new THREE.Mesh(new THREE.BoxGeometry(w+2*ink,h+2*ink,d+2*ink),INK));g.position.set(x,y,z);p.add(g);return g}
+function ball(r,m,x,y,z,ink=0.02,p=S,seg=20){const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.SphereGeometry(r,seg,seg/2+4),m));if(ink)g.add(new THREE.Mesh(new THREE.SphereGeometry(r+ink,seg,seg/2+4),INK));g.position.set(x,y,z);p.add(g);return g}
+function cyl(r0,r1,h,m,x,y,z,ink=0.02,p=S,seg=14){const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.CylinderGeometry(r0,r1,h,seg),m));if(ink)g.add(new THREE.Mesh(new THREE.CylinderGeometry(r0+ink,r1+ink,h+2*ink,seg),INK));g.position.set(x,y,z);p.add(g);return g}
+function ruido(x,w,h,n,a){for(let i=0;i<n;i++){x.fillStyle=`rgba(0,0,0,${a})`;x.fillRect(rnd()*w,rnd()*h,3,3)}}
+function ceu(cx,cores,estrelas){const t=tex(512,512,(x,w,h)=>{const g=x.createLinearGradient(0,0,0,h);cores.forEach(([p,c])=>g.addColorStop(p,c));x.fillStyle=g;x.fillRect(0,0,w,h);
+  if(estrelas){x.fillStyle='rgba(255,255,255,0.8)';for(let i=0;i<120;i++)x.fillRect(rnd()*w,rnd()*h*0.45,1.5,1.5)}});
+  const m=new THREE.Mesh(new THREE.SphereGeometry(140,32,16),new THREE.MeshBasicMaterial({map:t,side:THREE.BackSide,fog:false}));m.position.set(cx,0,0);S.add(m);return m}
+
+// ---------- PESSOA (estilo da série: cabeça grande, olhos grandes) ----------
+function pessoa(o){
+  const G=new THREE.Group(); S.add(G); const pele=toon(o.pele||'#a8683f'), roupa=toon(o.roupa||'#c9b48a');
+  const pernas=[], bracos=[];
+  for(const s of [-1,1]){const pv=new THREE.Group();pv.position.set(s*0.12,0.85,0);G.add(pv);
+    cyl(0.085,0.075,0.8,o.calca?toon(o.calca):pele,0,-0.4,0,0.018,pv); box(0.14,0.08,0.26,toon(o.sapato||'#6b4a2a'),0,-0.81,0.05,0.015,pv); pernas.push(pv)}
+  if(o.saia) cyl(0.3,o.saia==='longa'?0.42:0.36,o.saia==='longa'?0.82:0.5,toon(o.saiaCor||o.roupa),0,o.saia==='longa'?0.5:0.68,0,0.02,G,18);
+  cyl(0.26,0.3,0.78,roupa,0,1.27,0,0.022,G,18); ball(0.29,roupa,0,1.62,0,0.022,G).scale.set(1,0.4,0.85);
+  if(o.colar){const c=new THREE.Mesh(new THREE.TorusGeometry(0.24,0.06,8,24),toon('#e8b923'));c.rotation.x=Math.PI/2;c.position.y=1.68;c.scale.set(1,0.9,0.5);G.add(c)}
+  if(o.faixa) box(0.6,0.08,0.02,toon(o.faixa),0,1.0,0.29,0.01,G);
+  for(const s of [-1,1]){const sh=new THREE.Group();sh.position.set(s*0.34,1.58,0);G.add(sh);
+    cyl(0.075,0.065,0.3,o.mangaCurta?pele:roupa,0,-0.15,0,0.018,sh); cyl(0.058,0.052,0.42,pele,0,-0.48,0,0.018,sh); ball(0.07,pele,0,-0.72,0,0.014,sh); bracos.push(sh)}
+  cyl(0.075,0.085,0.14,pele,0,1.75,0,0.018,G);
+  const Hd=new THREE.Group(); Hd.position.set(0,2.06,0); G.add(Hd);
+  ball(0.32,pele,0,0,0,0.022,Hd,28);
+  const cab=toon(o.cabelo||'#2a1a10');
+  const tampa=(f=0.42)=>{const m=new THREE.Mesh(new THREE.SphereGeometry(0.335,24,12,0,Math.PI*2,0,Math.PI*f),cab);Hd.add(m);const i=new THREE.Mesh(new THREE.SphereGeometry(0.36,24,12,0,Math.PI*2,0,Math.PI*(f+0.02)),INK);Hd.add(i)};
+  if(o.cab==='coque'){tampa(0.42);ball(0.14,cab,0,0.34,-0.12,0.018,Hd)}
+  if(o.cab==='curto'){tampa(0.38)}
+  if(o.cab==='longo'){tampa(0.42);ball(0.29,cab,0,-0.2,-0.13,0.018,Hd).scale.set(1.15,1.3,0.8)}
+  if(o.cab==='lenco'){const m=new THREE.Mesh(new THREE.SphereGeometry(0.35,24,12,0,Math.PI*2,0,Math.PI*0.55),toon(o.lenco||'#7b5ea8'));m.rotation.x=-0.25;Hd.add(m);
+    const i=new THREE.Mesh(new THREE.SphereGeometry(0.375,24,12,0,Math.PI*2,0,Math.PI*0.57),INK);i.rotation.x=-0.25;Hd.add(i);ball(0.3,toon(o.lenco||'#7b5ea8'),0,-0.25,-0.18,0.018,Hd).scale.set(1.05,1.2,0.6)}
+  if(o.cab==='trancas'){tampa(0.42);for(const s of [-1,1])cyl(0.05,0.04,0.45,cab,s*0.24,-0.38,-0.08,0.012,Hd)}
+  if(o.cab==='chanel'){tampa(0.45);ball(0.33,cab,0,-0.08,-0.08,0.018,Hd).scale.set(1.08,0.95,0.95);const b=new THREE.Mesh(new THREE.TorusGeometry(0.335,0.03,8,28),toon('#e8b923'));b.rotation.x=Math.PI/2-0.2;b.position.y=0.13;Hd.add(b)}
+  if(o.cab==='nemes'){const n=tex(64,64,(x,w,h)=>{for(let i=0;i<8;i++){x.fillStyle=i%2?'#e8b923':'#1f4e9a';x.fillRect(0,i*8,w,8)}});
+    const m=new THREE.Mesh(new THREE.SphereGeometry(0.35,24,12,0,Math.PI*2,0,Math.PI*0.5),toon({map:n}));Hd.add(m);
+    for(const s of [-1,1]){const a=box(0.12,0.5,0.06,toon({map:n}),s*0.3,-0.3,0.08,0.012,Hd);a.rotation.z=s*0.1}}
+  if(o.cab==='pano'){const m=new THREE.Mesh(new THREE.SphereGeometry(0.35,24,12,0,Math.PI*2,0,Math.PI*0.5),toon(o.lenco||'#b8a27a'));Hd.add(m)}
+  const olhos=[],pup=[];
+  for(const s of [-1,1]){const e=ball(0.08,toon('#f7f3ea'),s*0.115,0.02,0.27,0.014,Hd);e.scale.set(1,1.15,0.55);olhos.push(e);
+    pup.push(ball(0.038,new THREE.MeshBasicMaterial({color:'#0d0d0d'}),s*0.115,0.015,0.32,0,Hd));
+    const br=box(0.11,0.028,0.03,toon(o.sobrancelha||'#1a100a'),s*0.115,0.14,0.3,0.008,Hd);br.rotation.z=s*(o.triste?-0.25:0.12)}
+  if(o.oculos) for(const s of [-1,1]){const g=new THREE.Mesh(new THREE.TorusGeometry(0.1,0.014,8,20),new THREE.MeshBasicMaterial({color:'#222'}));g.position.set(s*0.115,0.02,0.31);Hd.add(g)}
+  if(o.olhoPintado) for(const s of [-1,1]){const k=box(0.13,0.015,0.02,new THREE.MeshBasicMaterial({color:'#111'}),s*0.13,0.07,0.31,0,Hd);k.rotation.z=s*-0.15}
+  ball(0.045,toon(o.nariz||'#7a4a2e'),0,-0.07,0.32,0.008,Hd);
+  const boca=ball(0.055,new THREE.MeshBasicMaterial({color:o.batom||'#3a0e0e'}),0,-0.17,0.28,0.008,Hd);
+  if(o.barba){const b=ball(0.26,toon(o.barba),0,-0.2,0.08,0.018,Hd);b.scale.set(1.05,1.0,0.8);boca.position.z=0.33}
+  G.scale.setScalar(o.escala||1);
+  return {G,Hd,boca,olhos,pup,bracos,pernas};
+}
+function anima(p,t,{fala=0,anda=0,vel=6,piscaOff=0,olhar=null}={}){
+  p.boca.scale.set(1+fala*0.4,0.35+fala*1.5,0.6);
+  const pis=((t*0.6+piscaOff)%1)<0.06; p.olhos.forEach(o=>o.scale.y=pis?0.12:1.15); p.pup.forEach(o=>o.visible=!pis);
+  if(anda){p.pernas[0].rotation.x=0.5*Math.sin(t*vel);p.pernas[1].rotation.x=-0.5*Math.sin(t*vel)} else p.pernas.forEach(l=>l.rotation.x=0);
+  if(olhar){const v=new THREE.Vector3().subVectors(olhar,p.G.position);p.G.rotation.y=Math.atan2(v.x,v.z)}
+}
+
+// ================= QUARTO (x=0) =================
+const ceuQuarto=ceu(0,[[0,'#1d2236'],[1,'#2b2f45']]);
+{const mad=tex(256,256,(x,w,h)=>{x.fillStyle='#8a5a34';x.fillRect(0,0,w,h);x.strokeStyle='#5e3a1f';x.lineWidth=4;for(let i=0;i<=h;i+=32){x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}ruido(x,w,h,400,0.08)},[3,3]);
+ const piso=new THREE.Mesh(new THREE.PlaneGeometry(6,6),toon({map:mad}));piso.rotation.x=-Math.PI/2;S.add(piso);
+ const pap=toon({map:tex(256,256,(x,w,h)=>{x.fillStyle='#d8c39a';x.fillRect(0,0,w,h);x.fillStyle='#c4a874';for(let i=0;i<w;i+=32)for(let j=0;j<h;j+=32){x.beginPath();x.arc(i+16,j+16,4,0,7);x.fill()}},[4,2])});
+ box(0.1,2.8,6,pap,2.3,1.4,0,0.02); box(6,2.8,0.1,pap,0,1.4,-2.2,0.02); box(6,2.8,0.1,pap,0,1.4,2.6,0.02); box(0.1,2.8,6,pap,-2.3,1.4,0,0.02); box(6,0.1,6,toon('#efe6d2'),0,2.85,0,0.02);
+ // janela com chuva
+ const jan=new THREE.Mesh(new THREE.PlaneGeometry(1.0,1.2),new THREE.MeshBasicMaterial({map:tex(128,160,(x,w,h)=>{const g=x.createLinearGradient(0,0,0,h);g.addColorStop(0,'#0c1428');g.addColorStop(1,'#1d2a48');x.fillStyle=g;x.fillRect(0,0,w,h);x.strokeStyle='rgba(180,200,255,0.5)';for(let i=0;i<60;i++){const a=rnd()*w,b=rnd()*h;x.beginPath();x.moveTo(a,b);x.lineTo(a-3,b+12);x.stroke()}})}));
+ jan.rotation.y=-Math.PI/2;jan.position.set(2.24,1.65,1.0);S.add(jan); window.JAN=jan;
+ box(0.08,1.3,0.08,toon('#5e3a1f'),2.22,1.65,0.45,0.015);box(0.08,1.3,0.08,toon('#5e3a1f'),2.22,1.65,1.55,0.015);box(0.08,0.08,1.2,toon('#5e3a1f'),2.22,2.28,1.0,0.015);box(0.12,0.08,1.25,toon('#5e3a1f'),2.2,1.02,1.0,0.015);
+ // cruz e quadro na parede
+ box(0.04,0.5,0.06,toon('#6b4423'),2.24,2.1,-0.6,0.012);box(0.04,0.06,0.3,toon('#6b4423'),2.24,2.18,-0.6,0.012);
+ // cama
+ box(1.1,0.35,2.3,toon('#6b4423'),0,0.22,0.75,0.03); box(1.02,0.18,2.2,toon('#f2ede2'),0,0.47,0.75,0.02);
+ const coberta=toon({map:tex(128,128,(x,w,h)=>{x.fillStyle='#3e6aa8';x.fillRect(0,0,w,h);x.fillStyle='#e7d28a';for(let i=0;i<w;i+=32)for(let j=0;j<h;j+=32)if((i+j)%64===0)x.fillRect(i,j,32,32);x.strokeStyle='#22406e';x.lineWidth=3;for(let i=0;i<=w;i+=32){x.beginPath();x.moveTo(i,0);x.lineTo(i,h);x.stroke();x.beginPath();x.moveTo(0,i);x.lineTo(w,i);x.stroke()}},[3,4])});
+ box(1.08,0.12,1.8,coberta,0,0.61,1.0,0.02); const pe=ball(0.25,coberta,-0.08,0.66,1.6,0.02);pe.scale.set(1.6,0.5,2.2);
+ box(1.15,0.9,0.1,toon('#6b4423'),0,0.6,-0.35,0.03);
+ // criado-mudo + abajur
+ box(0.45,0.55,0.4,toon('#7a4e2b'),0.95,0.28,-0.75,0.02); cyl(0.04,0.06,0.3,toon('#caa86a'),0.95,0.7,-0.75,0.012); cyl(0.12,0.2,0.22,toon('#f3e2b0'),0.95,0.95,-0.75,0.015);
+}
+const ABAJUR=new THREE.PointLight('#ffcf8a',0,9,1.2); ABAJUR.position.set(0.85,1.05,-0.6); S.add(ABAJUR);
+const VO=pessoa({pele:'#9a6a4a',roupa:'#8c6bb0',saia:'longa',saiaCor:'#5a4a6a',cabelo:'#d8d4cc',cab:'coque',oculos:true,sobrancelha:'#cfcac0',nariz:'#8a5a3e'});
+// BÍBLIA (capa de couro com "BÍBLIA SAGRADA" em dourado; aberta no Êxodo 1)
+const BIB=new THREE.Group(); S.add(BIB);
+const capaTex=tex(256,352,(x,w,h)=>{x.fillStyle='#4a2414';x.fillRect(0,0,w,h);ruido(x,w,h,600,0.12);x.strokeStyle='#d4a63c';x.lineWidth=5;x.strokeRect(14,14,w-28,h-28);x.lineWidth=2;x.strokeRect(24,24,w-48,h-48);
+  x.fillStyle='#e8bf4e';x.textAlign='center';x.font='900 34px Inter';x.fillText('BÍBLIA',w/2,110);x.fillText('SAGRADA',w/2,150);x.fillRect(w/2-5,190,10,90);x.fillRect(w/2-30,212,60,10)});
+const pagTex=(lado)=>tex(256,352,(x,w,h)=>{x.fillStyle='#f4ead2';x.fillRect(0,0,w,h);x.fillStyle='#2a1a0e';x.textAlign='left';
+  if(lado==='dir'){x.textAlign='center';x.font='900 30px Inter';x.fillStyle='#7a1f1f';x.fillText('ÊXODO',w/2,46);x.font='800 18px Inter';x.fillStyle='#2a1a0e';x.fillText('CAPÍTULO 1',w/2,72);
+    x.font='900 40px Inter';x.textAlign='left';x.fillStyle='#7a1f1f';x.fillText('1',16,118);x.fillStyle='#2a1a0e';x.font='11px Inter';
+    const L=['Estes, pois, são os nomes dos filhos','de Israel, que entraram no Egito','com Jacó; cada um entrou com sua','casa. ... 8 Depois levantou-se um','novo rei sobre o Egito, que não','conhecera a José. ... 11 E puseram','sobre eles maiorais de tributos,','para os afligirem com suas cargas.','... 14 Assim, lhes fizeram amargar','a vida com dura servidão, em barro','e em tijolos. ... 22 Então ordenou','Faraó a todo o seu povo, dizendo:','A todos os filhos que nascerem','lançareis no rio...'];
+    L.forEach((s,i)=>x.fillText(s,(i===0?44:16),104+i*17));}
+  else {x.font='800 14px Inter';x.textAlign='center';x.fillText('GÊNESIS 50',w/2,30);x.font='11px Inter';x.textAlign='left';for(let i=0;i<17;i++){x.fillStyle='rgba(40,26,14,0.75)';x.fillRect(16,48+i*17,w-32-(i%4)*18,6)}}
+  x.strokeStyle='rgba(120,90,50,0.4)';x.lineWidth=2;x.strokeRect(6,6,w-12,h-12)});
+{const cw=0.24,ch=0.33,th=0.06; const couro=toon('#4a2414');
+ const tras=new THREE.Mesh(new THREE.BoxGeometry(cw,ch,0.01),couro);tras.position.set(cw/2,0,-th/2);BIB.add(tras);
+ const miolo=new THREE.Mesh(new THREE.BoxGeometry(cw-0.01,ch-0.01,th-0.012),toon('#efe2c2'));miolo.position.set(cw/2,0,0);BIB.add(miolo);
+ const pdir=new THREE.Mesh(new THREE.PlaneGeometry(cw-0.012,ch-0.012),new THREE.MeshBasicMaterial({map:pagTex('dir')}));pdir.position.set(cw/2,0,th/2-0.004);BIB.add(pdir);
+ const CAPA=new THREE.Group();CAPA.position.set(0,0,th/2);BIB.add(CAPA);
+ const cf=new THREE.Mesh(new THREE.BoxGeometry(cw,ch,0.01),[couro,couro,couro,couro,toon({map:capaTex}),new THREE.MeshBasicMaterial({map:pagTex('esq')})]);cf.position.set(cw/2,0,0.005);CAPA.add(cf);
+ const lomb=new THREE.Mesh(new THREE.BoxGeometry(0.012,ch,th+0.01),couro);lomb.position.set(-0.002,0,0);BIB.add(lomb);
+ const fita=new THREE.Mesh(new THREE.BoxGeometry(0.012,0.12,0.002),toon('#b01e1e'));fita.position.set(cw*0.6,-ch/2-0.04,th/2-0.003);BIB.add(fita);
+ window.CAPA=CAPA;}
+
+// ================= EGITO (x=300) =================
+const EX=300; ceu(EX,[[0,'#f6d9a0'],[0.45,'#fbe8c2'],[0.5,'#f2d8a6'],[1,'#caa46a']]);
+{const areia=toon({map:tex(256,256,(x,w,h)=>{x.fillStyle='#d9b77c';x.fillRect(0,0,w,h);ruido(x,w,h,2000,0.05);x.strokeStyle='rgba(150,110,60,0.35)';x.lineWidth=3;for(let i=0;i<10;i++){x.beginPath();x.arc(rnd()*w,rnd()*h,30+rnd()*40,0,2)}x.stroke()},[30,30])});
+ const ch=new THREE.Mesh(new THREE.PlaneGeometry(260,260),areia);ch.rotation.x=-Math.PI/2;ch.position.set(EX,0,0);S.add(ch);
+ for(const [x,z,s] of [[-40,-90,26],[10,-110,34],[55,-95,22]]){const p=new THREE.Mesh(new THREE.ConeGeometry(s,s*0.9,4),toon('#d6b071'));p.position.set(EX+x,s*0.45,z);p.rotation.y=Math.PI/4;S.add(p);
+   const i=new THREE.Mesh(new THREE.ConeGeometry(s+0.6,s*0.9+0.8,4),INK);i.position.copy(p.position);i.rotation.y=Math.PI/4;S.add(i)}
+ const lama=new THREE.Mesh(new THREE.CircleGeometry(2.4,24),toon('#6b4a2c'));lama.rotation.x=-Math.PI/2;lama.position.set(EX-1.5,0.02,-3.5);S.add(lama);
+ const tij=toon({map:tex(64,32,(x,w,h)=>{x.fillStyle='#a0603a';x.fillRect(0,0,w,h);x.strokeStyle='#5e3520';x.lineWidth=3;x.strokeRect(1,1,w-2,h-2)})});
+ for(const [x,z,n] of [[2.5,-2,5],[3.4,-4.5,7],[-3.8,-6,6],[4.8,-8,8],[-5.5,-3,4]]) for(let i=0;i<n;i++) box(0.9,0.3,0.45,tij,EX+x+(i%3)*0.05,0.15+i*0.3,z,0.015);
+ for(let i=0;i<14;i++) box(0.4,0.12,0.22,tij,EX-1.5+Math.cos(i)*2.9,0.06,-3.5+Math.sin(i*1.3)*2.9,0.01);
+ box(1.4,0.7,1.2,toon('#c9a56c'),EX+2.6,0.35,-6.5,0.03);   // pedra do capataz
+}
+const ESCRAVOS=[]; for(const [x,z,c] of [[-1.2,-2.3,'#b9a27a'],[-2.6,-4.4,'#a88e66'],[0.2,-4.9,'#c2ab84'],[-3.4,-2.8,'#9c8460'],[1.4,-3.1,'#b39a72']]){
+  const i=ESCRAVOS.length; const p=pessoa({pele:['#8a5a3c','#9a6a46','#7a4e32'][i%3],roupa:['#8a6a48','#6b7a5a','#9a5a3a','#7a6a8a','#a08a60'][i],saia:'curta',saiaCor:'#e8dcc0',mangaCurta:true,cab:i%2?'curto':'pano',lenco:'#e0d0a8',barba:i%2?'#2a1a10':null});
+  p.G.position.set(EX+x,0,z); ESCRAVOS.push(p)}
+const HEBREU=pessoa({pele:'#8a5a3c',roupa:'#6b5440',saia:'curta',saiaCor:'#e0d4b8',mangaCurta:true,cab:'pano',lenco:'#7a6a50',barba:'#e8e4dc',sobrancelha:'#e8e4dc',triste:true}); HEBREU.G.position.set(EX+1.0,0,-0.9);
+const CAPATAZ=pessoa({pele:'#b07a4a',roupa:'#b07a4a',mangaCurta:true,saia:'curta',saiaCor:'#f2ede0',cab:'nemes',colar:true,olhoPintado:true,faixa:'#e8b923'}); CAPATAZ.G.position.set(EX+2.6,0.7,-6.5);
+const LANCA=cyl(0.025,0.025,2.6,toon('#6b4423'),0,0,0,0.01); const PONTA=new THREE.Mesh(new THREE.ConeGeometry(0.06,0.25,4),toon('#c0c0c0')); LANCA.add(PONTA); PONTA.position.y=1.4;
+
+// ================= CASA DE BARRO (x=600) =================
+const CX=600; ceu(CX,[[0,'#060a18'],[1,'#121a34']],true);
+{const barro=toon({map:tex(256,256,(x,w,h)=>{x.fillStyle='#b48a5a';x.fillRect(0,0,w,h);ruido(x,w,h,1500,0.07);x.strokeStyle='rgba(90,60,30,0.3)';x.lineWidth=2;for(let i=0;i<20;i++){x.beginPath();x.moveTo(rnd()*w,rnd()*h);x.lineTo(rnd()*w,rnd()*h);x.stroke()}},[2,1])});
+ const chao=new THREE.Mesh(new THREE.PlaneGeometry(6,6),toon('#7a5a3a'));chao.rotation.x=-Math.PI/2;chao.position.set(CX,0,0);S.add(chao);
+ box(0.2,2.6,5,barro,CX-2.2,1.3,0,0.02); box(0.2,2.6,5,barro,CX+2.2,1.3,0,0.02); box(4.6,2.6,0.2,barro,CX,1.3,2.4,0.02);
+ box(1.6,2.6,0.2,barro,CX-1.5,1.3,-2.4,0.02); box(1.6,2.6,0.2,barro,CX+1.5,1.3,-2.4,0.02); box(1.4,1.0,0.2,barro,CX,2.1,-2.4,0.02); box(1.4,0.9,0.2,barro,CX,0.45,-2.4,0.02);
+ box(4.6,0.15,5,toon('#5e4026'),CX,2.65,0,0.02); for(let i=-2;i<=2;i++) cyl(0.08,0.08,4.8,toon('#4a3020'),CX+i*0.9,2.5,0,0.015).rotation.x=Math.PI/2;
+ box(0.5,0.08,0.3,toon('#8a6a48'),CX-2.05,1.2,-0.4,0.015); // prateleira
+ cyl(0.12,0.08,0.07,toon('#9a6a3a'),CX-2.0,1.28,-0.4,0.012); // lamparina
+ box(1.6,0.06,0.9,toon('#a8463a'),CX+0.3,0.03,-0.9,0.012); // esteira
+ cyl(0.16,0.13,0.22,toon('#1c1c1c'),CX+1.1,0.11,-0.2,0.015); // pote de piche
+}
+const CHAMA=new THREE.Mesh(new THREE.SphereGeometry(0.035,8,6),new THREE.MeshBasicMaterial({color:'#ffc060'}));CHAMA.scale.set(1,1.8,1);CHAMA.position.set(CX-2.0,1.37,-0.4);S.add(CHAMA);
+const LAMP=new THREE.PointLight('#ffb060',0,9,1.1); LAMP.position.set(CX-1.8,1.5,-0.4); S.add(LAMP);
+const LUA=new THREE.PointLight('#9fb4ff',0,6,1.4); LUA.position.set(CX,2.0,-2.8); S.add(LUA);
+
+// ---------- personagens da história ----------
+const JOQ=pessoa({pele:'#94603e',roupa:'#6b5a8a',saia:'longa',saiaCor:'#4e4268',cab:'lenco',lenco:'#7b5ea8',batom:'#5a1414',triste:true});
+const MIRIA=pessoa({pele:'#94603e',roupa:'#c8743a',saia:'longa',saiaCor:'#a05a2a',cab:'trancas',cabelo:'#2a1a10',escala:0.78});
+const PRINC=pessoa({pele:'#c08a5a',roupa:'#f4efe2',saia:'longa',saiaCor:'#f4efe2',cab:'chanel',cabelo:'#121212',colar:true,olhoPintado:true,batom:'#8a1f2a',faixa:'#e8b923'});
+const SERVAS=[0,1].map(i=>pessoa({pele:'#b07a4a',roupa:'#e8e0cc',saia:'longa',saiaCor:'#e8e0cc',cab:'chanel',cabelo:'#1a1a1a',escala:0.95}));
+const MENINO=pessoa({pele:'#94603e',roupa:'#f4efe2',saia:'curta',saiaCor:'#f4efe2',cab:'curto',escala:0.55});
+// bebê + cesto
+const CESTO=new THREE.Group(); S.add(CESTO);
+{const tr=toon({map:tex(64,64,(x,w,h)=>{x.fillStyle='#b88a48';x.fillRect(0,0,w,h);x.strokeStyle='#7a5628';x.lineWidth=3;for(let i=0;i<w;i+=8){x.beginPath();x.moveTo(i,0);x.lineTo(i+8,h);x.stroke();x.beginPath();x.moveTo(i+8,0);x.lineTo(i,h);x.stroke()}},[4,1])});
+ const c=cyl(0.32,0.26,0.22,tr,0,0.11,0,0.02,CESTO,18); c.scale.set(1,1,0.65);
+ const fundo=new THREE.Mesh(new THREE.CircleGeometry(0.3,18),toon('#2a1a0c'));fundo.rotation.x=-Math.PI/2;fundo.position.y=0.06;fundo.scale.set(1,0.65,1);CESTO.add(fundo);}
+const BEBE=new THREE.Group(); CESTO.add(BEBE); BEBE.position.set(0,0.16,0);
+{const m=ball(0.17,toon('#f2ede2'),0,0,0.05,0.012,BEBE);m.scale.set(1.3,0.7,0.8); ball(0.11,toon('#a8704a'),0,0.06,-0.18,0.012,BEBE);}
+const COLO=new THREE.Group(); S.add(COLO);
+{const m=ball(0.2,toon('#f2ede2'),0,0,0,0.014,COLO);m.scale.set(1.5,0.75,0.85); ball(0.12,toon('#a8704a'),-0.22,0.08,0.05,0.012,COLO);}
+const TAMPA=new THREE.Group(); CESTO.add(TAMPA); TAMPA.position.set(0,0.23,-0.2);
+{const tl=cyl(0.33,0.33,0.04,toon('#a87a3e'),0,0,0.2,0.015,TAMPA,18); tl.scale.set(1,1,0.65);}
+
+// ================= RIO NILO (x=900) =================
+const RX=900; ceu(RX,[[0,'#7a8ec8'],[0.35,'#f2b6a0'],[0.5,'#ffd8a0'],[1,'#d9a070']]);
+const aguaTex=tex(256,256,(x,w,h)=>{x.fillStyle='#3f8a8a';x.fillRect(0,0,w,h);x.strokeStyle='rgba(210,240,240,0.45)';x.lineWidth=3;for(let i=0;i<40;i++){const a=rnd()*w,b=rnd()*h;x.beginPath();x.moveTo(a,b);x.quadraticCurveTo(a+10,b-5,a+22,b);x.stroke()}},[20,20]);
+{const agua=new THREE.Mesh(new THREE.PlaneGeometry(240,160),toon({map:aguaTex}));agua.rotation.x=-Math.PI/2;agua.position.set(RX,0,-80);S.add(agua);
+ const mar=new THREE.Mesh(new THREE.PlaneGeometry(240,120),toon({map:tex(128,128,(x,w,h)=>{x.fillStyle='#c9a46a';x.fillRect(0,0,w,h);ruido(x,w,h,800,0.06)},[30,15])}));mar.rotation.x=-Math.PI/2;mar.position.set(RX,0.03,60.6);S.add(mar);
+ for(const [x,z,s] of [[-60,-110,24],[30,-120,30]]){const p=new THREE.Mesh(new THREE.ConeGeometry(s,s*0.9,4),toon('#c9a06a'));p.position.set(RX+x,s*0.45,z);p.rotation.y=Math.PI/4;S.add(p)}
+ // palmeiras
+ for(const [x,z] of [[-6,1.8],[7,2.5],[-11,-0.5],[12,0.4]]){cyl(0.12,0.18,4,toon('#7a5a3a'),RX+x,2,z,0.02).rotation.z=0.08;
+   for(let i=0;i<7;i++){const f=box(1.8,0.05,0.35,toon('#3f7a3a'),RX+x+Math.cos(i*0.9)*0.8,4.0-0.15*(i%2),z+Math.sin(i*0.9)*0.8,0.012);f.rotation.y=-i*0.9;f.rotation.z=-0.35}}
+ // juncos (instanciados)
+ const N=520, caule=new THREE.InstancedMesh(new THREE.CylinderGeometry(0.018,0.026,1,5),toon('#4f8a3a'),N), topo=new THREE.InstancedMesh(new THREE.ConeGeometry(0.12,0.22,6),toon('#6fa04a'),N);
+ const m4=new THREE.Matrix4(), q=new THREE.Quaternion(), sc=new THREE.Vector3(), pp=new THREE.Vector3(); let k=0;
+ const add=(x,z,h)=>{q.setFromEuler(new THREE.Euler((rnd()-.5)*0.15,0,(rnd()-.5)*0.15));sc.set(1,h,1);pp.set(x,h/2,z);m4.compose(pp,q,sc);caule.setMatrixAt(k,m4);sc.set(1,1,1);pp.set(x,h,z);q.setFromEuler(new THREE.Euler(Math.PI,0,0));m4.compose(pp,q,sc);topo.setMatrixAt(k,m4);k++};
+ for(let i=0;i<N;i++){let x,z,h; if(i<120){const s=rnd()<0.5?-1:1;x=RX+s*(0.9+rnd()*1.6);z=2.4+rnd()*1.4;h=0.7+rnd()*0.6} else if(i<380){x=RX-9+rnd()*18;z=-0.2+rnd()*1.6;h=0.35+rnd()*0.5;if(Math.abs(x-(RX-0.6))<1.6)h*=0.6} else {x=RX-8+rnd()*16;z=-3.4+rnd()*1.2;h=0.8+rnd()*1.1;if(Math.abs(x-(RX-0.8))<0.7)continue}
+   add(x,z,h)} caule.count=k; topo.count=k; S.add(caule); S.add(topo);
+}
+const SOLR=new THREE.DirectionalLight('#ffd0a0',0); SOLR.position.set(RX-40,20,-60); S.add(SOLR);
+
+// ---------- luzes gerais ----------
+const HEMI=new THREE.HemisphereLight('#ffffff','#443322',0.5); S.add(HEMI);
+const SOL=new THREE.DirectionalLight('#fff0d0',0); SOL.position.set(EX+30,60,30); S.add(SOL); SOL.target.position.set(EX,0,0); S.add(SOL.target);
+SOLR.target.position.set(RX,0,0); S.add(SOLR.target);
+
+// ---------- cena atual ----------
+function cena(t){const E=EV; if(t<E.egito-0.5) return 'quarto'; if(t<E.casa) return 'egito'; if(t<E.rio) return 'casa'; if(t<E.quarto2-0.6) return 'rio'; return 'quarto'}
+function rig(t){
+  const E=EV, c=cena(t);
+  if(c==='quarto'){
+    let eye=V(-0.3,1.08,-0.25), tg=V(0.5,1.45,1.0), fov=70;
+    const z=sm(E.zoom_pagina,E.zoom_pagina+0.9,t)*(1-sm(FF('03')-0.2,FF('03')+0.6,t));
+    const bp=BIB.localToWorld(V(0.12,0.02,0)), alvo=eye.clone().lerp(bp,0.42); eye.lerp(alvo,z); tg.lerp(bp,z); fov=lerp(fov,40,z);
+    if(t>E.quarto2-1){tg=V(0.5,1.45,1.0); const zb=sm(E.fecha_biblia,E.fecha_biblia+0.5,t)*(1-sm(FF('33')+0.2,FF('33')+0.8,t)); tg.lerp(BIB.position,zb*0.6)}
+    tg.x+=0.03*Math.sin(t*0.7); tg.y+=0.03*Math.sin(t*0.9);
+    return {eye,tg,fov};
+  }
+  if(c==='egito'){
+    let eye=V(EX-0.2,1.62,1.6), tg=V(EX,1.4,-5);
+    tg.lerp(CAPATAZ.G.position.clone().add(V(0,1.7,0)),sm(FI('06')-0.4,FI('06'),t)*(1-sm(FI('07')-0.4,FI('07'),t)));
+    tg.lerp(V(EX+1.0,1.9,-0.9),sm(FI('07')-0.4,FI('07'),t)*(1-sm(FI('08')-0.2,FI('08')+0.2,t)));
+    tg.lerp(V(EX+5,6,-60),sm(FI('08')-0.2,FI('08')+0.4,t)*(1-sm(FI('09')+1,FI('09')+2,t)));   // olha as pirâmides
+    tg.lerp(CAPATAZ.G.position.clone().add(V(0,1.8,0)),sm(FI('10')-0.4,FI('10'),t)*(1-sm(FI('11')-0.4,FI('11'),t)));
+    tg.lerp(V(EX+1.0,1.9,-0.9),sm(FI('11')-0.4,FI('11'),t));
+    tg.x+=0.08*Math.sin(t*0.9); tg.y+=0.05*Math.sin(t*1.3);
+    return {eye,tg,fov:82};
+  }
+  if(c==='casa'){
+    let eye=V(CX-1.3,1.2,1.5), tg=JOQ.G.position.clone().add(V(0,1.8,0));
+    tg.lerp(MIRIA.G.position.clone().add(V(0,1.5,0)),sm(FI('14')-0.3,FI('14'),t)*(1-sm(FI('15')-0.4,FI('15'),t)));
+    tg.lerp(V(CX+0.9,0.4,-0.3),sm(FI('16')+1.5,FI('16')+2.2,t));
+    tg.x+=0.05*Math.sin(t*0.8); return {eye,tg,fov:80};
+  }
+  // rio
+  let eye=V(RX+0.1,1.25,3.6), tg=V(RX-0.7,0.4,-1.2);
+  tg.lerp(JOQ.G.position.clone().add(V(0,1.7,0)),sm(FI('17')-0.6,FI('17'),t)*(1-sm(FF('18')-0.2,FF('18')+0.4,t)));
+  tg.lerp(MIRIA.G.position.clone().add(V(0,1.3,0)),sm(FI('19')-0.5,FI('19'),t)*(1-sm(FF('20'),FF('20')+0.5,t)));
+  tg.lerp(PRINC.G.position.clone().add(V(0,1.8,0)),sm(E.princesa+0.5,E.princesa+1.5,t));
+  tg.lerp(CESTO.position.clone().add(V(0,0.2,0)),sm(E.cesto_aberto-0.3,E.cesto_aberto+0.2,t)*(1-sm(FF('23'),FF('23')+0.6,t)));
+  tg.lerp(V(RX-1.4,1.6,-1.8),sm(FI('25')-0.4,FI('25'),t)*(1-sm(E.anos-0.5,E.anos,t)));
+  if(t>E.anos) tg=MENINO.G.position.clone().add(V(0.3,1.3,0));
+  tg.x+=0.05*Math.sin(t*0.8); tg.y+=0.04*Math.sin(t*1.1);
+  return {eye,tg,fov:t>E.anos?60:78};
+}
+
+// ---------- 2D por cima ----------
+function rr(c,x,y,w,h,r,fill,lw=5){c.beginPath();c.roundRect(x,y,w,h,r);if(fill){c.fillStyle=fill;c.fill()}if(lw){c.lineWidth=lw;c.strokeStyle='#000';c.stroke()}}
+function palpebras(c,a){if(a<=0)return;const h=a*H/2+40*a;c.fillStyle='#000';c.beginPath();c.moveTo(0,0);c.lineTo(W,0);c.lineTo(W,h);c.quadraticCurveTo(W/2,h+120*a,0,h);c.fill();
+  c.beginPath();c.moveTo(0,H);c.lineTo(W,H);c.lineTo(W,H-h);c.quadraticCurveTo(W/2,H-h-120*a,0,H-h);c.fill()}
+function ref(c,txt,a){if(a<=0)return;c.save();c.globalAlpha=a;c.textAlign='center';c.font='800 26px Inter';const w=c.measureText(txt).width+40;rr(c,360-w/2,300,w,46,14,'rgba(0,0,0,0.55)',0);c.fillStyle='#f6e0a0';c.fillText(txt,360,332);c.restore()}
+function texto(c,txt,a,y=640,size=56){if(a<=0)return;c.save();c.globalAlpha=a;c.textAlign='center';c.lineJoin='round';c.font=`900 ${size}px Inter`;c.lineWidth=size*0.16;c.strokeStyle='#000';c.strokeText(txt,360,y);c.fillStyle='#fff';c.fillText(txt,360,y);c.restore()}
+function maosTijolo(c,t){const E=EV,u=sm(E.egito+0.6,E.egito+1.4,t)*(1-sm(FI('07')-0.6,FI('07'),t));if(u<=0)return;
+  c.save();c.translate(360,lerp(1600,1120,u)+Math.sin(t*2)*6);
+  rr(c,-120,-50,240,95,10,'#a0603a',6);c.strokeStyle='#6b3a20';c.lineWidth=3;c.strokeRect(-100,-35,200,65);
+  for(const s of [-1,1]){rr(c,s*120-50,-30,100,120,38,'#8f5232',5);rr(c,s*150-60,60,120,300,20,'#46523a',5)}c.restore()}
+function cta(c,u){
+  c.fillStyle=`rgba(0,0,0,${0.62*sm(0,0.4,u)})`;c.fillRect(0,0,W,H);
+  const a=sm(0.1,0.5,u); if(a<=0) return; c.save();c.globalAlpha=a;c.textAlign='center';c.lineJoin='round';
+  const T=(t,y,size,col,w=900)=>{c.font=`${w} ${size}px Inter`;c.lineWidth=size*0.16;c.strokeStyle='#000';c.strokeText(t,360,y);c.fillStyle=col;c.fillText(t,360,y)};
+  T('E VOCÊ?',330,84,'#FFD84D'); T('Teria coragem de soltar',405,42,'#fff'); T('o cesto no rio?',455,42,'#fff'); T('Comenta aqui 👇',525,36,'#FFD84D',800);
+  rr(c,60,580,600,250,24,'rgba(30,22,10,0.85)',4); c.font='italic 600 26px Inter'; c.fillStyle='#f6e8c8';
+  ['“Pela fé, Moisés, quando nasceu,','foi escondido três meses por seus','pais... e não temeram o decreto','do rei.”'].forEach((s,i)=>c.fillText(s,360,632+i*38)); c.font='800 26px Inter';c.fillStyle='#e8bf4e';c.fillText('Hebreus 11:23',360,800);
+  rr(c,70,880,580,86,20,'#7a1f1f',5); c.font='900 28px Inter'; c.fillStyle='#fff'; c.fillText('PARTE 2: O PRÍNCIPE QUE',360,916); c.fillText('ESCOLHEU O POVO',360,950);
+  c.restore();
+}
+
+// ---------- quadro ----------
+window.draw=function(tt){
+  const E=EV, t=Math.min(tt,E.cta), c=cena(t);
+  // luzes por cenário
+  ABAJUR.intensity=c==='quarto'?3.2:0; LAMP.intensity=c==='casa'?(3.6+0.3*Math.sin(t*19)):0; LUA.intensity=c==='casa'?2.2:0;
+  SOL.intensity=c==='egito'?1.6:0; SOLR.intensity=c==='rio'?1.3:0;
+  HEMI.intensity={quarto:0.55,egito:1.1,casa:0.18,rio:0.95}[c]; HEMI.color.set({quarto:'#9aa4c8',egito:'#fff1d8',casa:'#6a78a8',rio:'#ffd8c0'}[c]);
+  S.fog.color.set({quarto:'#1d2236',egito:'#f2d9a8',casa:'#060a18',rio:'#f2c8a8'}[c]); S.fog.near={quarto:50,egito:40,casa:50,rio:35}[c]; S.fog.far={quarto:200,egito:230,casa:200,rio:170}[c];
+  CHAMA.scale.set(1,1.8+0.3*Math.sin(t*23),1); JAN.material.map.offset.y=-t*0.4;
+  aguaTex.offset.set(t*0.01,t*0.02);
+  // ---- QUARTO: a Vó e a Bíblia ----
+  VO.G.position.set(0.55,-0.38,1.05); {const v=V(-0.3,0,-0.25).sub(VO.G.position);VO.G.rotation.y=Math.atan2(v.x,v.z)}
+  anima(VO,t,{fala:amp('vo',t)}); VO.bracos.forEach(b=>{b.rotation.x=-1.05;b.rotation.z=0});
+  VO.Hd.rotation.x=0.12; VO.Hd.rotation.y=(t>E.abre_biblia&&t<FF('03'))?0:0.25;
+  const fr=V(-0.3,0,-0.25).sub(VO.G.position).setY(0).normalize(); const bibPos=VO.G.position.clone().add(fr.multiplyScalar(0.42)).add(V(0,1.12,0)); BIB.position.copy(bibPos); BIB.lookAt(V(-0.3,1.08,-0.25)); BIB.rotateX(-0.3); BIB.translateX(-0.12);
+  const aberta=sm(E.abre_biblia,E.abre_biblia+0.7,t)*(1-sm(E.fecha_biblia,E.fecha_biblia+0.6,t))*(t<E.fecha_olhos+1||t>E.quarto2?1:0);
+  CAPA.rotation.y=-Math.PI*0.97*aberta;
+  // ---- EGITO ----
+  ESCRAVOS.forEach((p,i)=>{anima(p,t,{piscaOff:i*0.3}); p.G.rotation.y=0.3+i; p.G.rotation.x=0.35+0.12*Math.sin(t*2.2+i); p.bracos.forEach((b,j)=>b.rotation.x=-1.0+0.5*Math.sin(t*2.2+i+j))});
+  anima(HEBREU,t,{fala:amp('hebreu',t),olhar:V(EX-0.2,0,1.6)}); HEBREU.G.rotation.x=0.15; HEBREU.bracos.forEach(b=>b.rotation.x=-0.3);
+  anima(CAPATAZ,t,{fala:amp('soldado',t),olhar:V(EX-0.2,0,1.6)}); CAPATAZ.bracos[1].rotation.x=t>FI('10')-0.3&&t<FF('10')?-2.6:-0.4; CAPATAZ.bracos[0].rotation.x=-0.5;
+  LANCA.position.copy(CAPATAZ.G.position).add(V(-0.38,1.2,0.25)); LANCA.rotation.z=0.06;
+  // ---- CASA ----
+  const emCasa=c==='casa';
+  if(emCasa){JOQ.G.position.set(CX+0.2,0,-1.0); MIRIA.G.position.set(CX+0.5,0,-2.0);
+    const nocesto=t>FI('16')+1.2; if(nocesto){JOQ.G.position.set(CX+0.75,0,-0.5)}
+    anima(JOQ,t,{fala:amp('joquebede',t),olhar:nocesto?V(CX+1.1,0,0.4):V(CX-1.3,0,1.5)}); JOQ.bracos.forEach(b=>b.rotation.x=nocesto?-0.9:-1.25); JOQ.G.rotation.x=nocesto?0.3:0;
+    anima(MIRIA,t,{fala:amp('miria',t),olhar:t>FI('14')-0.3?V(CX+0.2,0,-1.0):V(CX,0,-3.4)});
+    BEBE.parent!==S&&0; CESTO.position.set(CX+0.9,0,0.1); CESTO.rotation.set(0,0,0); TAMPA.rotation.x=0;
+    BEBE.visible=nocesto; COLO.visible=!nocesto; if(!nocesto){const f=V(CX-1.3,0,1.5).sub(JOQ.G.position).setY(0).normalize(); COLO.position.copy(JOQ.G.position).add(f.multiplyScalar(0.42)).add(V(0,1.15,0)); COLO.rotation.y=JOQ.G.rotation.y; COLO.rotation.z=0.15*Math.sin(t*2.5)} }
+  // ---- RIO ----
+  if(c==='rio'){
+    const sai=sm(FF('18')+0.2,FF('18')+2.2,t), volta=sm(E.mae_chega-0.2,E.mae_chega+1.6,t);
+    let jp=V(RX-0.8,0,-0.3).lerp(V(RX-3.5,0,1.6),sai).lerp(V(RX-1.5,0,-1.6),volta); JOQ.G.position.copy(jp);
+    anima(JOQ,t,{fala:amp('joquebede',t),anda:(t>FF('18')+0.2&&t<FF('18')+2.2)||(t>E.mae_chega-0.2&&t<E.mae_chega+1.6)?1:0,olhar:volta>0.5?PRINC.G.position:(sai>0.05?V(RX-5,0,3):V(RX-0.8,0,-1.4))});
+    JOQ.G.rotation.x=t<FI('17')+0.6?0.35:0; JOQ.bracos.forEach(b=>b.rotation.x=t<FI('17')+1?-1.0:(volta>0.9&&t>FI('27')+1?-1.1:0.05));
+    // Miriã escondida perto do Dudu, depois corre até a princesa
+    const corre=sm(FI('25')-0.6,FI('25')+0.8,t); MIRIA.G.position.copy(V(RX+1.0,0,1.5).lerp(V(RX-1.0,0,-1.3),corre));
+    anima(MIRIA,t,{fala:amp('miria',t),anda:t>FI('25')-0.6&&t<FI('25')+0.8?1:0,vel:10,olhar:(t>FI('19')-0.5&&t<FF('20')+0.5)?V(RX+0.1,0,3.3):(corre>0.5?PRINC.G.position:V(RX-0.8,0,-1.4))});
+    // princesa e servas
+    const chega=sm(E.princesa,E.princesa+2.2,t); PRINC.G.position.copy(V(RX-7,0,-1.9).lerp(V(RX-1.9,0,-2.0),chega));
+    const ola=t>E.anos?V(RX+0.1,0,3.3):(t>FI('25')?MIRIA.G.position:CESTO.position);
+    anima(PRINC,t,{fala:amp('princesa',t),anda:t>E.princesa&&t<E.princesa+2.2?1:0,olhar:ola});
+    PRINC.bracos.forEach(b=>b.rotation.x=(t>E.cesto_sai+1.4&&t<FI('27')+1)?-1.0:0.05);
+    SERVAS.forEach((s,i)=>{let p=V(RX-7.6-i*0.7,0,-2.6+i*0.4).lerp(V(RX-2.6-i*0.6,0,-2.7+i*0.3),chega);
+      if(i===0){p.lerp(V(RX-0.9,0,-1.9),sm(FF('22'),FF('22')+0.6,t)*(1-sm(E.cesto_sai+0.8,E.cesto_sai+1.4,t)))}
+      s.G.position.copy(p); anima(s,t,{anda:(t>E.princesa&&t<E.princesa+2.2)?1:0,olhar:CESTO.position,piscaOff:i*0.4}); s.bracos.forEach(b=>b.rotation.x=i===0&&t>FF('22')&&t<E.cesto_sai+1.4?-1.0:0.05)});
+    // cesto: na água, levado à princesa, aberto, entregue à mãe
+    let cp=V(RX-0.8,0.02+0.03*Math.sin(t*1.7),-1.4);
+    cp.lerp(PRINC.G.position.clone().add(V(0.45,0.95,0.15)),sm(E.cesto_sai+0.6,E.cesto_sai+1.4,t));
+    cp.lerp(JOQ.G.position.clone().add(V(0.45,0.95,0.15)),sm(FI('27')+0.8,FI('27')+1.6,t));
+    CESTO.position.copy(cp); CESTO.rotation.y=0.3*Math.sin(t*0.5); TAMPA.rotation.x=-1.6*sm(E.cesto_aberto-0.2,E.cesto_aberto+0.3,t); BEBE.visible=true;
+    // anos depois: Moisés menino ao lado da princesa
+    const anos=t>E.anos; MENINO.G.visible=anos; CESTO.visible=!anos; JOQ.G.visible=!anos; MIRIA.G.visible=!anos; SERVAS.forEach(s=>s.G.visible=!anos);
+    if(anos){PRINC.G.position.set(RX-1.2,0,-1.0); MENINO.G.position.set(RX-0.55,0,-0.8); anima(MENINO,t,{olhar:V(RX+0.1,0,3.3)}); PRINC.bracos[0].rotation.x=-0.5; PRINC.bracos[0].rotation.z=0.6}
+  }
+  // visibilidade por cenário
+  const vis=(p,on)=>p.G.visible=on;
+  vis(VO,c==='quarto'); BIB.visible=c==='quarto';
+  ESCRAVOS.forEach(p=>vis(p,c==='egito')); vis(HEBREU,c==='egito'); vis(CAPATAZ,c==='egito'); LANCA.visible=c==='egito';
+  if(c!=='casa')COLO.visible=false;
+  if(c!=='casa'&&c!=='rio'){JOQ.G.visible=false;MIRIA.G.visible=false;CESTO.visible=false}
+  if(c==='casa'){JOQ.G.visible=true;MIRIA.G.visible=true;CESTO.visible=true}
+  if(c!=='rio'){vis(PRINC,false);SERVAS.forEach(s=>vis(s,false));vis(MENINO,false)} else if(t<E.princesa){vis(PRINC,false);SERVAS.forEach(s=>vis(s,false))}
+  // câmera
+  BIB.updateMatrixWorld(true); const k=rig(t); CAM.position.copy(k.eye); CAM.fov=k.fov; CAM.updateProjectionMatrix(); CAM.lookAt(k.tg);
+  R.render(S,CAM); O.drawImage(R.domElement,0,0);
+  // brilho da página ao fechar os olhos (a luz vira o sol do Egito)
+  const brilho=sm(E.fecha_olhos+0.2,E.egito-0.4,t)*(1-sm(E.egito,E.egito+1.2,t)); if(brilho>0){O.fillStyle=`rgba(255,244,214,${brilho})`;O.fillRect(0,0,W,H)}
+  maosTijolo(O,t);
+  // pálpebras e fades
+  let pal=0; pal=Math.max(pal,sm(E.fecha_olhos,E.fecha_olhos+0.6,t)*(1-sm(E.egito-0.5,E.egito+0.4,t)));
+  pal=Math.max(pal,sm(E.fecha_olhos2,E.fecha_olhos2+0.6,t)*(1-sm(E.quarto2-0.4,E.quarto2+0.5,t)));
+  palpebras(O,pal);
+  for(const x of [E.casa,E.rio]){const f=sm(x-0.6,x,t)*(1-sm(x,x+0.6,t)); if(f>0){O.fillStyle=`rgba(0,0,0,${f})`;O.fillRect(0,0,W,H)}}
+  const fa=sm(E.anos-0.4,E.anos,t)*(1-sm(E.anos+0.2,E.anos+0.8,t)); if(fa>0){O.fillStyle=`rgba(0,0,0,${fa})`;O.fillRect(0,0,W,H)}
+  ref(O,'ÊXODO 1:11-14',sm(E.egito+0.5,E.egito+1,t)*(1-sm(E.egito+5,E.egito+5.5,t)));
+  ref(O,'ÊXODO 2:1-3',sm(E.casa+0.3,E.casa+0.8,t)*(1-sm(E.casa+5,E.casa+5.5,t)));
+  ref(O,'ÊXODO 2:3-6',sm(E.rio+0.3,E.rio+0.8,t)*(1-sm(E.rio+5,E.rio+5.5,t)));
+  ref(O,'ÊXODO 2:10',sm(E.anos+0.6,E.anos+1.1,t)*(1-sm(E.anos+6,E.anos+6.5,t)));
+  texto(O,'ANOS DEPOIS...',sm(E.anos+0.1,E.anos+0.4,t)*(1-sm(E.anos+2.2,E.anos+2.7,t)));
+  if(tt>=E.cta) cta(O,tt-E.cta);
+  return OUT.toDataURL('image/jpeg',0.92);
+};
+await document.fonts.ready; window.READY=true;
+</script></body></html>

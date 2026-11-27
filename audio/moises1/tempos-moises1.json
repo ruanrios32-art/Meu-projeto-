@@ -1,0 +1,294 @@
+{
+ "eventos": {
+  "abre_biblia": 9.52,
+  "zoom_pagina": 10.02,
+  "fecha_olhos": 18.26,
+  "egito": 19.56,
+  "casa": 57.339999999999996,
+  "rio": 81.97,
+  "princesa": 95.44,
+  "cesto_sai": 104.2,
+  "cesto_aberto": 105.4,
+  "mae_chega": 115.55,
+  "anos": 132.2,
+  "fecha_olhos2": 143.31000000000003,
+  "quarto2": 144.51000000000002,
+  "fecha_biblia": 149.29,
+  "cta": 160.94,
+  "total": 169.94
+ },
+ "falas": [
+  {
+   "n": "01",
+   "quem": "Vo",
+   "txt": "Dudu, hoje eu vou te contar a história de um bebê que o rei do Egito mandou matar.",
+   "ini": 0.6,
+   "dur": 6.07,
+   "src": "vo"
+  },
+  {
+   "n": "02",
+   "quem": "Dudu",
+   "txt": "Mandou matar um bebê, vó?",
+   "ini": 7.17,
+   "dur": 1.75,
+   "src": "dudu"
+  },
+  {
+   "n": "03",
+   "quem": "Vo",
+   "txt": "Êxodo, capítulo um. A história de Moisés.",
+   "ini": 9.82,
+   "dur": 3.97,
+   "src": "vo"
+  },
+  {
+   "n": "04",
+   "quem": "Vo",
+   "txt": "Fecha os olhos... e imagina comigo.",
+   "ini": 15.39,
+   "dur": 2.77,
+   "src": "vo"
+  },
+  {
+   "n": "05",
+   "quem": "Vo",
+   "txt": "O povo de Israel era escravo no Egito. Faziam tijolos de barro debaixo do sol.",
+   "ini": 21.56,
+   "dur": 6.15,
+   "src": "vo"
+  },
+  {
+   "n": "06",
+   "quem": "Soldado",
+   "txt": "Mais rápido! O Faraó quer esses tijolos hoje!",
+   "ini": 28.11,
+   "dur": 4.39,
+   "src": "soldado"
+  },
+  {
+   "n": "07",
+   "quem": "Hebreu",
+   "txt": "Abaixa a cabeça, menino. Senão eles te batem.",
+   "ini": 32.9,
+   "dur": 3.05,
+   "src": "hebreu"
+  },
+  {
+   "n": "08",
+   "quem": "Dudu",
+   "txt": "Isso é... o Egito.",
+   "ini": 36.45,
+   "dur": 2.6,
+   "src": "dudu"
+  },
+  {
+   "n": "09",
+   "quem": "Vo",
+   "txt": "Mas quanto mais eles sofriam, mais o povo crescia. E o Faraó ficou com medo.",
+   "ini": 39.65,
+   "dur": 7.62,
+   "src": "vo"
+  },
+  {
+   "n": "10",
+   "quem": "Soldado",
+   "txt": "Ordem do Faraó! Todo menino hebreu que nascer, joguem no rio!",
+   "ini": 47.67,
+   "dur": 5.88,
+   "src": "soldado"
+  },
+  {
+   "n": "11",
+   "quem": "Hebreu",
+   "txt": "Que Deus tenha misericórdia de nós.",
+   "ini": 54.05,
+   "dur": 2.39,
+   "src": "hebreu"
+  },
+  {
+   "n": "12",
+   "quem": "Vo",
+   "txt": "Uma mulher da tribo de Levi teve um filho. E viu que ele era bonito.",
+   "ini": 58.64,
+   "dur": 5.08,
+   "src": "vo"
+  },
+  {
+   "n": "13",
+   "quem": "Joquebede",
+   "txt": "Shhh... meu filho, por favor, não chora.",
+   "ini": 64.22,
+   "dur": 2.77,
+   "src": "joquebede"
+  },
+  {
+   "n": "14",
+   "quem": "Miria",
+   "txt": "Mãe! Os soldados tão passando na rua!",
+   "ini": 67.49,
+   "dur": 2.46,
+   "src": "miria"
+  },
+  {
+   "n": "15",
+   "quem": "Joquebede",
+   "txt": "Eu escondi você três meses... eu não consigo mais.",
+   "ini": 70.55,
+   "dur": 4.84,
+   "src": "joquebede"
+  },
+  {
+   "n": "16",
+   "quem": "Joquebede",
+   "txt": "Miriã, me ajuda com o cesto. Passa o piche nas beiradas.",
+   "ini": 75.99,
+   "dur": 4.98,
+   "src": "joquebede"
+  },
+  {
+   "n": "17",
+   "quem": "Joquebede",
+   "txt": "Deus, cuida dele.",
+   "ini": 83.37,
+   "dur": 3.4,
+   "src": "joquebede"
+  },
+  {
+   "n": "18",
+   "quem": "Joquebede",
+   "txt": "Fica aqui de longe, Miriã. Vê o que vai acontecer.",
+   "ini": 87.37,
+   "dur": 3.04,
+   "src": "joquebede"
+  },
+  {
+   "n": "19",
+   "quem": "Miria",
+   "txt": "Quem é você?",
+   "ini": 91.21,
+   "dur": 0.91,
+   "src": "miria"
+  },
+  {
+   "n": "20",
+   "quem": "Dudu",
+   "txt": "Eu... só tô olhando também.",
+   "ini": 92.52,
+   "dur": 2.12,
+   "src": "dudu"
+  },
+  {
+   "n": "21",
+   "quem": "Vo",
+   "txt": "Então a filha do Faraó desceu ao rio pra se banhar.",
+   "ini": 95.44,
+   "dur": 4.23,
+   "src": "vo"
+  },
+  {
+   "n": "22",
+   "quem": "Princesa",
+   "txt": "O que é aquilo no meio dos juncos? Tragam pra mim.",
+   "ini": 100.67,
+   "dur": 3.33,
+   "src": "princesa"
+  },
+  {
+   "n": "23",
+   "quem": "Princesa",
+   "txt": "É um dos meninos dos hebreus.",
+   "ini": 106.4,
+   "dur": 2.19,
+   "src": "princesa"
+  },
+  {
+   "n": "24",
+   "quem": "Dudu",
+   "txt": "Ela vai mandar jogar no rio...",
+   "ini": 109.09,
+   "dur": 1.53,
+   "src": "dudu"
+  },
+  {
+   "n": "25",
+   "quem": "Miria",
+   "txt": "Quer que eu chame uma mulher hebreia pra amamentar o menino?",
+   "ini": 111.42,
+   "dur": 2.95,
+   "src": "miria"
+  },
+  {
+   "n": "26",
+   "quem": "Princesa",
+   "txt": "Vai.",
+   "ini": 114.77,
+   "dur": 0.48,
+   "src": "princesa"
+  },
+  {
+   "n": "27",
+   "quem": "Princesa",
+   "txt": "Leva este menino e cria pra mim. Eu te pagarei.",
+   "ini": 117.85,
+   "dur": 3.81,
+   "src": "princesa"
+  },
+  {
+   "n": "28",
+   "quem": "Dudu",
+   "txt": "A própria mãe... vai ser paga pra criar o filho dela.",
+   "ini": 122.16,
+   "dur": 4.88,
+   "src": "dudu"
+  },
+  {
+   "n": "29",
+   "quem": "Vo",
+   "txt": "O menino cresceu, e ela o levou à filha do Faraó.",
+   "ini": 127.84,
+   "dur": 4.26,
+   "src": "vo"
+  },
+  {
+   "n": "30",
+   "quem": "Princesa",
+   "txt": "O nome dele será Moisés... porque das águas eu o tirei.",
+   "ini": 134.1,
+   "dur": 5.29,
+   "src": "princesa"
+  },
+  {
+   "n": "31",
+   "quem": "Dudu",
+   "txt": "Moisés... é o Moisés.",
+   "ini": 139.99,
+   "dur": 3.02,
+   "src": "dudu"
+  },
+  {
+   "n": "32",
+   "quem": "Dudu",
+   "txt": "Vó... e depois? O que aconteceu com ele?",
+   "ini": 145.61,
+   "dur": 3.48,
+   "src": "dudu"
+  },
+  {
+   "n": "33",
+   "quem": "Vo",
+   "txt": "Isso... fica pra amanhã.",
+   "ini": 149.69,
+   "dur": 2.22,
+   "src": "vo"
+  },
+  {
+   "n": "34",
+   "quem": "Vo",
+   "txt": "Mas lembra, Dudu: quando ninguém podia salvar aquele bebê, Deus já tinha um plano.",
+   "ini": 152.41,
+   "dur": 7.73,
+   "src": "vo"
+  }
+ ]
+}
