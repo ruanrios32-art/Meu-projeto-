@@ -1,0 +1,43 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Capa Parte 2</title><style>body{margin:0;background:#000}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas><script>
+// Capa da Parte 2 — "Qual é o Biel de verdade?" (porta em cima, Biel de dentro embaixo)
+const C=document.getElementById('c'), x=C.getContext('2d'), W=1080, H=1920;
+const A=new Image(), B=new Image(); let n=0; A.onload=B.onload=()=>{if(++n===2)pinta()}; A.src='porta.jpg'; B.src='biel.jpg';
+const T=(t,px,y,size,fill,lw,al='center',it=false)=>{x.textAlign=al;x.lineJoin='round';x.font=`${it?'italic ':''}900 ${size}px Inter`;x.lineWidth=lw||size*0.16;x.strokeStyle='#000';x.strokeText(t,px,y);x.fillStyle=fill;x.fillText(t,px,y)};
+function tag(px,y,w,h,col,txt,size){x.fillStyle=col;x.strokeStyle='#000';x.lineWidth=8;x.beginPath();x.roundRect(px,y,w,h,18);x.fill();x.stroke();x.textAlign='center';x.font=`900 ${size}px Inter`;x.fillStyle='#fff';x.fillText(txt,px+w/2,y+h/2+size*0.36)}
+function balao(px,y,w,txt,col,it){x.fillStyle='rgba(255,255,255,0.96)';x.strokeStyle='#000';x.lineWidth=7;x.beginPath();x.roundRect(px,y,w,96,30);x.fill();x.stroke();
+  x.beginPath();x.moveTo(px+60,y+92);x.lineTo(px+40,y+140);x.lineTo(px+110,y+92);x.closePath();x.fill();x.stroke();
+  x.fillStyle='rgba(255,255,255,0.96)';x.fillRect(px+52,y+84,62,12);
+  x.textAlign='center';x.font=`${it?'italic ':''}900 44px Inter`;x.fillStyle=col;x.fillText(txt,px+w/2,y+63)}
+function pinta(){
+  x.fillStyle='#05070d';x.fillRect(0,0,W,H);
+  // painel de cima: a porta
+  x.save();x.beginPath();x.rect(0,250,W,830);x.clip();x.drawImage(A,0,150,720,553,0,250,W,830);
+  x.fillStyle='rgba(0,0,15,0.25)';x.fillRect(0,250,W,830);
+  // "?" atrás do vidro
+  x.save();x.shadowColor='rgba(255,154,60,0.9)';x.shadowBlur=50;T('?',470,800,330,'#FF9A3C',22);x.restore();
+  x.restore();
+  // painel de baixo: o Biel de dentro
+  x.save();x.beginPath();x.rect(0,1080,W,840);x.clip();x.drawImage(B,0,380,720,560,0,1080,W,840);
+  x.fillStyle='rgba(0,0,15,0.15)';x.fillRect(0,1080,W,840);x.restore();
+  // linha divisória rasgada
+  x.fillStyle='#000';x.beginPath();x.moveTo(0,1060);for(let i=0;i<=24;i++)x.lineTo(i*45,1072+(i%2?18:-10));x.lineTo(W,1100);x.lineTo(0,1100);x.fill();
+  // topo
+  const g=x.createLinearGradient(0,0,0,330);g.addColorStop(0,'#000');g.addColorStop(1,'rgba(0,0,0,0)');x.fillStyle=g;x.fillRect(0,0,W,330);
+  tag(400,70,280,74,'#C62828','PARTE 2',44);
+  T('NÃO RESPONDE',540,225,92,'#ffffff');
+  // etiquetas e balões
+  tag(40,290,360,84,'#2E6F8E','🚪 O DA PORTA',42);
+  balao(560,330,470,'Sou eu, o Biel!','#d9701e',true);
+  tag(680,1130,360,84,'#C62828','🏪 O DE DENTRO',42);
+  balao(60,1180,360,'eu tô aqui.','#d9701e',false);
+  // pergunta no meio
+  x.fillStyle='rgba(0,0,0,0.82)';x.fillRect(0,890,W,170);
+  T('QUAL É O BIEL',540,965,84,'#ffffff'); T('DE VERDADE?',540,1045,84,'#FFD84D');
+  // dica: o olho
+  x.strokeStyle='#000';x.lineWidth=20;x.beginPath();x.ellipse(522,1405,120,75,0,0,7);x.stroke();x.strokeStyle='#e53935';x.lineWidth=10;x.stroke();
+  T('ele não pisca? 👀',650,1560,44,'#ffffff',8,'left');
+  x.textAlign='left';x.font='800 30px Inter';x.fillStyle='rgba(255,255,255,0.6)';x.fillText('@dudu.aventuras_',40,1880);
+  document.title='pronto';
+}
+</script></body></html>
