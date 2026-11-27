@@ -401,7 +401,7 @@ window.draw=function(tt){
   else {COISA.position.set(8.1,0,-18.3);COISA.rotation.y=Math.PI*0.9;CARM[1].rotation.x=-1.0;CARM[1].rotation.z=-1.2;COISA.rotation.z=0.12}
   // Biel
   const ab=amp('biel',t); BIEL.visible=t>E.luz_loja-0.5;
-  if(t<E.porta_fecha+0.6){BIEL.position.set(-11.7,0.26,-19.6);BARM[1].rotation.x=-2.6+0.5*Math.sin(t*9)*(t<E.corre+2?1:0)}
+  if(t<E.porta_fecha+0.6){BIEL.position.set(t<E.corre+1.5?-11.7:-12.3,0.26,t<E.corre+1.5?-19.6:-18.0);BARM[1].rotation.x=-2.6+0.5*Math.sin(t*9)*(t<E.corre+2?1:0)}
   else {BIEL.position.set(BIELP.x,0.26,BIELP.z);BARM[1].rotation.x=0.05}
   BARM[0].rotation.x=0.05;
   const lk=new THREE.Vector3().subVectors(CAM.position,BIEL.position); BIEL.rotation.y=Math.atan2(lk.x,lk.z);
