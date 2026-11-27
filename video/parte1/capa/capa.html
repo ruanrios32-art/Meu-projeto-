@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Capa Parte 1</title><style>body{margin:0;background:#000}</style></head>
+<body><canvas id="c" width="1080" height="1920"></canvas><script>
+// Capa do vídeo — NÃO RESPONDE, Parte 1. Base: quadro aos 1:20 (ligação + silhueta no beco).
+const C=document.getElementById('c'), x=C.getContext('2d'), W=1080, H=1920, img=new Image();
+const FIG=[336,640];            // silhueta no quadro original (720x1280)
+img.onload=()=>{
+  x.drawImage(img,0,0,W,H);
+  x.fillStyle='rgba(0,0,10,0.25)'; x.fillRect(0,0,W,H);
+  const v=x.createRadialGradient(540,1000,500,540,1000,1200); v.addColorStop(0,'rgba(0,0,0,0)'); v.addColorStop(1,'rgba(0,0,0,0.8)'); x.fillStyle=v; x.fillRect(0,0,W,H);
+  const top=x.createLinearGradient(0,0,0,700); top.addColorStop(0,'rgba(0,0,0,0.85)'); top.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=top; x.fillRect(0,0,W,700);
+  const fx=FIG[0]*1.5, fy=FIG[1]*1.5;
+  // círculo na silhueta + linha até o zoom
+  const BX=800, BY=880, BR=200;
+  x.lineCap='round'; x.strokeStyle='#000'; x.lineWidth=22; x.beginPath(); x.moveTo(fx+60,fy-30); x.lineTo(BX-BR*0.8,BY+BR*0.5); x.stroke();
+  x.strokeStyle='#e53935'; x.lineWidth=12; x.stroke();
+  x.lineWidth=20; x.strokeStyle='#000'; x.beginPath(); x.arc(fx,fy,78,0,7); x.stroke(); x.lineWidth=10; x.strokeStyle='#e53935'; x.stroke();
+  // bolha de zoom
+  x.save(); x.beginPath(); x.arc(BX,BY,BR,0,7); x.clip();
+  const z=4.2, sw=(2*BR)/z; x.drawImage(img,FIG[0]-sw/2,FIG[1]-sw/2-8,sw,sw,BX-BR,BY-BR,2*BR,2*BR);
+  x.fillStyle='rgba(0,0,0,0.15)'; x.fillRect(BX-BR,BY-BR,2*BR,2*BR);
+  // olhos brilhando
+  for(const ex of [-14,14]){x.save();x.shadowColor='#fff';x.shadowBlur=30;x.fillStyle='#f4f8ff';x.beginPath();x.ellipse(BX+ex-2,BY-112,9,4.5,ex<0?0.15:-0.15,0,7);x.fill();x.restore()}
+  x.restore();
+  x.lineWidth=24; x.strokeStyle='#000'; x.beginPath(); x.arc(BX,BY,BR,0,7); x.stroke();
+  x.lineWidth=12; x.strokeStyle='#e53935'; x.stroke();
+  // textos
+  x.textAlign='center'; x.lineJoin='round';
+  const T=(t,px,y,size,fill,lw)=>{x.font=`900 ${size}px Inter`;x.lineWidth=lw||size*0.16;x.strokeStyle='#000';x.strokeText(t,px,y);x.fillStyle=fill;x.fillText(t,px,y)};
+  x.fillStyle='#C62828'; x.strokeStyle='#000'; x.lineWidth=8; x.beginPath(); x.roundRect(400,150,280,78,16); x.fill(); x.stroke();
+  x.font='900 46px Inter'; x.fillStyle='#fff'; x.fillText('PARTE 1',540,206);
+  T('NÃO',540,400,180,'#ffffff'); T('RESPONDE',540,560,150,'#ffffff');
+  T('A MÃE TÁ LIGANDO...',540,1260,66,'#ffffff');
+  T('MAS A VOZ DELA',540,1350,74,'#FFD84D'); T('TÁ NA ESQUINA 😨',540,1440,74,'#FFD84D');
+  x.textAlign='left'; x.font='800 30px Inter'; x.fillStyle='rgba(255,255,255,0.55)'; x.fillText('@dudu.aventuras_',40,1880);
+  document.title='pronto';
+};
+img.src='capa-base.jpg';
+</script></body></html>
