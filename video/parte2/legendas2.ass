@@ -18,23 +18,23 @@ Style: Titulo,Inter Black,78,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 1,0:00:00.00,0:00:02.40,Selo,,0,0,0,,{\fad(150,350)}PARTE 2
 Dialogue: 1,0:00:00.00,0:00:02.40,Titulo,,0,0,0,,{\fad(150,350)}A LUZ
-Dialogue: 0,0:00:02.00,0:00:05.63,Mae,,0,0,0,,Eduardo. Não fala nada. Só escuta.
-Dialogue: 0,0:00:06.23,0:00:08.47,Mae,,0,0,0,,Eu tô presa no depósito do mercado.
-Dialogue: 0,0:00:09.07,0:00:12.33,Mae,,0,0,0,,Tem uma coisa aqui dentro... falando igual a mim.
-Dialogue: 0,0:00:12.93,0:00:15.74,Mae,,0,0,0,,Se ela te chamar, não sou eu. Não confia em—
-Dialogue: 0,0:00:17.74,0:00:19.39,Dudu,,0,0,0,,Mãe? Mãe!
-Dialogue: 0,0:00:20.79,0:00:25.54,Voz,,0,0,0,,Eduardo? A ligação caiu, filho.
-Dialogue: 0,0:00:26.24,0:00:29.08,Dudu,,0,0,0,,Não responde... não responde...
-Dialogue: 0,0:00:29.88,0:00:32.35,Dudu,,0,0,0,,O flash. Cadê o flash...
-Dialogue: 0,0:00:34.95,0:00:36.52,Dudu,,0,0,0,,Tá chegando mais perto.
-Dialogue: 0,0:00:38.82,0:00:41.54,Voz,,0,0,0,,Apaga essa luz, Eduardo.
-Dialogue: 0,0:00:43.14,0:00:46.62,Biel,,0,0,0,,Dudu! Aqui! Corre pra luz!
-Dialogue: 0,0:00:49.82,0:00:52.63,Biel,,0,0,0,,Entra! Entra! Ela não chega perto da luz!
-Dialogue: 0,0:00:53.63,0:00:57.25,Dudu,,0,0,0,,Biel... ela tá com a voz da minha mãe.
-Dialogue: 0,0:00:57.85,0:01:01.33,Biel,,0,0,0,,Com a do meu pai também. Ele saiu faz duas horas.
-Dialogue: 0,0:01:01.93,0:01:06.17,Biel,,0,0,0,,Essa luz aguenta umas três horas. Depois...
-Dialogue: 0,0:01:06.77,0:01:10.32,Dudu,,0,0,0,,Minha mãe tá viva, Biel. Tá no mercado.
-Dialogue: 0,0:01:12.52,0:01:16.71,VozBiel,,0,0,0,,Dudu! Abre aí! Sou eu, o Biel!
-Dialogue: 0,0:01:18.51,0:01:20.58,Biel,,0,0,0,,Dudu... eu tô aqui.
-Dialogue: 0,0:01:21.38,0:01:25.47,VozBiel,,0,0,0,,Não acredita nele! Ele não pisca, Dudu! Olha o olho dele!
-Dialogue: 0,0:01:26.47,0:01:28.86,Dudu,,0,0,0,,Qual de vocês... é o Biel?
+Dialogue: 0,0:00:04.00,0:00:07.63,Mae,,0,0,0,,Eduardo. Não fala nada. Só escuta.
+Dialogue: 0,0:00:08.23,0:00:10.47,Mae,,0,0,0,,Eu tô presa no depósito do mercado.
+Dialogue: 0,0:00:11.07,0:00:14.33,Mae,,0,0,0,,Tem uma coisa aqui dentro... falando igual a mim.
+Dialogue: 0,0:00:14.93,0:00:17.74,Mae,,0,0,0,,Se ela te chamar, não sou eu. Não confia em—
+Dialogue: 0,0:00:19.74,0:00:21.39,Dudu,,0,0,0,,Mãe? Mãe!
+Dialogue: 0,0:00:22.79,0:00:27.54,Voz,,0,0,0,,Eduardo? A ligação caiu, filho.
+Dialogue: 0,0:00:28.24,0:00:31.08,Dudu,,0,0,0,,Não responde... não responde...
+Dialogue: 0,0:00:31.88,0:00:34.35,Dudu,,0,0,0,,O flash. Cadê o flash...
+Dialogue: 0,0:00:36.95,0:00:38.52,Dudu,,0,0,0,,Tá chegando mais perto.
+Dialogue: 0,0:00:40.82,0:00:43.54,Voz,,0,0,0,,Apaga essa luz, Eduardo.
+Dialogue: 0,0:00:45.14,0:00:48.62,Biel,,0,0,0,,Dudu! Aqui! Corre pra luz!
+Dialogue: 0,0:00:51.82,0:00:54.63,Biel,,0,0,0,,Entra! Entra! Ela não chega perto da luz!
+Dialogue: 0,0:00:55.63,0:00:59.25,Dudu,,0,0,0,,Biel... ela tá com a voz da minha mãe.
+Dialogue: 0,0:00:59.85,0:01:03.33,Biel,,0,0,0,,Com a do meu pai também. Ele saiu faz duas horas.
+Dialogue: 0,0:01:03.93,0:01:08.17,Biel,,0,0,0,,Essa luz aguenta umas três horas. Depois...
+Dialogue: 0,0:01:08.77,0:01:12.32,Dudu,,0,0,0,,Minha mãe tá viva, Biel. Tá no mercado.
+Dialogue: 0,0:01:14.52,0:01:18.71,VozBiel,,0,0,0,,Dudu! Abre aí! Sou eu, o Biel!
+Dialogue: 0,0:01:20.51,0:01:22.58,Biel,,0,0,0,,Dudu... eu tô aqui.
+Dialogue: 0,0:01:23.38,0:01:27.47,VozBiel,,0,0,0,,Não acredita nele! Ele não pisca, Dudu! Olha o olho dele!
+Dialogue: 0,0:01:28.47,0:01:30.86,Dudu,,0,0,0,,Qual de vocês... é o Biel?

@@ -10,7 +10,7 @@ VIDRO="lowpass=f=2300,highpass=f=150,aecho=0.8:0.4:35|70:0.35|0.2"
 LONGE="lowpass=f=4500,aecho=0.8:0.5:120|260:0.3|0.15"
 # id, arquivo, ini, fim, efeito, quem (legenda), texto, regra de posição: ('abs',t) ou ('apos',gap)
 F=[
-("01","mae",0.00,3.51,FONE,"Mae","Eduardo. Não fala nada. Só escuta.",('abs',2.0)),
+("01","mae",0.00,3.51,FONE,"Mae","Eduardo. Não fala nada. Só escuta.",('abs',4.0)),
 ("02","mae",4.66,6.73,FONE,"Mae","Eu tô presa no depósito do mercado.",('apos',0.6)),
 ("03","mae",7.99,11.08,FONE,"Mae","Tem uma coisa aqui dentro... falando igual a mim.",('apos',0.6)),
 ("04","mae",12.04,14.80,FONE,"Mae","Se ela te chamar, não sou eu. Não confia em—",('apos',0.6)),
@@ -49,7 +49,7 @@ for n,src,a,b,fx,quem,txt,(modo,v) in F:
     clips.append(dict(n=n,quem=quem,txt=txt,ini=round(ini,3),dur=round(d,3),x=x)); fim=ini+d
 c={k['n']:k for k in clips}
 ev={
- "atende":1.0,
+ "atende":3.1,
  "morre":c["04"]["ini"]+c["04"]["dur"],
  "flash1":c["09"]["ini"]-1.4,
  "flash2":c["10"]["ini"]-1.2,

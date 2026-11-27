@@ -1,156 +1,156 @@
 {
  "eventos": {
-  "atende": 1.0,
-  "morre": 15.74,
-  "flash1": 33.546,
-  "flash2": 37.616,
-  "luz_loja": 42.338,
-  "corre": 46.717999999999996,
-  "porta_fecha": 51.018,
-  "batidas": 70.918,
-  "batidas2": 80.877,
-  "cta": 89.66,
-  "total": 97.66
+  "atende": 3.1,
+  "morre": 17.74,
+  "flash1": 35.546,
+  "flash2": 39.616,
+  "luz_loja": 44.338,
+  "corre": 48.717999999999996,
+  "porta_fecha": 53.018,
+  "batidas": 72.918,
+  "batidas2": 82.877,
+  "cta": 91.66,
+  "total": 99.66
  },
  "falas": [
   {
    "n": "01",
    "quem": "Mae",
    "txt": "Eduardo. Não fala nada. Só escuta.",
-   "ini": 2.0,
+   "ini": 4.0,
    "dur": 3.63
   },
   {
    "n": "02",
    "quem": "Mae",
    "txt": "Eu tô presa no depósito do mercado.",
-   "ini": 6.23,
+   "ini": 8.23,
    "dur": 2.24
   },
   {
    "n": "03",
    "quem": "Mae",
    "txt": "Tem uma coisa aqui dentro... falando igual a mim.",
-   "ini": 9.07,
+   "ini": 11.07,
    "dur": 3.26
   },
   {
    "n": "04",
    "quem": "Mae",
    "txt": "Se ela te chamar, não sou eu. Não confia em—",
-   "ini": 12.93,
+   "ini": 14.93,
    "dur": 2.81
   },
   {
    "n": "05",
    "quem": "Dudu",
    "txt": "Mãe? Mãe!",
-   "ini": 17.74,
+   "ini": 19.74,
    "dur": 1.65
   },
   {
    "n": "06",
    "quem": "Voz",
    "txt": "Eduardo? A ligação caiu, filho.",
-   "ini": 20.79,
+   "ini": 22.79,
    "dur": 4.746
   },
   {
    "n": "07",
    "quem": "Dudu",
    "txt": "Não responde... não responde...",
-   "ini": 26.236,
+   "ini": 28.236,
    "dur": 2.84
   },
   {
    "n": "08",
    "quem": "Dudu",
    "txt": "O flash. Cadê o flash...",
-   "ini": 29.876,
+   "ini": 31.876,
    "dur": 2.47
   },
   {
    "n": "09",
    "quem": "Dudu",
    "txt": "Tá chegando mais perto.",
-   "ini": 34.946,
+   "ini": 36.946,
    "dur": 1.57
   },
   {
    "n": "10",
    "quem": "Voz",
    "txt": "Apaga essa luz, Eduardo.",
-   "ini": 38.816,
+   "ini": 40.816,
    "dur": 2.722
   },
   {
    "n": "11",
    "quem": "Biel",
    "txt": "Dudu! Aqui! Corre pra luz!",
-   "ini": 43.138,
+   "ini": 45.138,
    "dur": 3.48
   },
   {
    "n": "12",
    "quem": "Biel",
    "txt": "Entra! Entra! Ela não chega perto da luz!",
-   "ini": 49.818,
+   "ini": 51.818,
    "dur": 2.81
   },
   {
    "n": "13",
    "quem": "Dudu",
    "txt": "Biel... ela tá com a voz da minha mãe.",
-   "ini": 53.628,
+   "ini": 55.628,
    "dur": 3.62
   },
   {
    "n": "14",
    "quem": "Biel",
    "txt": "Com a do meu pai também. Ele saiu faz duas horas.",
-   "ini": 57.848,
+   "ini": 59.848,
    "dur": 3.48
   },
   {
    "n": "15",
    "quem": "Biel",
    "txt": "Essa luz aguenta umas três horas. Depois...",
-   "ini": 61.928,
+   "ini": 63.928,
    "dur": 4.24
   },
   {
    "n": "16",
    "quem": "Dudu",
    "txt": "Minha mãe tá viva, Biel. Tá no mercado.",
-   "ini": 66.768,
+   "ini": 68.768,
    "dur": 3.55
   },
   {
    "n": "17",
    "quem": "VozBiel",
    "txt": "Dudu! Abre aí! Sou eu, o Biel!",
-   "ini": 72.518,
+   "ini": 74.518,
    "dur": 4.189
   },
   {
    "n": "18",
    "quem": "Biel",
    "txt": "Dudu... eu tô aqui.",
-   "ini": 78.507,
+   "ini": 80.507,
    "dur": 2.07
   },
   {
    "n": "19",
    "quem": "VozBiel",
    "txt": "Não acredita nele! Ele não pisca, Dudu! Olha o olho dele!",
-   "ini": 81.377,
+   "ini": 83.377,
    "dur": 4.096
   },
   {
    "n": "20",
    "quem": "Dudu",
    "txt": "Qual de vocês... é o Biel?",
-   "ini": 86.472,
+   "ini": 88.472,
    "dur": 2.39
   }
  ]

@@ -30,6 +30,15 @@ wenv=np.where(t<E['morre'],1.0,0.55); wenv=np.where(t>E['porta_fecha'],0.25,wenv
 out+=0.05*wind*wenv*(0.6+0.4*np.sin(2*np.pi*t/7.3))
 # atender: clique
 put(clique(.005),E['atende'],0.35)
+# toque do celular (continua da Parte 1) até ele atender
+def vib(dur):
+    L=int(dur*SR); tt=np.arange(L)/SR; x=np.sign(np.sin(2*np.pi*165*tt))*0.5+0.5*np.sin(2*np.pi*330*tt)
+    return lp(x.astype(np.float32),0.12)*np.minimum(1,tt/0.01)*np.minimum(1,(dur-tt)/0.01)
+for st in np.arange(0.0,E['atende']-0.2,1.0):
+    for j,f in enumerate([784,988,1175,988]):
+        L=int(0.35*SR); tt=np.arange(L)/SR; tone=((np.sin(2*np.pi*f*tt)+0.3*np.sin(2*np.pi*2*f*tt))*np.exp(-tt/0.12)).astype(np.float32)
+        if st+j*0.16<E['atende']-0.05: put(tone,st+j*0.16,0.09)
+    put(vib(0.6),st,0.15)
 # chiado de telefone durante a ligação
 k=(t>1.9)&(t<E['morre']); out[k]+=0.012*rng.standard_normal(k.sum()).astype(np.float32)
 # celular morre: bip descendente e silêncio

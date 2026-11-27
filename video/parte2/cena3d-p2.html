@@ -330,20 +330,44 @@ function fist(c,x,y,s,flip){c.save();c.translate(x,y);c.scale(flip?-s:s,s);
   rr(c,-48,-30,96,130,38,SKIN); for(const yy of [-22,8,38,68]){rr(c,30,yy,40,30,15,SKIN,4)}
   c.strokeStyle=SKIN2;c.lineWidth=3;c.beginPath();c.arc(-10,40,24,-0.6,0.6);c.stroke();c.restore()}
 const LIVE=document.createElement('canvas');LIVE.width=W;LIVE.height=H;
-function phoneEar(c,t){ // celular encostado na orelha (só a borda), depois desce mostrando a bateria vazia
+function phoneCall(c,t){ // começa onde a Parte 1 parou: a mãe ligando com 1%, ele atende, ela fala, o celular morre
   const E=EV;
-  if(t<E.morre+1.0){const glow=t<E.morre?1:0;
-    c.save();c.translate(700,640);c.rotate(0.12);
-    rr(c,-40,-300,140,600,30,'#15161a',6);
-    if(glow){c.fillStyle='rgba(120,255,170,0.55)';c.fillRect(-30,-280,18,560)}
-    poly(c,[[-60,120],[-20,60],[60,80],[80,400],[-40,420]],SKIN);
-    c.restore(); return}
-  const up=sm(E.morre+1.0,E.morre+1.8,t)*(1-sm(E.morre+5.2,E.morre+6.0,t)); if(up<=0) return;
-  c.save();c.translate(440,lerp(1500,960,up));c.rotate(-0.08);
-  rr(c,-98,-12,196,350,26,'#15161a',6); rr(c,-86,2,172,320,18,'#020203',0);
-  if(Math.floor(t*2.2)%2===0){c.strokeStyle='#ff3b3b';c.lineWidth=4;c.strokeRect(-30,140,56,26);c.fillStyle='#ff3b3b';c.fillRect(26,148,6,10);c.beginPath();c.moveTo(-34,170);c.lineTo(34,136);c.stroke()}
+  const down=t<E.morre?0:sm(E.morre+5.2,E.morre+6.0,t); if(down>=1) return;
+  const vib=(t<E.atende&&(t%1.0)<0.6)?Math.sin(t*95)*4:0;
+  c.save();c.translate(420+vib+Math.sin(t*1.2)*4,lerp(860,1550,down)+Math.sin(t*1.6)*4);c.rotate(-0.05);c.scale(1.25,1.25);
+  rr(c,-98,-12,196,350,26,'#15161a',6);
+  c.textAlign='center';
+  if(t<E.morre){
+    const emLig=t>=E.atende;
+    const sc=c.createLinearGradient(0,0,0,330);sc.addColorStop(0,'#1d3b2c');sc.addColorStop(1,'#0b1810');
+    rr(c,-86,2,172,320,18,null,0);c.fillStyle=sc;c.fill();
+    c.textAlign='left';c.fillStyle='#e6ecf6';c.font='700 13px Inter';c.fillText('23:52',-72,24);
+    const bl=Math.floor(t*3)%2===0; c.fillStyle=bl?'#ff4747':'#ff9a9a';c.font='900 14px Inter';c.fillText('1%',34,24);
+    c.strokeStyle='#ff4747';c.lineWidth=2;c.strokeRect(58,13,20,11);c.fillStyle='#ff4747';c.fillRect(59,14,1.5,9);
+    c.textAlign='center';
+    c.fillStyle='#cfe9da';c.font='600 14px Inter';c.fillText(emLig?'em chamada':'chamada recebida',0,70);
+    c.beginPath();c.arc(0,130,40,0,7);c.fillStyle='#c9a7ff';c.fill();c.lineWidth=3;c.strokeStyle='#000';c.stroke();
+    c.fillStyle='#2a1f40';c.font='900 34px Inter';c.fillText('M',0,143);
+    c.fillStyle='#ffffff';c.font='800 26px Inter';c.fillText('MÃE ❤️',0,206);
+    if(emLig){const s2=Math.floor(t-E.atende);c.font='700 16px Inter';c.fillStyle='#9ff0bf';c.fillText('00:'+String(s2).padStart(2,'0'),0,230);
+      c.beginPath();c.arc(0,284,26,0,7);c.fillStyle='#e53935';c.fill();c.lineWidth=3;c.strokeStyle='#000';c.stroke();c.font='22px Inter';c.fillText('📵',0,292);
+      c.font='18px Inter';c.fillText('🔇',-58,292);c.fillText('🔊',58,292)}
+    else {c.font='600 13px Inter';c.fillStyle='rgba(255,255,255,0.75)';c.fillText('chamando...',0,228);
+      const pulse=1+0.08*Math.sin(t*8);
+      c.beginPath();c.arc(-46,284,25,0,7);c.fillStyle='#e53935';c.fill();c.lineWidth=3;c.strokeStyle='#000';c.stroke();
+      c.beginPath();c.arc(46,284,25*pulse,0,7);c.fillStyle='#2ecc71';c.fill();c.stroke();
+      c.font='22px Inter';c.fillText('📵',-46,292);c.fillText('📞',46,292)}
+  } else {
+    rr(c,-86,2,172,320,18,'#020203',0);
+    if(Math.floor(t*2.2)%2===0){c.strokeStyle='#ff3b3b';c.lineWidth=4;c.strokeRect(-30,140,56,26);c.fillStyle='#ff3b3b';c.fillRect(26,148,6,10);c.beginPath();c.moveTo(-34,170);c.lineTo(34,136);c.stroke()}
+  }
+  c.textAlign='left';
   poly(c,[[-125,150],[-104,60],[-84,64],[-84,330],[-60,440],[-130,440]],SKIN);
   for(const yy of [130,182,234,282]) rr(c,78,yy,44,34,16,SKIN,5);
+  // polegar: vai até o botão verde e aperta
+  const go=sm(E.atende-0.7,E.atende-0.15,t)*(1-sm(E.atende+0.2,E.atende+0.7,t));
+  const tx=lerp(-120,46,go), ty=lerp(330,284,go)+(t>E.atende-0.15&&t<E.atende+0.15?6:0);
+  c.save();c.translate(tx,ty);c.rotate(-0.6+0.6*go);rr(c,-20,-14,62,30,15,SKIN,5);c.restore();
   poly(c,[[-150,340],[120,340],[150,640],[-180,640]],SLEEVE);
   c.restore();
 }
@@ -396,8 +420,9 @@ window.draw=function(tt){
   const em=t<E.luz_loja?0:(t<E.luz_loja+0.7?(Math.sin(t*60)>0?1:0.1):1);
   EMER.intensity=em*(4.2+0.25*Math.sin(t*50)); lampM.color.set(em>0.5?'#ffffff':'#3a3a3a'); LEDb.material.color.set(em>0.5?'#ffcc33':'#333');
   // a Coisa: flash 1 a 6 m, flash 2 a 3 m recuando da luz
-  COISA.visible=t>E.flash1-0.5&&t<E.luz_loja+4;
-  if(t<E.flash2-0.3){COISA.position.set(11.2,0,-18.9);COISA.rotation.y=Math.PI*0.96;CARM[0].rotation.x=0.1;CARM[1].rotation.x=-0.1;COISA.rotation.z=0}
+  COISA.visible=(t<E.morre+0.1)||(t>E.flash1-0.5&&t<E.luz_loja+4);
+  if(t<E.morre+0.1){COISA.position.set(18.5,0,-19.2);COISA.rotation.y=Math.PI;CARM[0].rotation.x=0.08;CARM[1].rotation.x=-0.08;CARM[1].rotation.z=0;COISA.rotation.z=0}
+  else if(t<E.flash2-0.3){COISA.position.set(11.2,0,-18.9);COISA.rotation.y=Math.PI*0.96;CARM[0].rotation.x=0.1;CARM[1].rotation.x=-0.1;COISA.rotation.z=0}
   else {COISA.position.set(8.1,0,-18.3);COISA.rotation.y=Math.PI*0.9;CARM[1].rotation.x=-1.0;CARM[1].rotation.z=-1.2;COISA.rotation.z=0.12}
   // Biel
   const ab=amp('biel',t); BIEL.visible=t>E.luz_loja-0.5;
@@ -419,7 +444,7 @@ window.draw=function(tt){
   // imagem que fica na retina depois do flash
   if(AFTER&&t>AFTER_T+0.12&&t<AFTER_T+1.3){O.globalAlpha=0.55*(1-sm(AFTER_T+0.12,AFTER_T+1.3,t));O.drawImage(AFTER,0,0);O.globalAlpha=1}
   LIVE.getContext('2d').drawImage(OUT,0,0);
-  phoneEar(O,t); cameraProp(O,t);
+  phoneCall(O,t); cameraProp(O,t);
   if(dark>0&&t<E.luz_loja+1.5){O.fillStyle=`rgba(0,0,6,${0.35*dark})`;O.fillRect(0,0,W,H)}
   for(const f of [E.flash1,E.flash2]) if(t>=f&&t<f+0.25){O.fillStyle=`rgba(255,255,255,${0.55*(1-(t-f)/0.25)})`;O.fillRect(0,0,W,H)}
   if(t>=E.morre&&t<E.morre+1.5){O.fillStyle='#000';O.fillRect(0,0,W,H)}        // tela preta
