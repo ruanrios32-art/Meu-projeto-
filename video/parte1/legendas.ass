@@ -9,6 +9,7 @@ Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour,
 Style: Dudu,Inter ExtraBold,40,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
 Style: Cida,Inter ExtraBold,40,&H004DD8FF,&H004DD8FF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
 Style: Voz,Inter ExtraBold,40,&H00FFA7C9,&H00FFA7C9,&H00000000,&H96000000,0,1,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: Cel,Inter ExtraBold,38,&H00D0E65E,&H00D0E65E,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
 Style: Selo,Inter Black,34,&H00FFFFFF,&H00FFFFFF,&H002828C6,&H002828C6,0,0,0,0,100,100,1,0,3,10,0,8,0,0,120,1
 Style: Titulo,Inter Black,78,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,2,0,1,6,3,8,0,0,185,1
 
@@ -16,6 +17,7 @@ Style: Titulo,Inter Black,78,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0
 Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
 Dialogue: 1,0:00:00.00,0:00:02.40,Selo,,0,0,0,,{\fad(150,350)}PARTE 1
 Dialogue: 1,0:00:00.00,0:00:02.40,Titulo,,0,0,0,,{\fad(150,350)}O APAGÃO
+Dialogue: 0,0:01:09.00,0:01:11.40,Cel,,0,0,0,,MÃE chamando...
 Dialogue: 0,0:00:01.00,0:00:04.81,Dudu,,0,0,0,,Apagou tudo... e a minha mãe não atende.
 Dialogue: 0,0:00:06.00,0:00:07.82,Dudu,,0,0,0,,Até os cachorros pararam.
 Dialogue: 0,0:00:09.00,0:00:12.23,Cida,,0,0,0,,Psiu! Menino! Sai do meio da rua!
@@ -23,3 +25,11 @@ Dialogue: 0,0:00:12.73,0:00:17.71,Dudu,,0,0,0,,Dona Cida? A senhora viu minha m�
 Dialogue: 0,0:00:18.21,0:00:24.03,Cida,,0,0,0,,Escuta bem. Se chamarem teu nome... não responde.
 Dialogue: 0,0:00:24.53,0:00:26.21,Dudu,,0,0,0,,Como assim, não responde?
 Dialogue: 0,0:00:26.71,0:00:30.95,Cida,,0,0,0,,O Juninho respondeu. Faz uma hora.
+Dialogue: 0,0:00:31.45,0:00:34.43,Dudu,,0,0,0,,Tá. Normal. Super normal.
+Dialogue: 0,0:00:48.00,0:00:52.59,Voz,,0,0,0,,Dudu? Dudu, é a mãe...
+Dialogue: 0,0:00:53.19,0:00:53.89,Dudu,,0,0,0,,Mã—
+Dialogue: 0,0:00:53.94,0:00:56.94,Cida,,0,0,0,,NÃO RESPONDE!
+Dialogue: 0,0:00:57.74,0:01:02.99,Voz,,0,0,0,,Filho... por que cê não fala comigo?
+Dialogue: 0,0:01:03.69,0:01:08.93,Dudu,,0,0,0,,Numa hora dessas... ela me chamaria de Eduardo.
+Dialogue: 0,0:01:11.53,0:01:15.15,Voz,,0,0,0,,Eduardo... atende, vai.
+Dialogue: 0,0:01:15.75,0:01:20.76,Dudu,,0,0,0,,Se ela tá ligando... quem tá ali na esquina?
