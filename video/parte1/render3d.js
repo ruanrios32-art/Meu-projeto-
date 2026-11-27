@@ -17,13 +17,13 @@ const srv = http.createServer((q, r) => {
   await p.goto(`http://127.0.0.1:${srv.address().port}/cena3d.html`);
   await p.waitForFunction(() => window.READY === true, null, { timeout: 60000 });
   await p.evaluate(a => window.setAmp(a), JSON.parse(fs.readFileSync(path.join(ROOT, 'amp.json'))));
-  const N = 27 * 30, last = only ? Math.max(...only) : 99;
+  const N = Math.round(89.8 * 30), last = only ? Math.max(...only) : 99;
   const t0 = Date.now();
   for (let f = 0; f < N; f++) {
     const t = f / 30; if (t > last + 0.02) break;
     const want = !only || only.some(x => Math.abs(x - t) < 1 / 60);
     // quadros não pedidos: só precisam rodar até o clique da câmera (foto congelada)
-    if (!want && !(t >= 0.6 && t < 0.7)) continue;
+    if (!want && !(t >= 0.6 && t < 0.7) && !(t >= 41.6 && t < 41.7)) continue;
     const url = await p.evaluate(t => window.draw(t), t);
     if (want) fs.writeFileSync(path.join(out, `f_${String(f).padStart(4, '0')}.jpg`), Buffer.from(url.split(',')[1], 'base64'));
     if (f % 90 === 0 && !only) console.log(`quadro ${f}/${N}  ${((Date.now() - t0) / 1000).toFixed(0)} s`);
