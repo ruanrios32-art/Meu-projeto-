@@ -95,3 +95,11 @@ Etiqueta com o número da parte + título do episódio no primeiro 1,5 s, por ex
 | 4 | O Mercado | Dudu | Encontrar a mãe, mas qual delas é a verdadeira? |
 | 5 | A Janela | **Dona Cida** | Virada de POV: o que ela viu antes de todo mundo |
 | 6 | Quem Respondeu | Dudu | A revelação de quem já respondeu sem perceber |
+
+---
+
+## Atualização depois da Parte 2 (decisão do público: o Biel de fora era o verdadeiro)
+- **Itálico = voz que vem do escuro.** É o significado real da mecânica (nunca explicado no vídeo). Vale para A Voz e também para gente de verdade que está no escuro: o Biel fala em itálico lá fora e normal quando entra na luz.
+- **Regra 4 confirmada na Parte 3:** quem responde "volta" e **não pisca**. Essas pessoas aguentam a luz, porque não são A Voz.
+- **Regra 5 (Parte 3):** quem respondeu **chega mais perto toda vez que alguém fala o nome dele**.
+- **Falso Biel:** o Biel que respondeu ao pai. Legenda laranja (normal), voz igual à do Biel, mas calma demais.
