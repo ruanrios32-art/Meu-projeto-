@@ -1,0 +1,39 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 720
+PlayResY: 1280
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Dudu,Inter ExtraBold,40,&H00FFFFFF,&H00FFFFFF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: Mae,Inter ExtraBold,40,&H00FFA7C9,&H00FFA7C9,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: Voz,Inter ExtraBold,40,&H00FFA7C9,&H00FFA7C9,&H00000000,&H96000000,0,1,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: Biel,Inter ExtraBold,40,&H003C9AFF,&H003C9AFF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: BielEscuro,Inter ExtraBold,40,&H003C9AFF,&H003C9AFF,&H00000000,&H96000000,0,1,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: Falso,Inter ExtraBold,40,&H003C9AFF,&H003C9AFF,&H00000000,&H96000000,0,0,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: VozBiel,Inter ExtraBold,40,&H003C9AFF,&H003C9AFF,&H00000000,&H96000000,0,1,0,0,100,100,0,0,1,4,2,2,50,50,380,1
+Style: Selo,Inter Black,34,&H00FFFFFF,&H00FFFFFF,&H002828C6,&H002828C6,0,0,0,0,100,100,1,0,3,10,0,8,0,0,120,1
+Style: Titulo,Inter Black,60,&H00FFFFFF,&H00FFFFFF,&H00000000,&H64000000,0,0,0,0,100,100,2,0,1,6,3,8,0,0,185,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 1,0:00:00.00,0:00:02.80,Selo,,0,0,0,,{\fad(150,350)}PARTE 3
+Dialogue: 1,0:00:00.00,0:00:02.80,Titulo,,0,0,0,,{\fad(150,350)}O QUE NÃO PISCA
+Dialogue: 0,0:00:00.50,0:00:03.19,Falso,,0,0,0,,Dudu. Não abre essa porta.
+Dialogue: 0,0:00:03.59,0:00:07.30,BielEscuro,,0,0,0,,Dudu, pelo amor de Deus, abre! Ela tá aqui atrás!
+Dialogue: 0,0:00:07.70,0:00:08.81,Dudu,,0,0,0,,Desculpa, Biel.
+Dialogue: 0,0:00:10.21,0:00:11.51,Biel,,0,0,0,,Fecha! Fecha a porta!
+Dialogue: 0,0:00:12.51,0:00:14.44,Biel,,0,0,0,,Dudu... quem é esse?
+Dialogue: 0,0:00:15.14,0:00:16.27,Falso,,0,0,0,,Eu sou o Biel.
+Dialogue: 0,0:00:16.86,0:00:19.12,Falso,,0,0,0,,Eu respondi quando meu pai me chamou.
+Dialogue: 0,0:00:19.72,0:00:21.76,Falso,,0,0,0,,Agora eu fico no lugar dele.
+Dialogue: 0,0:00:22.46,0:00:24.31,Dudu,,0,0,0,,Biel, sai de perto dele!
+Dialogue: 0,0:00:25.61,0:00:27.78,Biel,,0,0,0,,Para! Não fala meu nome!
+Dialogue: 0,0:00:28.28,0:00:31.32,Biel,,0,0,0,,Toda vez que alguém fala... ele chega mais perto.
+Dialogue: 0,0:00:32.02,0:00:33.88,Falso,,0,0,0,,Fala de novo, Dudu.
+Dialogue: 0,0:00:35.28,0:00:36.55,Dudu,,0,0,0,,A luz tá acabando...
+Dialogue: 0,0:00:37.15,0:00:40.41,Biel,,0,0,0,,O mercado é a duas quadras. Tua mãe tá lá?
+Dialogue: 0,0:00:40.91,0:00:43.32,Dudu,,0,0,0,,Tá. Trancada no depósito.
+Dialogue: 0,0:00:44.22,0:00:50.44,Voz,,0,0,0,,Eduardo... vem. Eu tô te esperando.
+Dialogue: 0,0:00:51.63,0:00:53.93,Falso,,0,0,0,,Ela também respondeu, Dudu.
