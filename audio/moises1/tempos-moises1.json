@@ -6,16 +6,21 @@
   "egito": 19.56,
   "casa": 57.339999999999996,
   "rio": 81.97,
-  "princesa": 95.44,
-  "cesto_sai": 104.2,
-  "cesto_aberto": 105.4,
-  "mae_chega": 115.55,
-  "anos": 132.2,
-  "fecha_olhos2": 143.31000000000003,
-  "quarto2": 144.51000000000002,
-  "fecha_biblia": 149.29,
-  "cta": 160.94,
-  "total": 169.94
+  "empurra": 90.81000000000002,
+  "para": 98.01,
+  "cesto_sai": 108.6,
+  "cesto_aberto": 109.99999999999999,
+  "sai_miria": 121.05000000000001,
+  "corte": 122.45,
+  "volta": 123.05000000000001,
+  "pega": 129.66,
+  "vao": 135.73999999999998,
+  "anos": 141.1,
+  "fecha_olhos2": 152.41000000000003,
+  "quarto2": 153.61,
+  "fecha_biblia": 158.39,
+  "cta": 170.04,
+  "total": 179.04
  },
  "falas": [
   {
@@ -163,10 +168,18 @@
    "src": "joquebede"
   },
   {
+   "n": "21",
+   "quem": "Vo",
+   "txt": "Então a filha do Faraó desceu ao rio pra se banhar.",
+   "ini": 92.81,
+   "dur": 4.23,
+   "src": "vo"
+  },
+  {
    "n": "19",
    "quem": "Miria",
    "txt": "Quem é você?",
-   "ini": 91.21,
+   "ini": 100.64,
    "dur": 0.91,
    "src": "miria"
   },
@@ -174,23 +187,15 @@
    "n": "20",
    "quem": "Dudu",
    "txt": "Eu... só tô olhando também.",
-   "ini": 92.52,
+   "ini": 101.95,
    "dur": 2.12,
    "src": "dudu"
-  },
-  {
-   "n": "21",
-   "quem": "Vo",
-   "txt": "Então a filha do Faraó desceu ao rio pra se banhar.",
-   "ini": 95.44,
-   "dur": 4.23,
-   "src": "vo"
   },
   {
    "n": "22",
    "quem": "Princesa",
    "txt": "O que é aquilo no meio dos juncos? Tragam pra mim.",
-   "ini": 100.67,
+   "ini": 105.07,
    "dur": 3.33,
    "src": "princesa"
   },
@@ -198,7 +203,7 @@
    "n": "23",
    "quem": "Princesa",
    "txt": "É um dos meninos dos hebreus.",
-   "ini": 106.4,
+   "ini": 111.0,
    "dur": 2.19,
    "src": "princesa"
   },
@@ -206,7 +211,7 @@
    "n": "24",
    "quem": "Dudu",
    "txt": "Ela vai mandar jogar no rio...",
-   "ini": 109.09,
+   "ini": 113.69,
    "dur": 1.53,
    "src": "dudu"
   },
@@ -214,7 +219,7 @@
    "n": "25",
    "quem": "Miria",
    "txt": "Quer que eu chame uma mulher hebreia pra amamentar o menino?",
-   "ini": 111.42,
+   "ini": 117.02,
    "dur": 2.95,
    "src": "miria"
   },
@@ -222,7 +227,7 @@
    "n": "26",
    "quem": "Princesa",
    "txt": "Vai.",
-   "ini": 114.77,
+   "ini": 120.37,
    "dur": 0.48,
    "src": "princesa"
   },
@@ -230,7 +235,7 @@
    "n": "27",
    "quem": "Princesa",
    "txt": "Leva este menino e cria pra mim. Eu te pagarei.",
-   "ini": 117.85,
+   "ini": 125.45,
    "dur": 3.81,
    "src": "princesa"
   },
@@ -238,7 +243,7 @@
    "n": "28",
    "quem": "Dudu",
    "txt": "A própria mãe... vai ser paga pra criar o filho dela.",
-   "ini": 122.16,
+   "ini": 130.66,
    "dur": 4.88,
    "src": "dudu"
   },
@@ -246,7 +251,7 @@
    "n": "29",
    "quem": "Vo",
    "txt": "O menino cresceu, e ela o levou à filha do Faraó.",
-   "ini": 127.84,
+   "ini": 136.54,
    "dur": 4.26,
    "src": "vo"
   },
@@ -254,7 +259,7 @@
    "n": "30",
    "quem": "Princesa",
    "txt": "O nome dele será Moisés... porque das águas eu o tirei.",
-   "ini": 134.1,
+   "ini": 143.2,
    "dur": 5.29,
    "src": "princesa"
   },
@@ -262,7 +267,7 @@
    "n": "31",
    "quem": "Dudu",
    "txt": "Moisés... é o Moisés.",
-   "ini": 139.99,
+   "ini": 149.09,
    "dur": 3.02,
    "src": "dudu"
   },
@@ -270,7 +275,7 @@
    "n": "32",
    "quem": "Dudu",
    "txt": "Vó... e depois? O que aconteceu com ele?",
-   "ini": 145.61,
+   "ini": 154.71,
    "dur": 3.48,
    "src": "dudu"
   },
@@ -278,7 +283,7 @@
    "n": "33",
    "quem": "Vo",
    "txt": "Isso... fica pra amanhã.",
-   "ini": 149.69,
+   "ini": 158.79,
    "dur": 2.22,
    "src": "vo"
   },
@@ -286,7 +291,7 @@
    "n": "34",
    "quem": "Vo",
    "txt": "Mas lembra, Dudu: quando ninguém podia salvar aquele bebê, Deus já tinha um plano.",
-   "ini": 152.41,
+   "ini": 161.51,
    "dur": 7.73,
    "src": "vo"
   }

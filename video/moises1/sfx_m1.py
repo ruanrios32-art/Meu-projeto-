@@ -23,7 +23,7 @@ def lp(x,al):
     return y
 def ruido(s): return rng.standard_normal(int(s*SR)).astype(np.float32)
 def janela(a,b,f=0.6): return (np.clip((t-a)/f,0,1)*np.clip((b-t)/f,0,1)).astype(np.float32)
-quarto=np.maximum(janela(0,E['egito']-0.3),janela(E['quarto2']-0.5,DUR+1)); egito=janela(E['egito']-0.2,E['casa']); casa=janela(E['casa'],E['rio']); rio=janela(E['rio'],E['quarto2']-0.4)
+quarto=np.maximum(janela(0,E['egito']-0.3),janela(E['quarto2']-0.5,DUR+1)); egito=janela(E['egito']-0.2,E['casa']); casa=janela(E['casa'],E['rio']); rio=janela(E['rio'],E['anos']); palacio=janela(E['anos'],E['quarto2']-0.4)
 base=lp(ruido(DUR)[:n],0.08)
 # quarto: chuva
 out+=0.05*(base-lp(base,0.02))*quarto*3
@@ -50,6 +50,12 @@ for s in np.arange(E['rio'],E['quarto2'],1.3+rng.random()):
     for j in range(3):
         L=int(0.09*SR); tt=np.arange(L)/SR; put((np.sin(2*np.pi*np.cumsum(2600+1800*tt/0.09)/SR)*np.sin(np.pi*tt/0.09)).astype(np.float32),s+j*0.12+rng.random()*0.3,0.04)
 put(choro(3.2),E['cesto_aberto']+0.1,0.22)
+# empurrão na água + respingo
+L=int(0.6*SR); put(lp(ruido(0.6),0.25)*np.exp(-np.arange(L)/(SR*0.15)),E['empurra'],0.35)
+# palácio: fogo crepitando
+for s_ in np.arange(E['anos'],E['quarto2'],0.12):
+    if rng.random()<0.5: L=int(0.01*SR); put((rng.standard_normal(L)*np.exp(-np.arange(L)/(L/4))).astype(np.float32),s_+rng.random()*0.1,0.12)
+out+=0.03*lp(ruido(DUR)[:n],0.03)*palacio*2
 out=np.clip(out,-1,1)
 w=wave.open('sfx-m1.wav','wb'); w.setnchannels(1); w.setsampwidth(2); w.setframerate(SR); w.writeframes((out*32767).astype(np.int16).tobytes()); w.close()
 # música suave: acordes de cordas (pad) lentos
